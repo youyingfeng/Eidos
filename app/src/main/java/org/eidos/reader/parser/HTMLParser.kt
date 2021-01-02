@@ -85,209 +85,198 @@ class HTMLParser {
             return workBlurbList
         }
 
-        fun parseChapter(parseTree: Document) : Chapter {
-            // this only parses a single chapter
-            // parseTree represents the html of the entire page.
-            val workTree = parseTree.select("div#workskin")
-            val chapterTree = workTree.select("div#chapters > div.chapter")
+        fun parseWorkAlternate(workHtml: String, navigationHtml: String, workURL: String) : Work {
+            val workDoc = Jsoup.parse(workHtml)
+            val navigationDoc = Jsoup.parse(navigationHtml)
+            // get the list of URLs to zip with the contents later
+            val chapterURLs : List<String> = navigationDoc
+                    .select("div#main > ol.chapter.index.group > li > a[href]")
+                    .map { it.attr("href") }
 
-            // TODO: Refactor this out into another function
-            /*
-            IMPORTANT NOTE:
-            the format of the html obtained at /work/<id> is different from the format obtained
-            at /work/<id>/chapter/<id>
-
-            Thankfully, oneshots allow for both formats.
-
-            Make sure that the first format does not appear ANYWHERE near this function
-             */
-            // FIXME: be stricter with summaries and notes, bc this code will mix work notes and chapter notes
-            // FIXME: same above with summaries - make sure work summary is not mixed with chapter summary
-            // TODO: check if chapter 1 can have 2 summaries - since it can have 2 notes.
-            val title = chapterTree.select("div.chapter.preface.group > h3.title")
-                .first()
-                .text()
-            val summary = chapterTree.select("div#summary > blockquote.userstuff")
-                .first()
-                ?.html()
-                ?: ""
-            val preChapterNotes = chapterTree.select("div#notes > blockquote.userstuff") // FIXME: verify
-                .first()
-                ?.html()
-                ?: ""
-            val chapterText = chapterTree.select("div.userstuff.module")
-                .first()
-                .html()
-            val postChapterNotes = chapterTree
-                .select("div.chapter.preface.group > div.end.notes.module > blockquote.userstuff")
-                .first()
-                ?.html()
-                ?: ""
-
-            val chapter = Chapter(
-                title = title,
-                summary = summary,
-                preChapterNotes = preChapterNotes,
-                chapterBody = chapterText,
-                postChapterNotes = postChapterNotes
-            )
-
-            return chapter
-        }
-
-        fun parseWork(html: String, workURL: String) : Work {
-            val doc = Jsoup.parse(html)
-            // optimise later, get something working first
-            val chapterURLs : List<String> = doc.select("div#main > ol.chapter.index.group > li > a[href]")
-                .map { it.attr("href") }
-
-            val chapterParseTrees : List<Document> = chapterURLs
-                .map { url: String -> ChapterRequest(url) }
-                .map { chapterRequest: ChapterRequest -> getChapterHTML(chapterRequest) }
-                .map { Jsoup.parse(it) }
-
-
-            val firstChapter = chapterParseTrees[0]
-            val metadataTree = firstChapter.select("dl.work.meta.group")
+            // Statistics
+            val metadataTree = workDoc.select("dl.work.meta.group")
             val statisticsTree = metadataTree.select("dl.stats")
             val chapterCountArray = statisticsTree.select("dd.chapters")
-                .first()
-                .text()
-                .split("/")
+                    .first()
+                    .text()
+                    .split("/")
 
             val rating = metadataTree.select("dd.rating.tags")
-                .select("a.tag")
-                .first()
-                .text()
+                    .select("a.tag")
+                    .first()
+                    .text()
             val warnings = metadataTree.select("dd.warning.tags")
-                .select("a.tag")
-                .map { it.text() }
+                    .select("a.tag")
+                    .map { it.text() }
             val categories = metadataTree.select("dd.category.tags")
-                .select("a.tag")
-                .map { it.text() }
+                    .select("a.tag")
+                    .map { it.text() }
             val fandoms = metadataTree.select("dd.fandom.tags")
-                .select("a.tag")
-                .map { it.text() }
+                    .select("a.tag")
+                    .map { it.text() }
             val relationships = metadataTree.select("dd.relationship.tags")
-                .select("a.tag")
-                .map { it.text() }
+                    .select("a.tag")
+                    .map { it.text() }
             val characters = metadataTree.select("dd.character.tags")
-                .select("a.tag")
-                .map { it.text() }
+                    .select("a.tag")
+                    .map { it.text() }
             val freeforms = metadataTree.select("dd.freeform.tags")
-                .select("a.tag")
-                .map { it.text() }
+                    .select("a.tag")
+                    .map { it.text() }
             val language = metadataTree.select("dd.language")
-                .first()
-                .text()
+                    .first()
+                    .text()
 
             val publishDate = statisticsTree.select("dd.published")
-                .first()
-                .text()
+                    .first()
+                    .text()
             val lastUpdatedDate = statisticsTree.select("dd.status")
-                .first()
-                ?.text()
-                ?: publishDate
+                    .first()
+                    ?.text()
+                    ?: publishDate
             val wordCount = statisticsTree.select("dd.words")
-                .first()
-                .text()
-                .toInt()
+                    .first()
+                    .text()
+                    .toInt()
             val currentChapterCount = chapterCountArray[0].toInt()
             val maxChapterCount = chapterCountArray[1].toIntOrNull() ?: 0
             val completionStatus = currentChapterCount == maxChapterCount
             val comments = statisticsTree.select("dd.comments")
-                .first()
-                ?.text()
-                ?.toInt()
-                ?: 0
+                    .first()
+                    ?.text()
+                    ?.toInt()
+                    ?: 0
             val kudos = statisticsTree.select("dd.kudos")
-                .first()
-                ?.text()
-                ?.toInt()
-                ?: 0
+                    .first()
+                    ?.text()
+                    ?.toInt()
+                    ?: 0
             val bookmarks = statisticsTree.select("dd.bookmarks")
-                .first()
-                ?.text()
-                ?.toInt()
-                ?: 0
+                    .first()
+                    ?.text()
+                    ?.toInt()
+                    ?: 0
             val hits = statisticsTree.select("dd.comments")
-                .first()
-                .text()
-                .toInt()
+                    .first()
+                    .text()
+                    .toInt()
 
-            val title = firstChapter
-                .select("div#workskin > div.preface.group > h2.title.heading")
-                .first()
-                .text()
+            val title = workDoc
+                    .select("div#workskin > div.preface.group > h2.title.heading")
+                    .first()
+                    .text()
 
-            val summary = firstChapter
-                .select("div#workskin > div.preface.group > div.summary.module > blockquote.userstuff")
-                .html()
+            val summary = workDoc
+                    .select("div#workskin > div.preface.group > div.summary.module > blockquote.userstuff")
+                    .html()
 
-            val authors = firstChapter
-                .select("div#workskin > div.preface.group > h3.byline.heading > a[href]")
-                .map { it.text() }
+            val authors = workDoc
+                    .select("div#workskin > div.preface.group > h3.byline.heading > a[href]")
+                    .map { it.text() }
 
-            val chapters = chapterParseTrees.map { parseTree: Document -> parseChapter(parseTree) }
+            // TODO: Because Entire Work doesn't actually work on completed oneshots, we need to change chapterTrees
+            //
 
-            val preWorkNotes = getPreWorkNotes(chapterParseTrees[0])
-            val postWorkNotes = getPostWorkNotes((chapterParseTrees[chapterParseTrees.lastIndex]))
+            val chapters : List<Chapter>
+
+            if (currentChapterCount == 1 && maxChapterCount == 1) {
+                // TODO: execute the following code if it is a oneshot
+                val chapterText = workDoc.select("div#chapters > div.userstuff")
+                        .first()
+                        .html()
+
+                val chapter = Chapter(
+                        title = "",
+                        summary = "",
+                        preChapterNotes = "",
+                        chapterBody = chapterText,
+                        postChapterNotes = "",
+                        chapterURL = chapterURLs[0]
+                )
+
+                chapters = listOf(chapter)
+
+            } else {
+                // TODO: Execute this branch if the work is a *completed* oneshot.
+                // Get chapter trees
+                val chapterTrees = workDoc.select("div#chapters > div.chapter")
+
+                require(chapterTrees.size == chapterURLs.size)
+                val zipChapterTreesAndUrlsList = chapterTrees zip chapterURLs
+                chapters = zipChapterTreesAndUrlsList.map {
+                    val title = it.first
+                            .select("div.chapter.preface.group > h3.title")
+                            .first()
+                            .ownText()  // gets the text enclosed within the element that is *not* nested in other elements
+                            .removePrefix(": ")
+                    val summary = it.first
+                            .select("div#summary > blockquote.userstuff")
+                            .first()
+                            ?.html()
+                            ?: ""
+                    val preChapterNotes = it.first
+                            .select("div#notes > blockquote.userstuff")
+                            .first()
+                            ?.html()
+                            ?: ""
+                    val chapterText = it.first
+                            .select("div.userstuff.module")
+                            .first()
+                            .apply { this.getElementById("work")?.remove() }
+                            .html()
+                    val postChapterNotes = it.first
+                            .select("div.chapter.preface.group > div.end.notes.module > blockquote.userstuff")
+                            .first()
+                            ?.html()
+                            ?: ""
+                    val chapterURL = it.second
+
+                    return@map Chapter(
+                            title = title,
+                            summary = summary,
+                            preChapterNotes = preChapterNotes,
+                            chapterBody = chapterText,
+                            postChapterNotes = postChapterNotes,
+                            chapterURL = chapterURL
+                    )
+                }
+            }
+
+            val preWorkNotes = getPreWorkNotes(workDoc)
+            val postWorkNotes = getPostWorkNotes(workDoc)
 
             val work: Work = Work(
-                title = title,
-                authors = authors,
-                publishedDate = publishDate,
-                lastUpdatedDate = lastUpdatedDate,
-                fandoms = fandoms,
-                rating = rating,
-                warnings = warnings,
-                categories = categories,
-                completionStatus = completionStatus,
-                characters = characters,
-                relationships = relationships,
-                freeforms = freeforms,
-                summary = summary,
-                language = language,
-                wordCount = wordCount,
-                chapterCount = currentChapterCount,
-                maxChapters = maxChapterCount,
-                commentsCount = comments,
-                kudosCount = kudos,
-                bookmarksCount = bookmarks,
-                hitCount = hits,
-                workURL = workURL,
-                preWorkNotes = preWorkNotes,
-                chapters = chapters,
-                postWorkNotes = postWorkNotes
+                    title = title,
+                    authors = authors,
+                    publishedDate = publishDate,
+                    lastUpdatedDate = lastUpdatedDate,
+                    fandoms = fandoms,
+                    rating = rating,
+                    warnings = warnings,
+                    categories = categories,
+                    completionStatus = completionStatus,
+                    characters = characters,
+                    relationships = relationships,
+                    freeforms = freeforms,
+                    summary = summary,
+                    language = language,
+                    wordCount = wordCount,
+                    chapterCount = currentChapterCount,
+                    maxChapters = maxChapterCount,
+                    commentsCount = comments,
+                    kudosCount = kudos,
+                    bookmarksCount = bookmarks,
+                    hitCount = hits,
+                    workURL = workURL,
+                    preWorkNotes = preWorkNotes,
+                    chapters = chapters,
+                    postWorkNotes = postWorkNotes
             )
 
             return work
         }
 
-
         /* Auxiliary small functions that should not be called from anywhere other than this class */
-
-        private fun getChapterHTML(chapterRequest: ChapterRequest) : String {
-            val urlString = "https://www.archiveofourown.org" + chapterRequest.queryString
-            println(urlString)
-
-            val html = try {
-                Network.get(urlString)
-            } catch (e: Network.NetworkException) {
-                throw e
-            }
-
-            return html
-        }
-
-        private fun getMetadata(html: String) {
-            // just return a workblurb bc its literally the same thing
-            // to be called on the very first chapter only, bc its guaranteed to contain the work summary
-
-
-
-        }
-
         private fun getPreWorkNotes(doc: Document) : String {
             val preWorkNotes : String = doc
                 .select("#workskin > div.preface.group > div.notes.module > blockquote.userstuff")

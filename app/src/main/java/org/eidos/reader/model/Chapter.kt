@@ -6,7 +6,8 @@ data class Chapter(
     val summary: String,
     val preChapterNotes: String,
     val chapterBody: String,
-    val postChapterNotes: String
+    val postChapterNotes: String,
+    val chapterURL : String
 ) {
 
 }

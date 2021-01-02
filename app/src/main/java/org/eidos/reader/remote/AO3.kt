@@ -24,6 +24,7 @@ class AO3 {
                 val responseBody = Network.get(urlString)
                 return HTMLParser.parseWorksList(responseBody)
             } catch (e: Network.NetworkException) {
+                print(e.message)
                 throw e
             }
         }
@@ -31,12 +32,21 @@ class AO3 {
         fun getWork(workRequest: WorkRequest) : Work {
             // Input: the navigation page of the work
             // Output: the work itself
-            val urlString = "https://www.archiveofourown.org" + workRequest.queryString
-            println(urlString)
+//            val urlString = "https://www.archiveofourown.org" + workRequest.queryString
+//            println(urlString)
+
+            val workUrlString = "https://www.archiveofourown.org" + workRequest.getEntireWorkURL()
+            val navigationIndexUrlString = "https://www.archiveofourown.org" +
+                    workRequest.getNavigationIndexPageURL()
 
             try {
-                val responseBody = Network.get(urlString)
-                return HTMLParser.parseWork(responseBody, workRequest.url)
+                val workResponseBody = Network.get(workUrlString)
+                val navigationIndexResponseBody = Network.get(navigationIndexUrlString)
+                return HTMLParser.parseWorkAlternate(
+                        workHtml = workResponseBody,
+                        navigationHtml = navigationIndexResponseBody,
+                        workURL = workRequest.url
+                )
             } catch (e: Network.NetworkException) {
                 throw e
             }

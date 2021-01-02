@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Determines the color of the toolbar -->
+    <attr name="colorToolbarBackground" format="reference|color"/>
+
+    <!-- Determines the color of the toolbar's text and icons -->
+    <attr name="colorToolbarForeground" format="reference|color"/>
+
+    <!-- Determines the color of the background -->
+    <attr name="colorBackground" format="reference|color"/>
+
+    <!-- Determines the color of the text -->
+    <attr name="colorText" format="reference|color"/>
+
+    <!-- Determines the color of the buttons and widgets -->
+    <attr name="colorAccent" format="reference|color"/>
+
+    <!-- Determines the color of the background of the drawer -->
+    <attr name="colorDrawerBackground" format="reference|color"/>
+
+    <!-- Determines the color of the text and icons in the drawer -->
+    <attr name="colorDrawerForeground" format="reference|color"/>
+
+    <!-- Determines the color of the text and icons when an item is selected/active in the drawer -->
+    <attr name="colorDrawerForegroundActive" format="reference|color"/>
+</resources>
