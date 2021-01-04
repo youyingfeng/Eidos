@@ -6,10 +6,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI
 import org.eidos.reader.R
 import org.eidos.reader.databinding.FragmentWorkListBinding
+import org.eidos.reader.remote.requests.WorkFilterRequest
+import timber.log.Timber
 
 class WorkListFragment : Fragment() {
     companion object {
@@ -17,6 +20,7 @@ class WorkListFragment : Fragment() {
     }
 
     private lateinit var viewModel: WorkListViewModel
+    private lateinit var viewModelFactory: WorkListViewModelFactory
 
     private var _binding: FragmentWorkListBinding? = null
     // This property is only valid between onCreateView and
@@ -28,24 +32,29 @@ class WorkListFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // TODO: Use the viewmodel
-        viewModel = ViewModelProvider(this).get(WorkListViewModel::class.java)
+        val args = WorkListFragmentArgs.fromBundle(requireArguments())
+        val tagName = args.tagName
+        val workFilterRequest = WorkFilterRequest(tagName)
+
+        viewModelFactory = WorkListViewModelFactory(workFilterRequest)
+        viewModel = ViewModelProvider(this, viewModelFactory).get(WorkListViewModel::class.java)
+
+        // inflates the root
         _binding = FragmentWorkListBinding.inflate(inflater, container, false)
         val view = binding.root
 
-        /* Set up onClickListeners */
-        binding.button.setOnClickListener { view ->
-            var workURL = binding.inputWorkURL.text.toString()
-            print(workURL)
+        // create the adapter
+        val adapter = WorkBlurbAdapter()
+        binding.workListDisplay.adapter = adapter
 
-            if (workURL == "/works/") {
-                workURL = "/works/25245133"
+        //get data into the adapter
+        viewModel.workBlurbs.observe(viewLifecycleOwner, Observer {
+            it?.let {
+                adapter.data = it
             }
+        })
 
-            view.findNavController()
-                .navigate(WorkListFragmentDirections
-                    .actionWorkListFragmentToWorkReaderFragment(workURL))
-        }
-
+        Timber.i("WorkListFragment onCreateView completed")
 
         return view
     }

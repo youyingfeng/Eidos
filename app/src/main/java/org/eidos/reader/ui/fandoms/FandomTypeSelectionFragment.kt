@@ -6,7 +6,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.findNavController
+import androidx.navigation.ui.NavigationUI
 import org.eidos.reader.R
+import org.eidos.reader.databinding.FragmentFandomTypeSelectionBinding
+import org.eidos.reader.databinding.FragmentWorkListBinding
+import org.eidos.reader.remote.requests.WorkFilterRequest
 
 class FandomTypeSelectionFragment : Fragment() {
 
@@ -16,15 +21,29 @@ class FandomTypeSelectionFragment : Fragment() {
 
     private lateinit var viewModel: FandomTypeSelectionViewModel
 
+    private var _binding: FragmentFandomTypeSelectionBinding? = null
+    // This property is only valid between onCreateView and onDestroyView.
+    private val binding get() = _binding!!
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_fandom_type_selection, container, false)
-    }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProvider(this).get(FandomTypeSelectionViewModel::class.java)
-        // TODO: Use the ViewModel
-    }
 
+        _binding = FragmentFandomTypeSelectionBinding.inflate(inflater, container, false)
+        val view = binding.root
+
+        // set click listeners
+        binding.submitButton.setOnClickListener { view ->
+            val tagName = binding.tagField.text.toString()
+//            val workFilterRequest = WorkFilterRequest(tagName)
+
+            view.findNavController()
+                    .navigate(FandomTypeSelectionFragmentDirections
+                            .actionFandomTypeSelectionFragmentToWorkListFragment(tagName))
+        }
+
+
+        return view
+    }
 }

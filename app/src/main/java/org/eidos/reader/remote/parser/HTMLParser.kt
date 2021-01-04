@@ -1,13 +1,11 @@
-package org.eidos.reader.parser
+package org.eidos.reader.remote.parser
 
 import org.eidos.reader.model.Chapter
 import org.eidos.reader.model.Work
 import org.eidos.reader.model.WorkBlurb
-import org.eidos.reader.network.Network
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.jsoup.select.Elements
-import org.eidos.reader.remote.requests.ChapterRequest
 
 class HTMLParser {
     companion object {

@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.eidos.reader.model.Work
 import org.eidos.reader.remote.AO3
 import org.eidos.reader.remote.requests.WorkRequest
@@ -26,17 +27,18 @@ class WorkReaderViewModel(private var workURL: String) : ViewModel() {
         get() = _currentChapterBody
 
     init {
-        // TODO: Launch a coroutine to get stuff
-        // Calling normal functions work ok. Dispatchers.IO has a lot of threads so its ok.
-        val workRequest = WorkRequest(workURL)
+        viewModelScope.launch {
+            getWorkFromRemote()
+        }
+    }
 
-        // TODO: Inject the dispatcher into the VM
-        viewModelScope.launch(Dispatchers.IO) {
+    private suspend fun getWorkFromRemote() {
+        withContext(Dispatchers.IO) {
+            val workRequest = WorkRequest(workURL)
             work = AO3.getWork(workRequest)
             _currentChapterBody.postValue(convertHtmlToSpanned(work.chapters[0].chapterBody))
-            Timber.i("Initialisation complete")
+            Timber.i("Coroutines: Work fetched from Remote")
         }
-        Timber.i("Launch scope out")
     }
 
     /* Chapter getters */

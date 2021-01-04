@@ -6,7 +6,7 @@ import org.eidos.reader.model.Work
 import org.eidos.reader.model.WorkBlurb
 import org.eidos.reader.network.Network
 import okhttp3.OkHttpClient
-import org.eidos.reader.parser.HTMLParser
+import org.eidos.reader.remote.parser.HTMLParser
 import org.eidos.reader.remote.requests.AutocompleteRequest
 import org.eidos.reader.remote.requests.WorkFilterRequest
 import org.eidos.reader.remote.requests.WorkRequest

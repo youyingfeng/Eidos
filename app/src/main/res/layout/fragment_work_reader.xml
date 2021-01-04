@@ -26,9 +26,8 @@
                 android:id="@+id/workBody"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:paddingLeft="5sp"
-                android:paddingRight="5sp"
-                android:scrollbarStyle="outsideInset"/>
+                android:padding="24sp"
+                android:scrollbarStyle="outsideInset" />
         </LinearLayout>
     </ScrollView>
 
