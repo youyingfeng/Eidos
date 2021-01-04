@@ -49,19 +49,24 @@ class WorkBlurbAdapter : RecyclerView.Adapter<WorkBlurbAdapter.ViewHolder>() {
             Timber.i("WorkBlurb bound!")
             title.text = item.title
             authors.text = item.authors
-                    .fold(StringBuilder()) { acc, next -> acc.append(next) }
+                    .fold(StringBuilder()) { acc, next -> acc.append(next).append(", ") }
+                    .removeSuffix(", ")
                     .toString()
             warnings.text = item.warnings
-                    .fold(StringBuilder()) { acc, next -> acc.append(next) }
+                    .fold(StringBuilder()) { acc, next -> acc.append(next).append(", ") }
+                    .removeSuffix(", ")
                     .toString()
             relationships.text = item.relationships
-                    .fold(StringBuilder()) { acc, next -> acc.append(next) }
+                    .fold(StringBuilder()) { acc, next -> acc.append(next).append(", ") }
+                    .removeSuffix(", ")
                     .toString()
             characters.text = item.characters
-                    .fold(StringBuilder()) { acc, next -> acc.append(next) }
+                    .fold(StringBuilder()) { acc, next -> acc.append(next).append(", ") }
+                    .removeSuffix(", ")
                     .toString()
             freeforms.text = item.freeforms
-                    .fold(StringBuilder()) { acc, next -> acc.append(next) }
+                    .fold(StringBuilder()) { acc, next -> acc.append(next).append(", ") }
+                    .removeSuffix(", ")
                     .toString()
             summary.text = HtmlCompat.fromHtml(item.summary, HtmlCompat.FROM_HTML_MODE_LEGACY)
         }
