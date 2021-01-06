@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI
+import androidx.recyclerview.widget.RecyclerView
 import org.eidos.reader.R
 import org.eidos.reader.databinding.FragmentWorkListBinding
 import org.eidos.reader.remote.requests.WorkFilterRequest
@@ -51,6 +52,22 @@ class WorkListFragment : Fragment() {
         viewModel.workBlurbs.observe(viewLifecycleOwner, Observer {
             it?.let {
                 adapter.data = it
+            }
+        })
+
+        // set scroll listener to load more data
+        // possible but complicated soln: https://stackoverflow.com/questions/36127734/detect-when-recyclerview-reaches-the-bottom-most-position-while-scrolling/48514857#48514857
+        // using the simple naive soln first,
+        binding.workListDisplay.addOnScrollListener(object: RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                if (!recyclerView.canScrollVertically(1) && dy > 0) {
+                    // this should hit when you have scrolled to the bottom of the list
+                    Timber.i("Bottom of the list reached")
+                    viewModel.getNextPage()
+                } else if (recyclerView.canScrollVertically(-1) && dy < 0) {
+                    // this should only hit when you scroll to the very top of the list
+                    Timber.i("Top of the list reached")
+                }
             }
         })
 

@@ -19,6 +19,11 @@ class WorkListViewModel(private val workFilterRequest: WorkFilterRequest) : View
     val workBlurbs: LiveData<List<WorkBlurb>>
         get() = _workBlurbs
 
+    private var largestPageNumber = 1
+
+    // TODO: possibly hacky fix, see if it is possible to improve.
+    private var isFetchingWorks = false
+
     init {
         initialiseWorkBlurbs()
     }
@@ -26,12 +31,31 @@ class WorkListViewModel(private val workFilterRequest: WorkFilterRequest) : View
     private fun initialiseWorkBlurbs() {
         Timber.i("Fetching Work Blurbs")
         viewModelScope.launch(Dispatchers.IO) {
-            _workBlurbs.postValue(getWorkBlurbs())
+            _workBlurbs.postValue(getWorkBlurbs(workFilterRequest))
             Timber.i("WorkBlurbs successfully fetched")
         }
     }
 
-    private suspend fun getWorkBlurbs() : List<WorkBlurb> {
-        return AO3.getWorkBlurbs(workFilterRequest)
+    private suspend fun getWorkBlurbs(request: WorkFilterRequest) : List<WorkBlurb> {
+        return AO3.getWorkBlurbs(request)
+    }
+
+    fun getNextPage() {
+        if (!isFetchingWorks) {
+            // set the bool to stop repeated fetching
+            isFetchingWorks = true
+            largestPageNumber++
+            Timber.i("getNextPage() called")
+            workFilterRequest.setPageNumber(largestPageNumber)
+            val currentList : MutableList<WorkBlurb> = workBlurbs.value!!.toMutableList()
+            viewModelScope.launch(Dispatchers.IO) {
+                currentList.addAll(getWorkBlurbs(workFilterRequest))
+                _workBlurbs.postValue(currentList)
+                isFetchingWorks = false
+                Timber.i("More WorkBlurbs successfully fetched")
+            }
+        } else {
+            Timber.i("Currently fetching works, extra requests blocked")
+        }
     }
 }
