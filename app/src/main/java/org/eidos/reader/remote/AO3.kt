@@ -13,11 +13,13 @@ import org.eidos.reader.remote.requests.WorkRequest
 
 class AO3 {
     companion object {
-        private val httpClient: OkHttpClient = OkHttpClient()
+        private val moshi: Moshi = Moshi.Builder()
+            .addLast(KotlinJsonAdapterFactory())
+            .build()
 
         fun getWorkBlurbs(workListRequest: WorkFilterRequest) : List<WorkBlurb> {
             // TODO: send request to okhttp3
-            val urlString = "https://www.archiveofourown.org" + workListRequest.queryString
+            val urlString = "https://archiveofourown.org" + workListRequest.queryString
             println(urlString)
 
             try {
@@ -32,11 +34,11 @@ class AO3 {
         fun getWork(workRequest: WorkRequest) : Work {
             // Input: the navigation page of the work
             // Output: the work itself
-//            val urlString = "https://www.archiveofourown.org" + workRequest.queryString
+//            val urlString = "https://archiveofourown.org" + workRequest.queryString
 //            println(urlString)
 
-            val workUrlString = "https://www.archiveofourown.org" + workRequest.getEntireWorkURL()
-            val navigationIndexUrlString = "https://www.archiveofourown.org" +
+            val workUrlString = "https://archiveofourown.org" + workRequest.getEntireWorkURL()
+            val navigationIndexUrlString = "https://archiveofourown.org" +
                     workRequest.getNavigationIndexPageURL()
 
             try {
@@ -53,8 +55,9 @@ class AO3 {
         }
 
         /* SEARCH FUNCTIONS */
+        // FIXME: autocomplete results dont fetch unless a prior request was fired off from the actual site
         fun getAutocompleteResults(autocompleteRequest: AutocompleteRequest) : List<String> {
-            val urlString = "https://www.archiveofourown.org/autocomplete" + autocompleteRequest.queryString
+            val urlString = "https://archiveofourown.org/autocomplete" + autocompleteRequest.queryString
             println(urlString)
 
             val responseBody: String = try {
@@ -66,9 +69,7 @@ class AO3 {
             // TODO: parse the JSON results into a map/array - usually array should be enough
             // Using Moshi, parse the json results. its easy. return as a list<string>
 
-            val moshi: Moshi = Moshi.Builder()
-                .addLast(KotlinJsonAdapterFactory())
-                .build()
+
             val listResultType = Types.newParameterizedType(List::class.java, AutocompleteResult::class.java)
             val jsonAdapter: JsonAdapter<List<AutocompleteResult>> = moshi.adapter(listResultType)
 

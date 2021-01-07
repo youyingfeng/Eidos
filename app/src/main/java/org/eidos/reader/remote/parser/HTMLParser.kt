@@ -154,7 +154,7 @@ class HTMLParser {
                     ?.text()
                     ?.toInt()
                     ?: 0
-            val hits = statisticsTree.select("dd.comments")
+            val hits = statisticsTree.select("dd.hits")
                     .first()
                     .text()
                     .toInt()
@@ -173,7 +173,6 @@ class HTMLParser {
                     .map { it.text() }
 
             // TODO: Because Entire Work doesn't actually work on completed oneshots, we need to change chapterTrees
-            //
 
             val chapters : List<Chapter>
 

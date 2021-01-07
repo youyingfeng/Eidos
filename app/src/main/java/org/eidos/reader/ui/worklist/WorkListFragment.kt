@@ -45,7 +45,11 @@ class WorkListFragment : Fragment() {
         val view = binding.root
 
         // create the adapter
-        val adapter = WorkBlurbAdapter()
+        val adapter = WorkBlurbAdapter { holderView, workBlurb ->
+            holderView.findNavController()
+                    .navigate(WorkListFragmentDirections
+                            .actionWorkListFragmentToWorkReaderFragment(workBlurb.workURL))
+        }
         binding.workListDisplay.adapter = adapter
 
         //get data into the adapter

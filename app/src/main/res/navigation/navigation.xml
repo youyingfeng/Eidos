@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation"
-    app:startDestination="@id/fandomTypeSelectionFragment">
+    app:startDestination="@id/placeholderFragment">
 
     <fragment
         android:id="@+id/homeFragment"
@@ -39,5 +39,14 @@
         <argument
             android:name="tagName"
             app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/placeholderFragment"
+        android:name="org.eidos.reader.ui.PlaceholderFragment"
+        android:label="fragment_placeholder"
+        tools:layout="@layout/fragment_placeholder" >
+        <action
+            android:id="@+id/action_placeholderFragment_to_workListFragment"
+            app:destination="@id/workListFragment" />
     </fragment>
 </navigation>

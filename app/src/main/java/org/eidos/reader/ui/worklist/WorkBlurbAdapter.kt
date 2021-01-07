@@ -10,7 +10,7 @@ import org.eidos.reader.databinding.CardWorkBlurbBinding
 import org.eidos.reader.model.WorkBlurb
 import timber.log.Timber
 
-class WorkBlurbAdapter : RecyclerView.Adapter<WorkBlurbAdapter.ViewHolder>() {
+class WorkBlurbAdapter(private val onClickAction: (View, WorkBlurb) -> Unit) : RecyclerView.Adapter<WorkBlurbAdapter.WorkBlurbViewHolder>() {
     var data = listOf<WorkBlurb>()
         set(value) {
             field = value
@@ -23,17 +23,20 @@ class WorkBlurbAdapter : RecyclerView.Adapter<WorkBlurbAdapter.ViewHolder>() {
         return data.size
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: WorkBlurbViewHolder, position: Int) {
         Timber.i("onBindViewHolder called")
         val item = data[position]
         holder.bind(item)
+        holder.itemView.setOnClickListener { view ->
+            onClickAction(view, item)
+        }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WorkBlurbAdapter.ViewHolder {
-        return ViewHolder.from(parent)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WorkBlurbViewHolder {
+        return WorkBlurbViewHolder.from(parent)
     }
 
-    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class WorkBlurbViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         // binding solution obtained from stackoverflow: https://stackoverflow.com/questions/60491966/how-to-do-latest-jetpack-view-binding-in-adapter-bind-the-views
         private val binding = CardWorkBlurbBinding.bind(itemView)
 
@@ -72,12 +75,12 @@ class WorkBlurbAdapter : RecyclerView.Adapter<WorkBlurbAdapter.ViewHolder>() {
         }
 
         companion object {
-            fun from(parent: ViewGroup): ViewHolder {
+            fun from(parent: ViewGroup): WorkBlurbViewHolder {
                 // FIXME: consider doing viewbinding here and passing the binding object to the viewHolder instead
                 // See: https://stackoverflow.com/questions/60491966/how-to-do-latest-jetpack-view-binding-in-adapter-bind-the-views
                 val layoutInflater = LayoutInflater.from(parent.context)
                 val view = layoutInflater.inflate(R.layout.card_work_blurb, parent, false)
-                return ViewHolder(view)
+                return WorkBlurbViewHolder(view)
             }
         }
     }
