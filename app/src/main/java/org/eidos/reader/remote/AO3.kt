@@ -61,7 +61,7 @@ class AO3 {
             println(urlString)
 
             val responseBody: String = try {
-                Network.get(urlString)
+                Network.getJSON(urlString)
             } catch (e: Network.NetworkException) {
                 throw e
             }

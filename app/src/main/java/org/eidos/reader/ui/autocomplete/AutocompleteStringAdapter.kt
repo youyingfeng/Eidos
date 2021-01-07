@@ -8,7 +8,8 @@ import org.eidos.reader.R
 import org.eidos.reader.databinding.CardAutocompleteResultBinding
 import timber.log.Timber
 
-class AutocompleteStringAdapter : RecyclerView.Adapter<AutocompleteStringAdapter.AutocompleteStringViewHolder>() {
+class AutocompleteStringAdapter(private val onClickAction: (View, String) -> Unit)
+    : RecyclerView.Adapter<AutocompleteStringAdapter.AutocompleteStringViewHolder>() {
     var data = listOf<String>()
         set(value) {
             field = value
@@ -21,8 +22,11 @@ class AutocompleteStringAdapter : RecyclerView.Adapter<AutocompleteStringAdapter
     }
 
     override fun onBindViewHolder(holder: AutocompleteStringViewHolder, position: Int) {
-        val item = data[position]
-        holder.bind(item)
+        val autocompleteResult = data[position]
+        holder.bind(autocompleteResult)
+        holder.itemView.setOnClickListener { view ->
+            onClickAction(view, autocompleteResult)
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AutocompleteStringViewHolder {
@@ -40,7 +44,7 @@ class AutocompleteStringAdapter : RecyclerView.Adapter<AutocompleteStringAdapter
         companion object {
             fun from(parent: ViewGroup) : AutocompleteStringViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
-                val view = layoutInflater.inflate(R.layout.card_work_blurb, parent, false)
+                val view = layoutInflater.inflate(R.layout.card_autocomplete_result, parent, false)
                 return AutocompleteStringViewHolder(view)
             }
         }

@@ -25,10 +25,10 @@ class WorkBlurbAdapter(private val onClickAction: (View, WorkBlurb) -> Unit) : R
 
     override fun onBindViewHolder(holder: WorkBlurbViewHolder, position: Int) {
         Timber.i("onBindViewHolder called")
-        val item = data[position]
-        holder.bind(item)
+        val workBlurb = data[position]
+        holder.bind(workBlurb)
         holder.itemView.setOnClickListener { view ->
-            onClickAction(view, item)
+            onClickAction(view, workBlurb)
         }
     }
 

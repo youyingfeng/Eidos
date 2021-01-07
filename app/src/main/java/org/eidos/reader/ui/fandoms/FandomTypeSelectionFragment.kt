@@ -39,18 +39,13 @@ class FandomTypeSelectionFragment : Fragment() {
         _binding = FragmentFandomTypeSelectionBinding.inflate(inflater, container, false)
         val view = binding.root
 
-        // set click listeners
-//        binding.submitButton.setOnClickListener { view ->
-//            val tagName = binding.tagField.text.toString()
-////            val workFilterRequest = WorkFilterRequest(tagName)
-//
-//            view.findNavController()
-//                    .navigate(FandomTypeSelectionFragmentDirections
-//                            .actionFandomTypeSelectionFragmentToWorkListFragment(tagName))
-//        }
-
-        // set the adapter
-        val adapter = AutocompleteStringAdapter()
+        // initialise the adapter with the onclicklistener
+        // onclicklistener navigates to the next fragment
+        val adapter = AutocompleteStringAdapter { holderView: View, autocompleteResultString: String ->
+            holderView.findNavController()
+                .navigate(FandomTypeSelectionFragmentDirections
+                    .actionFandomTypeSelectionFragmentToWorkListFragment(autocompleteResultString))
+        }
         binding.autocompleteResultsDisplay.adapter = adapter
 
         // get data into adapter
