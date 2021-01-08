@@ -9,6 +9,7 @@ import kotlinx.coroutines.launch
 import org.eidos.reader.remote.AO3
 import org.eidos.reader.remote.requests.AutocompleteRequest
 import org.eidos.reader.remote.requests.FandomAutocompleteRequest
+import org.eidos.reader.repository.EidosRepository
 
 class FandomTypeSelectionViewModel : ViewModel() {
     // TODO: Implement the ViewModel
@@ -24,6 +25,6 @@ class FandomTypeSelectionViewModel : ViewModel() {
 
     private suspend fun getAutocompleteResults(searchInput: String) : List<String> {
         val autocompleteRequest = FandomAutocompleteRequest(searchInput)
-        return AO3.getAutocompleteResults(autocompleteRequest)
+        return EidosRepository.getAutocompleteResultsFromAO3(autocompleteRequest)
     }
 }

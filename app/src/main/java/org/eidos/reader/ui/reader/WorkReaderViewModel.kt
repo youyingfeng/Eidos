@@ -14,6 +14,7 @@ import kotlinx.coroutines.withContext
 import org.eidos.reader.model.Work
 import org.eidos.reader.remote.AO3
 import org.eidos.reader.remote.requests.WorkRequest
+import org.eidos.reader.repository.EidosRepository
 import timber.log.Timber
 
 class WorkReaderViewModel(private var workURL: String) : ViewModel() {
@@ -35,7 +36,7 @@ class WorkReaderViewModel(private var workURL: String) : ViewModel() {
     private suspend fun getWorkFromRemote() {
         withContext(Dispatchers.IO) {
             val workRequest = WorkRequest(workURL)
-            work = AO3.getWork(workRequest)
+            work = EidosRepository.getWorkFromAO3(workRequest)
             _currentChapterBody.postValue(convertHtmlToSpanned(work.chapters[0].chapterBody))
             Timber.i("Coroutines: Work fetched from Remote")
         }

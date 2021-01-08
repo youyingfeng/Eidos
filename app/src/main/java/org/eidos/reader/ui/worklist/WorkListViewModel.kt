@@ -10,6 +10,7 @@ import kotlinx.coroutines.launch
 import org.eidos.reader.model.WorkBlurb
 import org.eidos.reader.remote.AO3
 import org.eidos.reader.remote.requests.WorkFilterRequest
+import org.eidos.reader.repository.EidosRepository
 import timber.log.Timber
 
 class WorkListViewModel(private val workFilterRequest: WorkFilterRequest) : ViewModel() {
@@ -37,7 +38,7 @@ class WorkListViewModel(private val workFilterRequest: WorkFilterRequest) : View
     }
 
     private suspend fun getWorkBlurbs(request: WorkFilterRequest) : List<WorkBlurb> {
-        return AO3.getWorkBlurbs(request)
+        return EidosRepository.getWorkBlurbsFromAO3(request)
     }
 
     fun getNextPage() {
