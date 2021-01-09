@@ -1,8 +1,6 @@
 package org.eidos.reader.ui.reader
 
-import android.text.Html
 import android.text.Spanned
-import android.util.Log
 import androidx.core.text.HtmlCompat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -12,7 +10,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.eidos.reader.model.Work
-import org.eidos.reader.remote.AO3
 import org.eidos.reader.remote.requests.WorkRequest
 import org.eidos.reader.repository.EidosRepository
 import timber.log.Timber
@@ -20,12 +17,26 @@ import timber.log.Timber
 class WorkReaderViewModel(private var workURL: String) : ViewModel() {
     // TODO: make this non-nullable after writing coroutine
     private lateinit var work : Work
-    private var currentChapterIndex: Int = 0
 
-    // Livedata variable for currentText
+    private var _currentChapterIndex: Int = 0
+    val currentChapterIndex : Int
+        get() = _currentChapterIndex
+
+    private val _currentChapterTitle = MutableLiveData<String>()
+    val currentChapterTitle: LiveData<String>
+        get() = _currentChapterTitle
+
     private val _currentChapterBody = MutableLiveData<Spanned>()
     val currentChapterBody: LiveData<Spanned>
         get() = _currentChapterBody
+
+    private val _hasNextChapter = MutableLiveData<Boolean>()
+    val hasNextChapter: LiveData<Boolean>
+        get() = _hasNextChapter
+
+    private val _hasPreviousChapter = MutableLiveData<Boolean>()
+    val hasPreviousChapter: LiveData<Boolean>
+        get() = _hasPreviousChapter
 
     init {
         viewModelScope.launch {
@@ -37,41 +48,52 @@ class WorkReaderViewModel(private var workURL: String) : ViewModel() {
         withContext(Dispatchers.IO) {
             val workRequest = WorkRequest(workURL)
             work = EidosRepository.getWorkFromAO3(workRequest)
-            _currentChapterBody.postValue(convertHtmlToSpanned(work.chapters[0].chapterBody))
+            loadFirstChapter()
             Timber.i("Coroutines: Work fetched from Remote")
         }
     }
 
-    /* Chapter getters */
+    /* Chapter loaders */
     // the below methods should provide a complete FSM
-    fun getFirstChapter() : Spanned {
-        currentChapterIndex = 0
-        return convertHtmlToSpanned(work.chapters[currentChapterIndex].chapterBody)
+    fun loadFirstChapter() {
+        _currentChapterIndex = 0
+        updateLiveDataFields()
     }
 
-    fun getNextChapter() : Spanned {
-        currentChapterIndex++
-        if (currentChapterIndex >= work.chapterCount) {
-            currentChapterIndex = work.chapterCount - 1
+    fun loadNextChapter() {
+        _currentChapterIndex++
+        if (_currentChapterIndex >= work.chapterCount) {
+            _currentChapterIndex = work.chapterCount - 1
         }
-        return convertHtmlToSpanned(work.chapters[currentChapterIndex].chapterBody)
+        updateLiveDataFields()
     }
 
-    fun getPreviousChapter() : Spanned {
-        currentChapterIndex--
-        if (currentChapterIndex < 0) {
-            currentChapterIndex = 0
+    fun loadPreviousChapter() {
+        _currentChapterIndex--
+        if (_currentChapterIndex < 0) {
+            _currentChapterIndex = 0
         }
-        return convertHtmlToSpanned(work.chapters[currentChapterIndex].chapterBody)
+        updateLiveDataFields()
     }
 
-    fun getChapterAtIndex(index: Int) : Spanned {
-        currentChapterIndex = index
-        return convertHtmlToSpanned(work.chapters[currentChapterIndex].chapterBody)
+    fun loadChapterAtIndex(index: Int) {
+        require(0 <= index && index < work.chapterCount)
+        _currentChapterIndex = index
+        updateLiveDataFields()
     }
 
     /* Utility methods */
     private fun convertHtmlToSpanned(html: String) : Spanned {
         return HtmlCompat.fromHtml(html, HtmlCompat.FROM_HTML_MODE_LEGACY)
+    }
+
+    private fun updateLiveDataFields() {
+        _currentChapterBody.postValue(convertHtmlToSpanned(work
+                .chapters[_currentChapterIndex]
+                .chapterBody)
+        )
+        _hasPreviousChapter.postValue(currentChapterIndex != 0)
+        _hasNextChapter.postValue(currentChapterIndex != work.chapterCount - 1)
+        _currentChapterTitle.postValue(work.chapters[currentChapterIndex].title)
     }
 }

@@ -8,13 +8,13 @@
     <fragment
         android:id="@+id/homeFragment"
         android:name="org.eidos.reader.ui.home.HomeFragment"
-        android:label="fragment_home"
+        android:label="Home"
         tools:layout="@layout/fragment_home" />
     <fragment
         android:id="@+id/fandomTypeSelectionFragment"
         android:name="org.eidos.reader.ui.fandoms.FandomTypeSelectionFragment"
-        android:label="fragment_fandom_type_selection"
-        tools:layout="@layout/fragment_fandom_type_selection" >
+        android:label="Fandom Search"
+        tools:layout="@layout/fragment_fandom_type_selection">
         <action
             android:id="@+id/action_fandomTypeSelectionFragment_to_workListFragment"
             app:destination="@id/workListFragment" />
@@ -22,8 +22,8 @@
     <fragment
         android:id="@+id/workReaderFragment"
         android:name="org.eidos.reader.ui.reader.WorkReaderFragment"
-        android:label="fragment_work_reader"
-        tools:layout="@layout/fragment_work_reader" >
+        android:label="Loading..."
+        tools:layout="@layout/fragment_work_reader">
         <argument
             android:name="workURL"
             app:argType="string" />
@@ -31,8 +31,8 @@
     <fragment
         android:id="@+id/workListFragment"
         android:name="org.eidos.reader.ui.worklist.WorkListFragment"
-        android:label="fragment_work_list"
-        tools:layout="@layout/fragment_work_list" >
+        android:label="Loading..."
+        tools:layout="@layout/fragment_work_list">
         <action
             android:id="@+id/action_workListFragment_to_workReaderFragment"
             app:destination="@id/workReaderFragment" />
@@ -43,8 +43,8 @@
     <fragment
         android:id="@+id/placeholderFragment"
         android:name="org.eidos.reader.ui.PlaceholderFragment"
-        android:label="fragment_placeholder"
-        tools:layout="@layout/fragment_placeholder" >
+        android:label="testingFragment"
+        tools:layout="@layout/fragment_placeholder">
         <action
             android:id="@+id/action_placeholderFragment_to_workListFragment"
             app:destination="@id/workListFragment" />

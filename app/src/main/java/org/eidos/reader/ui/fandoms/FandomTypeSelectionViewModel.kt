@@ -17,6 +17,11 @@ class FandomTypeSelectionViewModel : ViewModel() {
     val autocompleteResults : LiveData<List<String>>
         get() = _autocompleteResults
 
+    // flag for network error
+    private var _eventNetworkError = MutableLiveData<Boolean>(false)
+    val eventNetworkError : LiveData<Boolean>
+        get() = _eventNetworkError
+
     fun fetchAutocompleteResults(searchInput: String) {
         viewModelScope.launch(Dispatchers.IO) {
             _autocompleteResults.postValue(getAutocompleteResults(searchInput))

@@ -4,6 +4,8 @@ import android.app.Activity
 import android.content.Context
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import androidx.annotation.StringRes
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 
 class Utilities {
@@ -24,5 +26,16 @@ class Utilities {
             val inputMethodManager = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
             inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
         }
+
+        /* Extension functions to set the title of the activity */
+        // solution taken from: https://stackoverflow.com/questions/27918701/android-fragment-change-title
+        fun Fragment.setActivityTitle(@StringRes id: Int) {
+            (activity as AppCompatActivity?)!!.supportActionBar?.title = getString(id)
+        }
+
+        fun Fragment.setActivityTitle(title: String) {
+            (activity as AppCompatActivity?)!!.supportActionBar?.title = title
+        }
+
     }
 }

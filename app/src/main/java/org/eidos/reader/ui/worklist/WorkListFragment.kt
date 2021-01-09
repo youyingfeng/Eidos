@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import org.eidos.reader.R
 import org.eidos.reader.databinding.FragmentWorkListBinding
 import org.eidos.reader.remote.requests.WorkFilterRequest
+import org.eidos.reader.ui.utilities.Utilities.Companion.setActivityTitle
 import timber.log.Timber
 
 class WorkListFragment : Fragment() {
@@ -36,6 +37,8 @@ class WorkListFragment : Fragment() {
         val args = WorkListFragmentArgs.fromBundle(requireArguments())
         val tagName = args.tagName
         val workFilterRequest = WorkFilterRequest(tagName)
+
+        setActivityTitle(tagName)
 
         viewModelFactory = WorkListViewModelFactory(workFilterRequest)
         viewModel = ViewModelProvider(this, viewModelFactory).get(WorkListViewModel::class.java)

@@ -15,8 +15,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-
-
         binding = ActivityMainBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
@@ -49,7 +47,12 @@ class MainActivity : AppCompatActivity() {
         https://stackoverflow.com/questions/26440879/how-do-i-use-drawerlayout-to-display-over-the-actionbar-toolbar-and-under-the-st
         https://developer.android.com/guide/navigation/navigation-ui#add_a_navigation_drawer
          */
-        NavigationUI.setupWithNavController(toolbar, navController, drawerLayout)
+
+        // FIXME: I don't know what the below code does, but check this code again if toolbar errors pop up.
+        // taken from: https://github.com/googlecodelabs/android-navigation/blob/master/app/src/main/java/com/example/android/codelabs/navigation/MainActivity.kt
+        setSupportActionBar(toolbar)    // set the toolbar as the support action bar first
+        NavigationUI.setupActionBarWithNavController(this, navController, drawerLayout)
+
         NavigationUI.setupWithNavController(binding.navView, navController)
     }
 

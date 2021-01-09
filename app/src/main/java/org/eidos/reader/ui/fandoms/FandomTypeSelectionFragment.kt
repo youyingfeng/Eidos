@@ -18,6 +18,7 @@ import org.eidos.reader.databinding.FragmentFandomTypeSelectionBinding
 import org.eidos.reader.databinding.FragmentWorkListBinding
 import org.eidos.reader.remote.requests.WorkFilterRequest
 import org.eidos.reader.ui.autocomplete.AutocompleteStringAdapter
+import org.eidos.reader.ui.utilities.Utilities.Companion.hideKeyboard
 
 class FandomTypeSelectionFragment : Fragment() {
 
@@ -42,6 +43,7 @@ class FandomTypeSelectionFragment : Fragment() {
         // initialise the adapter with the onclicklistener
         // onclicklistener navigates to the next fragment
         val adapter = AutocompleteStringAdapter { holderView: View, autocompleteResultString: String ->
+            hideKeyboard()
             holderView.findNavController()
                 .navigate(FandomTypeSelectionFragmentDirections
                     .actionFandomTypeSelectionFragmentToWorkListFragment(autocompleteResultString))
@@ -59,7 +61,7 @@ class FandomTypeSelectionFragment : Fragment() {
         // suggestion
 
         binding.searchInputField.afterTextChangedDelayed {
-            viewModel.fetchAutocompleteResults(it)
+            if (it.isNotBlank()) viewModel.fetchAutocompleteResults(it)
         }
 
         return view

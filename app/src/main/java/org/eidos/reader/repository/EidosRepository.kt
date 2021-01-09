@@ -1,5 +1,7 @@
 package org.eidos.reader.repository
 
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOf
 import org.eidos.reader.model.Work
 import org.eidos.reader.model.WorkBlurb
 import org.eidos.reader.remote.AO3
@@ -29,5 +31,12 @@ object EidosRepository {
 
     fun getAutocompleteResultsFromAO3(autocompleteRequest: AutocompleteRequest): List<String> {
         return remote.getAutocompleteResults(autocompleteRequest)
+    }
+
+    // TODO: Change the repo and VM to use flows
+    val _autocompleteResults : Flow<List<String>> = flowOf(listOf<String>())
+
+    suspend fun updateAutocompleteResults(autocompleteRequest: AutocompleteRequest) {
+        // update the value of flow
     }
 }
