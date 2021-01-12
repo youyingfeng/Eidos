@@ -5,8 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginStart="14dp"
-    android:layout_marginTop="16dp"
+    android:layout_marginTop="8dp"
     android:layout_marginEnd="14dp"
+    android:layout_marginBottom="8dp"
     app:cardCornerRadius="8dp"
     app:cardElevation="4dp">
 
@@ -19,11 +20,26 @@
             android:id="@+id/workTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="4dp"
             android:fontFamily="sans-serif-condensed"
             android:text="How To Coexist"
             android:textSize="24sp"
+            app:layout_constrainedWidth="true"
+            app:layout_constraintEnd_toStartOf="@+id/workDateUpdated"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/workDateUpdated"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_weight="1"
+            android:drawableStart="@drawable/ic_card_date_updated_16"
+            android:drawablePadding="4dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/workTitle" />
 
         <TextView
             android:id="@+id/workAuthors"
@@ -35,16 +51,27 @@
             app:layout_constraintTop_toBottomOf="@+id/workTitle" />
 
         <TextView
-            android:id="@+id/workWarnings"
+            android:id="@+id/workLanguage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
+            android:layout_weight="1"
+            android:drawableStart="@drawable/ic_card_language_16"
+            android:drawablePadding="8dp"
+            app:layout_constraintStart_toStartOf="@+id/workAuthors"
+            app:layout_constraintTop_toBottomOf="@+id/workAuthors" />
+
+        <TextView
+            android:id="@+id/workWarnings"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:drawableLeft="@drawable/ic_card_warnings_14"
             android:drawablePadding="10sp"
             android:text="TextView"
             android:textSize="14sp"
-            app:layout_constraintStart_toStartOf="@+id/workAuthors"
-            app:layout_constraintTop_toBottomOf="@+id/workAuthors" />
+            app:layout_constraintStart_toStartOf="@+id/workLanguage"
+            app:layout_constraintTop_toBottomOf="@+id/workLanguage" />
 
         <TextView
             android:id="@+id/workRelationships"
@@ -102,20 +129,12 @@
                 android:layout_height="match_parent">
 
                 <TextView
-                    android:id="@+id/workLanguage"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:drawableStart="@drawable/ic_card_language_16"
-                    android:drawablePadding="8dp" />
-
-                <TextView
                     android:id="@+id/workWordCount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:drawableStart="@drawable/ic_card_word_count_16"
-                    android:drawablePadding="8dp" />
+                    android:drawablePadding="6dp" />
 
                 <TextView
                     android:id="@+id/workChapters"
@@ -123,7 +142,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:drawableStart="@drawable/ic_card_chapters_16"
-                    android:drawablePadding="8dp" />
+                    android:drawablePadding="6dp" />
 
                 <TextView
                     android:id="@+id/workKudos"
@@ -131,15 +150,29 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:drawableStart="@drawable/ic_card_kudos_16"
-                    android:drawablePadding="8dp" />
+                    android:drawablePadding="6dp" />
 
                 <TextView
-                    android:id="@+id/workDateUpdated"
+                    android:id="@+id/workComments"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:drawableStart="@drawable/ic_card_date_updated_16"
-                    android:drawablePadding="8dp" />
+                    android:drawableStart="@drawable/ic_card_comments_16"
+                    android:drawablePadding="6dp" />
+
+                <TextView
+                    android:id="@+id/workBookmarks"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableStart="@drawable/ic_card_bookmarks_16"
+                    android:drawablePadding="6dp" />
+
+                <TextView
+                    android:id="@+id/workHits"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableStart="@drawable/ic_card_hits_16"
+                    android:drawablePadding="6dp" />
+
             </TableRow>
 
             <TableRow

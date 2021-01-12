@@ -45,51 +45,43 @@ class WorkBlurbAdapter(private val onClickAction: (View, WorkBlurb) -> Unit) : R
         // binding solution obtained from stackoverflow: https://stackoverflow.com/questions/60491966/how-to-do-latest-jetpack-view-binding-in-adapter-bind-the-views
         private val binding = CardWorkBlurbBinding.bind(itemView)
 
-        val title = binding.workTitle
-        val authors = binding.workAuthors
-        val warnings = binding.workWarnings
-        val relationships = binding.workRelationships
-        val characters = binding.workCharacters
-        val freeforms = binding.workFreeforms
-        val summary = binding.workSummary
-        val language = binding.workLanguage
-        val wordCount = binding.workWordCount
-        val chapterCount = binding.workChapters
-        val dateUpdated = binding.workDateUpdated
-        val kudos = binding.workKudos
+
 
         fun bind(item: WorkBlurb) {
             Timber.i("WorkBlurb bound!")
-            title.text = item.title
-            authors.text = item.authors
+            binding.workTitle.text = item.title
+            binding.workAuthors.text = item.authors
                     .fold(StringBuilder()) { acc, next -> acc.append(next).append(", ") }
                     .removeSuffix(", ")
                     .toString()
 
-            warnings.text = item.warnings
+            binding.workWarnings.text = item.warnings
                     .fold(StringBuilder()) { acc, next -> acc.append(next).append(", ") }
                     .removeSuffix(", ")
                     .toString()
-            relationships.text = item.relationships
+            binding.workRelationships.text = item.relationships
                     .fold(StringBuilder()) { acc, next -> acc.append(next).append(", ") }
                     .removeSuffix(", ")
                     .toString()
-            characters.text = item.characters
+            binding.workCharacters.text = item.characters
                     .fold(StringBuilder()) { acc, next -> acc.append(next).append(", ") }
                     .removeSuffix(", ")
                     .toString()
-            freeforms.text = item.freeforms
+            binding.workFreeforms.text = item.freeforms
                     .fold(StringBuilder()) { acc, next -> acc.append(next).append(", ") }
                     .removeSuffix(", ")
                     .toString()
 
-            summary.text = HtmlCompat.fromHtml(item.summary, HtmlCompat.FROM_HTML_MODE_LEGACY)
+            binding.workSummary.text = HtmlCompat.fromHtml(item.summary, HtmlCompat.FROM_HTML_MODE_LEGACY)
 
-            language.text = item.language
-            wordCount.text = formatNumber(item.wordCount)
-            chapterCount.text = "${item.chapterCount}/${if (item.maxChapters == 0) "?" else item.maxChapters.toString()}"
-            dateUpdated.text = "18-02-20"
-            kudos.text = formatNumber(item.kudosCount)
+            binding.workLanguage.text = item.language
+            binding.workWordCount.text = formatNumber(item.wordCount)
+            binding.workChapters.text = "${item.chapterCount}/${if (item.maxChapters == 0) "?" else item.maxChapters.toString()}"
+            binding.workDateUpdated.text = "18-02-20"
+            binding.workKudos.text = formatNumber(item.kudosCount)
+            binding.workComments.text = formatNumber(item.commentsCount)
+            binding.workBookmarks.text = formatNumber(item.bookmarksCount)
+            binding.workHits.text = formatNumber(item.hitCount)
 
 
         }
