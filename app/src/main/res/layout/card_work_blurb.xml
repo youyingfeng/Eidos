@@ -20,7 +20,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif-condensed"
-            android:text="How To Coexist"
+            android:text="Title"
             android:textSize="24sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -30,54 +30,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="spoilerarlert"
+            android:text="authors"
             app:layout_constraintStart_toStartOf="@+id/workTitle"
             app:layout_constraintTop_toBottomOf="@+id/workTitle" />
-
-        <TextView
-            android:id="@+id/workWarnings"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:drawableLeft="@drawable/ic_card_warnings_14"
-            android:drawablePadding="10sp"
-            android:text="TextView"
-            android:textSize="14sp"
-            app:layout_constraintStart_toStartOf="@+id/workAuthors"
-            app:layout_constraintTop_toBottomOf="@+id/workAuthors" />
-
-        <TextView
-            android:id="@+id/workRelationships"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:drawableLeft="@drawable/ic_card_relationships_14"
-            android:drawablePadding="10sp"
-            android:text="TextView"
-            app:layout_constraintStart_toStartOf="@+id/workWarnings"
-            app:layout_constraintTop_toBottomOf="@+id/workWarnings" />
-
-        <TextView
-            android:id="@+id/workCharacters"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:drawableLeft="@drawable/ic_card_characters_24"
-            android:drawablePadding="10sp"
-            android:text="Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod"
-            app:layout_constraintStart_toStartOf="@+id/workRelationships"
-            app:layout_constraintTop_toBottomOf="@+id/workRelationships" />
-
-        <TextView
-            android:id="@+id/workFreeforms"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:drawableLeft="@drawable/ic_card_freeforms_14"
-            android:drawablePadding="10sp"
-            android:text="TextView"
-            app:layout_constraintStart_toStartOf="@+id/workCharacters"
-            app:layout_constraintTop_toBottomOf="@+id/workCharacters" />
 
         <TextView
             android:id="@+id/workSummary"
@@ -86,7 +41,128 @@
             android:layout_marginTop="16dp"
             android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras ut lobortis magna. Ut commodo commodo viverra. Phasellus a elit eget purus bibendum suscipit volutpat in dolor. Phasellus at nulla interdum, vehicula sem id, efficitur tellus. Sed a volutpat sem, suscipit blandit justo. Quisque quis libero feugiat, dictum dui quis, pulvinar tortor. Aliquam eget gravida nulla. Interdum et malesuada fames ac ante ipsum primis in faucibus. Morbi consectetur dictum eros. Nulla eu semper nunc. Quisque viverra neque non felis faucibus, id dictum quam finibus.  Ut eget quam lacinia, viverra massa id, dignissim orci. Integer quis enim at nunc vulputate iaculis eget a est. Duis sagittis libero tortor, a fringilla sem mollis in. Nulla semper dignissim tincidunt. Proin a leo faucibus odio laoreet fermentum. Vestibulum ultricies, sapien et luctus placerat, sapien augue tincidunt neque, a egestas metus ante et quam. Phasellus ultrices vitae justo eget pharetra.  Aliquam nec tellus gravida, posuere justo vitae, aliquet turpis. Mauris vehicula a libero a auctor. Curabitur id tristique libero. Nullam porttitor arcu magna, eu porttitor diam tempor id. Nam dictum eget elit id pretium. Mauris tincidunt tempor magna laoreet dictum. Fusce hendrerit mauris nunc. "
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/workFreeforms"
-            app:layout_constraintTop_toBottomOf="@+id/workFreeforms" />
+            app:layout_constraintStart_toStartOf="@+id/iconFreeforms"
+            app:layout_constraintTop_toBottomOf="@+id/barrierFreeforms" />
+
+        <ImageView
+            android:id="@+id/iconWarnings"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:layout_constraintStart_toStartOf="@+id/workAuthors"
+            app:layout_constraintTop_toBottomOf="@+id/workAuthors"
+            app:srcCompat="@drawable/ic_card_warnings_14" />
+
+        <ImageView
+            android:id="@+id/iconRelationships"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:layout_constraintStart_toStartOf="@+id/iconWarnings"
+            app:layout_constraintTop_toBottomOf="@id/barrierWarnings"
+            app:srcCompat="@drawable/ic_card_relationships_14" />
+
+        <ImageView
+            android:id="@+id/iconCharacters"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:layout_constraintStart_toStartOf="@+id/iconRelationships"
+            app:layout_constraintTop_toBottomOf="@+id/barrierRelationships"
+            app:srcCompat="@drawable/ic_card_characters_24" />
+
+        <ImageView
+            android:id="@+id/iconFreeforms"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:layout_constraintStart_toStartOf="@+id/iconCharacters"
+            app:layout_constraintTop_toBottomOf="@+id/barrierCharacters"
+            app:srcCompat="@drawable/ic_card_freeforms_14" />
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/workWarnings"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            app:chipSpacingHorizontal="4dp"
+            app:chipSpacingVertical="4dp"
+            app:layout_constraintStart_toEndOf="@+id/iconWarnings"
+            app:layout_constraintTop_toTopOf="@+id/iconWarnings">
+
+        </com.google.android.material.chip.ChipGroup>
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/workRelationships"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            app:chipSpacingHorizontal="4dp"
+            app:chipSpacingVertical="4dp"
+            app:layout_constraintStart_toEndOf="@+id/iconRelationships"
+            app:layout_constraintTop_toTopOf="@+id/iconRelationships">
+
+        </com.google.android.material.chip.ChipGroup>
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/workCharacters"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            app:chipSpacingHorizontal="4dp"
+            app:chipSpacingVertical="4dp"
+            app:layout_constraintStart_toEndOf="@+id/iconCharacters"
+            app:layout_constraintTop_toTopOf="@+id/iconCharacters">
+
+        </com.google.android.material.chip.ChipGroup>
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/workFreeforms"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            app:chipSpacingHorizontal="4dp"
+            app:chipSpacingVertical="4dp"
+            app:layout_constraintStart_toEndOf="@+id/iconFreeforms"
+            app:layout_constraintTop_toTopOf="@+id/iconFreeforms">
+
+        </com.google.android.material.chip.ChipGroup>
+
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/barrierWarnings"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:barrierDirection="bottom"
+            app:constraint_referenced_ids="iconWarnings,workWarnings"
+            tools:layout_editor_absoluteX="24dp"
+            tools:layout_editor_absoluteY="100dp" />
+
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/barrierRelationships"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:barrierDirection="bottom"
+            app:constraint_referenced_ids="iconRelationships,workRelationships"
+            tools:layout_editor_absoluteX="24dp"
+            tools:layout_editor_absoluteY="130dp" />
+
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/barrierCharacters"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:barrierDirection="bottom"
+            app:constraint_referenced_ids="iconCharacters,workCharacters"
+            tools:layout_editor_absoluteX="24dp"
+            tools:layout_editor_absoluteY="160dp" />
+
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/barrierFreeforms"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:barrierDirection="bottom"
+            app:constraint_referenced_ids="iconFreeforms,workFreeforms"
+            tools:layout_editor_absoluteX="24dp"
+            tools:layout_editor_absoluteY="190dp" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>

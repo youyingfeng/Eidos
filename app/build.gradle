@@ -1,9 +1,12 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
+    id 'de.mannodermaus.android-junit5'
+    id 'androidx.navigation.safeargs.kotlin'
 }
 
-apply plugin: "androidx.navigation.safeargs.kotlin"
+// old method of applying plugins
+// apply plugin: "androidx.navigation.safeargs.kotlin"
 
 android {
     compileSdkVersion 30
@@ -50,9 +53,6 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'com.google.android.material:material:1.2.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
-    testImplementation 'junit:junit:4.+'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
     // Navigation for Kotlin
     implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
@@ -68,4 +68,12 @@ dependencies {
     implementation 'org.jsoup:jsoup:1.13.1'
     implementation 'com.squareup.moshi:moshi:1.11.0'
     implementation 'com.squareup.moshi:moshi-kotlin:1.11.0'
+
+    // testing
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+    // old tests
+    // testImplementation 'junit:junit:4.13.1'
 }

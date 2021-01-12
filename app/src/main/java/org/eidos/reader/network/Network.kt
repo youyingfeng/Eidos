@@ -41,6 +41,21 @@ class Network {
         return responseBody
     }
 
+    fun getJS(urlString: String) : String {
+        val request: Request = Request.Builder()
+                .addHeader("X-Requested-With", "XMLHttpRequest")
+                .addHeader("Accept", "*/*;q=0.5, text/javascript, application/javascript, application/ecmascript, application/x-ecmascript")
+                .url(urlString)
+                .build()
+
+        val responseBody : String = httpClient.newCall(request).execute()
+                .body
+                ?.string()
+                ?: throw NetworkException("Empty response!")
+
+        return responseBody
+    }
+
     // TODO: specify network exceptions - e.g. for 404
     class NetworkException(message: String) : Exception(message)
 }

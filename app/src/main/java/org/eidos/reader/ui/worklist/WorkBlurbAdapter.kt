@@ -4,7 +4,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.text.HtmlCompat
+import androidx.core.view.setPadding
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.chip.Chip
 import org.eidos.reader.R
 import org.eidos.reader.databinding.CardWorkBlurbBinding
 import org.eidos.reader.model.WorkBlurb
@@ -55,22 +57,43 @@ class WorkBlurbAdapter(private val onClickAction: (View, WorkBlurb) -> Unit) : R
                     .fold(StringBuilder()) { acc, next -> acc.append(next).append(", ") }
                     .removeSuffix(", ")
                     .toString()
-            warnings.text = item.warnings
-                    .fold(StringBuilder()) { acc, next -> acc.append(next).append(", ") }
-                    .removeSuffix(", ")
-                    .toString()
-            relationships.text = item.relationships
-                    .fold(StringBuilder()) { acc, next -> acc.append(next).append(", ") }
-                    .removeSuffix(", ")
-                    .toString()
-            characters.text = item.characters
-                    .fold(StringBuilder()) { acc, next -> acc.append(next).append(", ") }
-                    .removeSuffix(", ")
-                    .toString()
-            freeforms.text = item.freeforms
-                    .fold(StringBuilder()) { acc, next -> acc.append(next).append(", ") }
-                    .removeSuffix(", ")
-                    .toString()
+
+            // clear the chipgroups
+            warnings.removeAllViews()
+            relationships.removeAllViews()
+            characters.removeAllViews()
+            freeforms.removeAllViews()
+
+            // Populate the chipgroups with chips
+
+            item.warnings.map {
+                val chip = Chip(warnings.context)
+                chip.text = it
+                chip.setEnsureMinTouchTargetSize(false)
+                warnings.addView(chip)
+            }
+
+            item.relationships.map {
+                val chip = Chip(relationships.context)
+                chip.text = it
+                chip.setEnsureMinTouchTargetSize(false)
+                relationships.addView(chip)
+            }
+
+            item.characters.map {
+                val chip = Chip(characters.context)
+                chip.text = it
+                chip.setEnsureMinTouchTargetSize(false)
+                characters.addView(chip)
+            }
+
+            item.freeforms.map {
+                val chip = Chip(freeforms.context)
+                chip.text = it
+                chip.setEnsureMinTouchTargetSize(false)
+                freeforms.addView(chip)
+            }
+
             summary.text = HtmlCompat.fromHtml(item.summary, HtmlCompat.FROM_HTML_MODE_LEGACY)
         }
 
