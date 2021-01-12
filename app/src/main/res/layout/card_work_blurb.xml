@@ -85,8 +85,74 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras ut lobortis magna. Ut commodo commodo viverra. Phasellus a elit eget purus bibendum suscipit volutpat in dolor. Phasellus at nulla interdum, vehicula sem id, efficitur tellus. Sed a volutpat sem, suscipit blandit justo. Quisque quis libero feugiat, dictum dui quis, pulvinar tortor. Aliquam eget gravida nulla. Interdum et malesuada fames ac ante ipsum primis in faucibus. Morbi consectetur dictum eros. Nulla eu semper nunc. Quisque viverra neque non felis faucibus, id dictum quam finibus.  Ut eget quam lacinia, viverra massa id, dignissim orci. Integer quis enim at nunc vulputate iaculis eget a est. Duis sagittis libero tortor, a fringilla sem mollis in. Nulla semper dignissim tincidunt. Proin a leo faucibus odio laoreet fermentum. Vestibulum ultricies, sapien et luctus placerat, sapien augue tincidunt neque, a egestas metus ante et quam. Phasellus ultrices vitae justo eget pharetra.  Aliquam nec tellus gravida, posuere justo vitae, aliquet turpis. Mauris vehicula a libero a auctor. Curabitur id tristique libero. Nullam porttitor arcu magna, eu porttitor diam tempor id. Nam dictum eget elit id pretium. Mauris tincidunt tempor magna laoreet dictum. Fusce hendrerit mauris nunc. "
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="@+id/workFreeforms"
             app:layout_constraintTop_toBottomOf="@+id/workFreeforms" />
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:stretchColumns="*"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/workSummary">
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/workLanguage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:drawableStart="@drawable/ic_card_language_16"
+                    android:drawablePadding="8dp" />
+
+                <TextView
+                    android:id="@+id/workWordCount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:drawableStart="@drawable/ic_card_word_count_16"
+                    android:drawablePadding="8dp" />
+
+                <TextView
+                    android:id="@+id/workChapters"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:drawableStart="@drawable/ic_card_chapters_16"
+                    android:drawablePadding="8dp" />
+
+                <TextView
+                    android:id="@+id/workKudos"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:drawableStart="@drawable/ic_card_kudos_16"
+                    android:drawablePadding="8dp" />
+
+                <TextView
+                    android:id="@+id/workDateUpdated"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:drawableStart="@drawable/ic_card_date_updated_16"
+                    android:drawablePadding="8dp" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </TableLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>

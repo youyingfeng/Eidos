@@ -7,10 +7,13 @@ import androidx.core.text.HtmlCompat
 import androidx.core.view.setPadding
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.chip.Chip
+import okhttp3.internal.format
 import org.eidos.reader.R
 import org.eidos.reader.databinding.CardWorkBlurbBinding
 import org.eidos.reader.model.WorkBlurb
 import timber.log.Timber
+import kotlin.math.log
+import kotlin.math.pow
 
 class WorkBlurbAdapter(private val onClickAction: (View, WorkBlurb) -> Unit) : RecyclerView.Adapter<WorkBlurbAdapter.WorkBlurbViewHolder>() {
     var data = listOf<WorkBlurb>()
@@ -49,6 +52,11 @@ class WorkBlurbAdapter(private val onClickAction: (View, WorkBlurb) -> Unit) : R
         val characters = binding.workCharacters
         val freeforms = binding.workFreeforms
         val summary = binding.workSummary
+        val language = binding.workLanguage
+        val wordCount = binding.workWordCount
+        val chapterCount = binding.workChapters
+        val dateUpdated = binding.workDateUpdated
+        val kudos = binding.workKudos
 
         fun bind(item: WorkBlurb) {
             Timber.i("WorkBlurb bound!")
@@ -76,6 +84,14 @@ class WorkBlurbAdapter(private val onClickAction: (View, WorkBlurb) -> Unit) : R
                     .toString()
 
             summary.text = HtmlCompat.fromHtml(item.summary, HtmlCompat.FROM_HTML_MODE_LEGACY)
+
+            language.text = item.language
+            wordCount.text = formatNumber(item.wordCount)
+            chapterCount.text = "${item.chapterCount}/${if (item.maxChapters == 0) "?" else item.maxChapters.toString()}"
+            dateUpdated.text = "18-02-20"
+            kudos.text = formatNumber(item.kudosCount)
+
+
         }
 
         companion object {
@@ -85,6 +101,12 @@ class WorkBlurbAdapter(private val onClickAction: (View, WorkBlurb) -> Unit) : R
                 val layoutInflater = LayoutInflater.from(parent.context)
                 val view = layoutInflater.inflate(R.layout.card_work_blurb, parent, false)
                 return WorkBlurbViewHolder(view)
+            }
+
+            fun formatNumber(count: Int) : String {
+                if (count < 1000) return count.toString()
+                val exponent = log(count.toDouble(), 1000.toDouble())
+                return String.format("%.1f %c", count / 1000.0.pow(exponent), "KMGTPE"[exponent.toInt() - 1])
             }
         }
     }
