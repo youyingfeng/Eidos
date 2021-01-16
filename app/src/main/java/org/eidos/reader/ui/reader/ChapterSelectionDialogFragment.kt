@@ -1,0 +1,35 @@
+package org.eidos.reader.ui.reader
+
+import android.app.Dialog
+import android.content.Context
+import android.content.DialogInterface
+import android.os.Bundle
+import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.viewModels
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import timber.log.Timber
+
+
+class ChapterSelectionDialogFragment(private vararg val chapterTitles: String) : DialogFragment() {
+
+    private val viewModel : WorkReaderViewModel by viewModels({requireParentFragment()})
+
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        // use requireActivity instead of activity?. bc IDE will complain otherwise
+        // see https://stackoverflow.com/questions/56168026/how-to-create-alertdialog-in-androidx-appcompat
+        return requireActivity().let {
+            val builder = MaterialAlertDialogBuilder(it)
+            builder.setTitle("Jump To Chapter")
+                    .setItems(chapterTitles,
+                        DialogInterface.OnClickListener { dialog, id ->
+                            Timber.i("Menu item #$id selected!")
+                            viewModel.loadChapterAtIndex(id)
+                        })
+                    .setNegativeButton("Back",
+                        DialogInterface.OnClickListener { dialog, id ->
+                            // do nothing
+                        })
+            builder.show()
+        }
+    }
+}

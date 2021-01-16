@@ -35,6 +35,10 @@ class WorkReaderFragment : Fragment() {
     // This property is only valid between onCreateView and onDestroyView.
     private val binding get() = _binding!!
 
+
+    // this exists because there is no other way to clear onGlobalLayoutListeners without knowing
+    // the reference.
+    // if the listener is not cleared, then a crash will occur.
     val scrollToTop = { binding.mainScrollView.fullScroll(View.FOCUS_UP) }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -53,16 +57,21 @@ class WorkReaderFragment : Fragment() {
         val view = binding.root
 
         /* Setting observers */
-        viewModel.currentChapterBody.observe(viewLifecycleOwner, Observer { chapterBody ->
+        viewModel.currentChapterBody.observe(viewLifecycleOwner, { chapterBody ->
             binding.workBody.text = chapterBody
         })
 
-        viewModel.hasNextChapter.observe(viewLifecycleOwner, Observer { hasNextChapter ->
+        viewModel.hasNextChapter.observe(viewLifecycleOwner, { hasNextChapter ->
             binding.nextChapterButton.isEnabled = hasNextChapter
         })
 
-        viewModel.hasPreviousChapter.observe(viewLifecycleOwner, Observer { hasPreviousChapter ->
+        viewModel.hasPreviousChapter.observe(viewLifecycleOwner, { hasPreviousChapter ->
             binding.previousChapterButton.isEnabled = hasPreviousChapter
+        })
+
+        viewModel.currentChapterIndicatorString.observe(viewLifecycleOwner,
+                { currentChapterIndicatorString ->
+            binding.currentChapterIndicator.text = currentChapterIndicatorString
         })
 
         // this code automatically scrolls the scrollview to the top upon laying out anything
@@ -97,6 +106,9 @@ class WorkReaderFragment : Fragment() {
             viewModel.loadNextChapter()
         }
 
+        binding.currentChapterIndicator.setOnClickListener {
+            openChapterSelectionDialog()
+        }
 
         return view
     }
@@ -106,5 +118,14 @@ class WorkReaderFragment : Fragment() {
         // remove the global layout listener to prevent NPE
         binding.workBody.viewTreeObserver.removeOnGlobalLayoutListener { scrollToTop }
         _binding = null
+    }
+
+    // methods for handling chapter selection dialog
+    fun openChapterSelectionDialog() {
+        val dialogFragment = ChapterSelectionDialogFragment(
+                *viewModel.chapterTitles.value?.toTypedArray()!!
+        )
+        dialogFragment.show(childFragmentManager, "selectChapter")
+        // dialog will auto close when any button is tapped
     }
 }

@@ -1,5 +1,6 @@
 package org.eidos.reader.ui.reader
 
+import android.app.AlertDialog
 import android.text.Spanned
 import androidx.core.text.HtmlCompat
 import androidx.lifecycle.LiveData
@@ -22,6 +23,10 @@ class WorkReaderViewModel(private var workURL: String) : ViewModel() {
     val currentChapterIndex : Int
         get() = _currentChapterIndex
 
+    private val _currentChapterIndicatorString = MutableLiveData<String>("")
+    val currentChapterIndicatorString : LiveData<String>
+        get() = _currentChapterIndicatorString
+
     private val _currentChapterTitle = MutableLiveData<String>()
     val currentChapterTitle: LiveData<String>
         get() = _currentChapterTitle
@@ -38,6 +43,10 @@ class WorkReaderViewModel(private var workURL: String) : ViewModel() {
     val hasPreviousChapter: LiveData<Boolean>
         get() = _hasPreviousChapter
 
+    private val _chapterTitles = MutableLiveData<List<String>>()
+    val chapterTitles: LiveData<List<String>>
+        get() = _chapterTitles
+
     init {
         viewModelScope.launch {
             getWorkFromRemote()
@@ -49,6 +58,13 @@ class WorkReaderViewModel(private var workURL: String) : ViewModel() {
             val workRequest = WorkRequest(workURL)
             work = EidosRepository.getWorkFromAO3(workRequest)
             loadFirstChapter()
+            _chapterTitles.postValue(work.chapters.let { chapterList ->
+                val titles = mutableListOf<String>()
+                for (i in chapterList.indices) {
+                    titles.add("Chapter ${i + 1}: ${chapterList[i].title}")
+                }
+                return@let titles
+            })
             Timber.i("Coroutines: Work fetched from Remote")
         }
     }
@@ -95,5 +111,7 @@ class WorkReaderViewModel(private var workURL: String) : ViewModel() {
         _hasPreviousChapter.postValue(currentChapterIndex != 0)
         _hasNextChapter.postValue(currentChapterIndex != work.chapterCount - 1)
         _currentChapterTitle.postValue(work.chapters[currentChapterIndex].title)
+        _currentChapterIndicatorString.postValue("${currentChapterIndex + 1}/${work.chapterCount}"
+        )
     }
 }
