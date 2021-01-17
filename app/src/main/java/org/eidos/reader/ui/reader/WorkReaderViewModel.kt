@@ -19,6 +19,7 @@ class WorkReaderViewModel(private var workURL: String) : ViewModel() {
     // TODO: make this non-nullable after writing coroutine
     private lateinit var work : Work
 
+    // this variable is 0-based and represents the chapter's index in the list of chapters
     private var _currentChapterIndex: Int = 0
     val currentChapterIndex : Int
         get() = _currentChapterIndex

@@ -10,9 +10,30 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import timber.log.Timber
 
 
-class ChapterSelectionDialogFragment(private vararg val chapterTitles: String) : DialogFragment() {
+class ChapterSelectionDialogFragment() : DialogFragment() {
+    // FIXME: Do not overload constructor else fragment recreation will be problematic.
+    // see https://stackoverflow.com/questions/9245408/best-practice-for-instantiating-a-new-android-fragment
+
+    companion object {
+        fun newInstance(chapterTitles: Array<String>) : DialogFragment {
+            val newDialogFragment = ChapterSelectionDialogFragment()
+
+            val args = Bundle()
+            args.putStringArray("chapterTitles", chapterTitles)
+            newDialogFragment.arguments = args
+
+            return newDialogFragment
+        }
+    }
 
     private val viewModel : WorkReaderViewModel by viewModels({requireParentFragment()})
+
+    private lateinit var chapterTitles : Array<String>
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        chapterTitles = requireArguments().getStringArray("chapterTitles") as Array<String>
+    }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         // use requireActivity instead of activity?. bc IDE will complain otherwise

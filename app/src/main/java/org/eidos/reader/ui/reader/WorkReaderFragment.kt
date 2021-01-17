@@ -13,6 +13,7 @@ import org.eidos.reader.databinding.FragmentWorkListBinding
 import org.eidos.reader.databinding.FragmentWorkReaderBinding
 import org.eidos.reader.ui.utilities.Utilities.Companion.setActivityTitle
 import org.eidos.reader.ui.worklist.WorkListViewModel
+import timber.log.Timber
 
 /*
 TODO: Implement a collapsible toolbar as laid out in the design docs
@@ -39,7 +40,10 @@ class WorkReaderFragment : Fragment() {
     // this exists because there is no other way to clear onGlobalLayoutListeners without knowing
     // the reference.
     // if the listener is not cleared, then a crash will occur.
-    val scrollToTop = { binding.mainScrollView.fullScroll(View.FOCUS_UP) }
+    val scrollToTop = {
+        binding.mainScrollView.fullScroll(View.FOCUS_UP)
+        Timber.i("scrollToTop called")
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -78,9 +82,11 @@ class WorkReaderFragment : Fragment() {
         // FIXME: this section might cause a problem when comments are laid out in the future,
         // as the view might scroll to top even though the buttons have not been pressed.
         // solution obtained from: https://stackoverflow.com/questions/4119441/how-to-scroll-to-top-of-long-scrollview-layout
-        binding.workBody.viewTreeObserver.addOnGlobalLayoutListener {
-            scrollToTop
+        binding.mainScrollView.viewTreeObserver.addOnGlobalLayoutListener {
+            scrollToTop()
+            Timber.i("OnGlobalLayoutListener called")
         }
+        Timber.i("OnGlobalLayoutListener added")
 
         // this code sets the title automatically
         // FIXME: race conditions may happen bc the chapter number may not be updated before the title
@@ -103,7 +109,7 @@ class WorkReaderFragment : Fragment() {
 
         binding.previousChapterButton.setOnClickListener {
             // same concerns as above.
-            viewModel.loadNextChapter()
+            viewModel.loadPreviousChapter()
         }
 
         binding.currentChapterIndicator.setOnClickListener {
@@ -117,13 +123,14 @@ class WorkReaderFragment : Fragment() {
         super.onDestroyView()
         // remove the global layout listener to prevent NPE
         binding.workBody.viewTreeObserver.removeOnGlobalLayoutListener { scrollToTop }
+        Timber.i("OnGlobalLayoutListener removed!")
         _binding = null
     }
 
     // methods for handling chapter selection dialog
     fun openChapterSelectionDialog() {
-        val dialogFragment = ChapterSelectionDialogFragment(
-                *viewModel.chapterTitles.value?.toTypedArray()!!
+        val dialogFragment = ChapterSelectionDialogFragment.newInstance(
+                viewModel.chapterTitles.value?.toTypedArray()!!
         )
         dialogFragment.show(childFragmentManager, "selectChapter")
         // dialog will auto close when any button is tapped
