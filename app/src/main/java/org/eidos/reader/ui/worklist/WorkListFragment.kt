@@ -2,10 +2,8 @@ package org.eidos.reader.ui.worklist
 
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI
@@ -47,6 +45,9 @@ class WorkListFragment : Fragment() {
         _binding = FragmentWorkListBinding.inflate(inflater, container, false)
         val view = binding.root
 
+        // sets the options menu
+        setHasOptionsMenu(true)
+
         // create the adapter
         val adapter = WorkBlurbAdapter { holderView, workBlurb ->
             holderView.findNavController()
@@ -83,8 +84,26 @@ class WorkListFragment : Fragment() {
         return view
     }
 
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        // only include super.onCreateOptionsMenu(menu, inflater) if you want to include parent menu
+        inflater.inflate(R.menu.work_list_options_menu, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.filterWorksAction -> {
+                val dialogFragment = FilterDialogFragment()
+                dialogFragment.show(childFragmentManager, "workListFilter")
+            }
+        }
+
+        // return true to consume the event here, false to forward the event elsewhere
+        return true
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        setHasOptionsMenu(false)
     }
 }

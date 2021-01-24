@@ -30,6 +30,7 @@
 
     <TextView
         android:id="@+id/includeHeader"
+        style="@style/SectionHeaderText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
@@ -86,23 +87,5 @@
         app:layout_constraintTop_toBottomOf="@+id/excludeTagInput">
 
     </com.google.android.material.chip.ChipGroup>
-
-    <Button
-        android:id="@+id/submitFilterButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:text="Filter"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/leftBorder" />
-
-    <Button
-        android:id="@+id/cancelFilterButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:text="Cancel"
-        app:layout_constraintBottom_toBottomOf="@+id/submitFilterButton"
-        app:layout_constraintStart_toEndOf="@+id/submitFilterButton" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
