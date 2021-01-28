@@ -14,16 +14,22 @@ import org.eidos.reader.repository.EidosRepository
 import timber.log.Timber
 
 class WorkListViewModel(private val workFilterRequest: WorkFilterRequest) : ViewModel() {
-    // TODO: make the backend use flows
-    // worklist can be left as a mutablelivedata since it originates in the VM.
+
+    /* BEGIN Variables for WorkListFragment */
     private var _workBlurbs = MutableLiveData<List<WorkBlurb>>()
     val workBlurbs: LiveData<List<WorkBlurb>>
         get() = _workBlurbs
 
     private var largestPageNumber = 1
 
-    // TODO: possibly hacky fix, see if it is possible to improve.
+    // possibly hacky fix, see if it is possible to improve.
     private var isFetchingWorks = false
+    /* END Variables for WorkListFragment */
+
+    /* BEGIN Variables for FilterDialogFragment */
+    // TODO: add arrays to store shit
+    // Note: autocomplete stuff should be shoved in another ViewModel
+    /* END Variables for FilterDialogFragment */
 
     init {
         initialiseWorkBlurbs()

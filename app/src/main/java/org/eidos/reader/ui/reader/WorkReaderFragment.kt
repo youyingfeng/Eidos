@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.View.FOCUS_UP
 import android.view.ViewGroup
+import android.view.ViewTreeObserver
 import androidx.lifecycle.Observer
 import org.eidos.reader.R
 import org.eidos.reader.databinding.FragmentWorkListBinding
@@ -36,15 +37,6 @@ class WorkReaderFragment : Fragment() {
     // This property is only valid between onCreateView and onDestroyView.
     private val binding get() = _binding!!
 
-
-    // this exists because there is no other way to clear onGlobalLayoutListeners without knowing
-    // the reference.
-    // if the listener is not cleared, then a crash will occur.
-    val scrollToTop = {
-        binding.mainScrollView.fullScroll(View.FOCUS_UP)
-        Timber.i("scrollToTop called")
-    }
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // get the workURL
@@ -63,6 +55,25 @@ class WorkReaderFragment : Fragment() {
         /* Setting observers */
         viewModel.currentChapterBody.observe(viewLifecycleOwner, { chapterBody ->
             binding.workBody.text = chapterBody
+
+            // this code automatically scrolls the scrollview to the top upon laying out anything
+            // FIXED: this section might cause a problem when comments are laid out in the future,
+            // as the view might scroll to top even though the buttons have not been pressed.
+            // solution obtained from: https://stackoverflow.com/questions/4119441/how-to-scroll-to-top-of-long-scrollview-layout
+            binding.mainScrollView.viewTreeObserver.addOnGlobalLayoutListener(object:
+                ViewTreeObserver.OnGlobalLayoutListener {
+                    override fun onGlobalLayout() {
+                        binding.mainScrollView.fullScroll(View.FOCUS_UP)
+                        Timber.i("OnGlobalLayout called!")
+
+                        // remove the global layout listener to prevent NPE
+                        // if the listener is not cleared, then a crash will occur.
+                        binding.mainScrollView.viewTreeObserver.removeOnGlobalLayoutListener(this)
+                        Timber.i("OnGlobalLayoutListener removed!")
+                    }
+                }
+            )
+            Timber.i("OnGlobalLayoutListener added")
         })
 
         viewModel.hasNextChapter.observe(viewLifecycleOwner, { hasNextChapter ->
@@ -77,16 +88,6 @@ class WorkReaderFragment : Fragment() {
                 { currentChapterIndicatorString ->
             binding.currentChapterIndicator.text = currentChapterIndicatorString
         })
-
-        // this code automatically scrolls the scrollview to the top upon laying out anything
-        // FIXME: this section might cause a problem when comments are laid out in the future,
-        // as the view might scroll to top even though the buttons have not been pressed.
-        // solution obtained from: https://stackoverflow.com/questions/4119441/how-to-scroll-to-top-of-long-scrollview-layout
-        binding.mainScrollView.viewTreeObserver.addOnGlobalLayoutListener {
-            scrollToTop()
-            Timber.i("OnGlobalLayoutListener called")
-        }
-        Timber.i("OnGlobalLayoutListener added")
 
         // this code sets the title automatically
         // FIXME: race conditions may happen bc the chapter number may not be updated before the title
@@ -121,9 +122,6 @@ class WorkReaderFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        // remove the global layout listener to prevent NPE
-        binding.workBody.viewTreeObserver.removeOnGlobalLayoutListener { scrollToTop }
-        Timber.i("OnGlobalLayoutListener removed!")
         _binding = null
     }
 
