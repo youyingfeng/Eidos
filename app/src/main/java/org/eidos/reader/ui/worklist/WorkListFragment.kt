@@ -6,15 +6,17 @@ import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
-import androidx.navigation.ui.NavigationUI
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import org.eidos.reader.R
 import org.eidos.reader.databinding.FragmentWorkListBinding
 import org.eidos.reader.remote.requests.WorkFilterRequest
+import org.eidos.reader.ui.utilities.Utilities.Companion.hideKeyboard
 import org.eidos.reader.ui.utilities.Utilities.Companion.setActivityTitle
 import timber.log.Timber
 
 class WorkListFragment : Fragment() {
+
     companion object {
         fun newInstance() = WorkListFragment()
     }
@@ -92,8 +94,10 @@ class WorkListFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.filterWorksAction -> {
-                val dialogFragment = FilterDialogFragment()
-                dialogFragment.show(childFragmentManager, "workListFilter")
+                hideKeyboard()
+                findNavController()
+                        .navigate(WorkListFragmentDirections
+                                .actionWorkListFragmentToWorkListFilterFragment())
             }
         }
 

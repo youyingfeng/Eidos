@@ -39,6 +39,9 @@
         <argument
             android:name="tagName"
             app:argType="string" />
+        <action
+            android:id="@+id/action_workListFragment_to_workListFilterFragment"
+            app:destination="@id/workListFilterFragment" />
     </fragment>
     <fragment
         android:id="@+id/placeholderFragment"
@@ -49,4 +52,8 @@
             android:id="@+id/action_placeholderFragment_to_workListFragment"
             app:destination="@id/workListFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/workListFilterFragment"
+        android:name="org.eidos.reader.ui.worklistfilter.WorkListFilterFragment"
+        android:label="WorkListFilterFragment" />
 </navigation>

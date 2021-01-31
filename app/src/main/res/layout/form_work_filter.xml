@@ -1,297 +1,310 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:clipToPadding="true"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:paddingBottom="16dp">
 
-    <TextView
-        android:id="@+id/workFilterTitle"
+
+    <TableLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Filter Works" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:orientation="vertical">
 
         <TextView
-            android:id="@+id/includeTagsSectionHeaderTV"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:text="Include" />
-
-        <com.google.android.flexbox.FlexboxLayout
-            android:id="@+id/includeTagsFL"
+            android:id="@+id/workFilterTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginStart="8dp"
-            app:alignContent="space_around"
-            app:alignItems="stretch"
-            app:flexWrap="wrap"
-            app:showDivider="beginning|middle|end">
-            <!--            app:dividerDrawable="@drawable/divider"-->
+            android:text="Filter Works" />
 
-            <EditText
-                android:id="@+id/includeTagsInputET"
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/includeTagsSectionHeaderTV"
                 android:layout_width="wrap_content"
-                android:layout_height="32dp"
-                android:background="@android:color/transparent"
-                android:imeOptions="actionDone"
-                android:inputType="text"
-                app:layout_flexGrow="1" />
+                android:layout_height="wrap_content"
+                android:layout_gravity="top|left"
+                android:text="Include" />
 
-        </com.google.android.flexbox.FlexboxLayout>
+            <com.google.android.flexbox.FlexboxLayout
+                android:id="@+id/includeTagsFL"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="16dp"
+                android:layout_weight="1"
+                app:alignContent="space_around"
+                app:alignItems="stretch"
+                app:flexWrap="wrap"
+                app:showDivider="beginning|middle|end">
+                <!--            app:dividerDrawable="@drawable/divider"-->
 
-    </LinearLayout>
+                <EditText
+                    android:id="@+id/includeTagsInputET"
+                    android:layout_width="wrap_content"
+                    android:layout_height="32dp"
+                    android:background="@android:color/transparent"
+                    android:imeOptions="actionDone"
+                    android:inputType="text"
+                    app:layout_flexGrow="1" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/autocompleteIncludeTagsRV"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="gone" />
+            </com.google.android.flexbox.FlexboxLayout>
+        </TableRow>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/autocompleteIncludeTagsRV"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager">
+
+        </androidx.recyclerview.widget.RecyclerView>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/excludeTagsSectionHeaderTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top|left"
+                android:text="Exclude" />
+
+            <com.google.android.flexbox.FlexboxLayout
+                android:id="@+id/excludeTagsFL"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="16dp"
+                android:layout_weight="1"
+                app:alignContent="space_around"
+                app:alignItems="stretch"
+                app:flexWrap="wrap"
+                app:showDivider="beginning|middle|end">
+                <!--            app:dividerDrawable="@drawable/divider"-->
+
+                <EditText
+                    android:id="@+id/excludeTagsInputET"
+                    android:layout_width="wrap_content"
+                    android:layout_height="32dp"
+                    android:background="@android:color/transparent"
+                    android:imeOptions="actionDone"
+                    android:inputType="text"
+                    app:layout_flexGrow="1" />
+
+            </com.google.android.flexbox.FlexboxLayout>
+
+        </TableRow>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/autocompleteExcludeTagsRV"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
         <TextView
-            android:id="@+id/excludeTagsSectionHeaderTV"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:text="Exclude" />
-
-        <com.google.android.flexbox.FlexboxLayout
-            android:id="@+id/excludeTagsFL"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginStart="8dp"
-            app:alignContent="space_around"
-            app:alignItems="stretch"
-            app:flexWrap="wrap"
-            app:showDivider="beginning|middle|end">
-            <!--            app:dividerDrawable="@drawable/divider"-->
+            android:text="Ratings" />
 
-            <EditText
-                android:id="@+id/excludeTagsInputET"
-                android:layout_width="wrap_content"
-                android:layout_height="32dp"
-                android:background="@android:color/transparent"
-                android:imeOptions="actionDone"
-                android:inputType="text"
-                app:layout_flexGrow="1" />
+        <com.google.android.material.checkbox.MaterialCheckBox
+            android:id="@+id/showRatingGeneralAudiencesCB"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="General Audiences" />
 
-        </com.google.android.flexbox.FlexboxLayout>
+        <com.google.android.material.checkbox.MaterialCheckBox
+            android:id="@+id/showRatingTeenAndUpAudiencesCB"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="Teen And Up Audiences" />
 
-    </LinearLayout>
+        <com.google.android.material.checkbox.MaterialCheckBox
+            android:id="@+id/showRatingMatureCB"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="Mature" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/autocompleteExcludeTagsRV"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="gone" />
+        <com.google.android.material.checkbox.MaterialCheckBox
+            android:id="@+id/showRatingExplicitCB"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="Explicit" />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Ratings" />
+        <com.google.android.material.checkbox.MaterialCheckBox
+            android:id="@+id/showRatingNotRatedCB"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="Not Rated" />
 
-    <com.google.android.material.checkbox.MaterialCheckBox
-        android:id="@+id/showRatingGeneralAudiencesCB"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:text="General Audiences" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Warnings" />
 
-    <com.google.android.material.checkbox.MaterialCheckBox
-        android:id="@+id/showRatingTeenAndUpAudiencesCB"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:text="Teen And Up Audiences" />
+        <com.google.android.material.checkbox.MaterialCheckBox
+            android:id="@+id/showWarningNoArchiveWarningsApplyCB"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="No Archive Warnings Apply" />
 
-    <com.google.android.material.checkbox.MaterialCheckBox
-        android:id="@+id/showRatingMatureCB"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:text="Mature" />
+        <com.google.android.material.checkbox.MaterialCheckBox
+            android:id="@+id/showWarningGraphicViolenceCB"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="Graphic Depictions Of Violence" />
 
-    <com.google.android.material.checkbox.MaterialCheckBox
-        android:id="@+id/showRatingExplicitCB"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:text="Explicit" />
+        <com.google.android.material.checkbox.MaterialCheckBox
+            android:id="@+id/showWarningMajorCharacterDeathCB"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="Major Character Death" />
 
-    <com.google.android.material.checkbox.MaterialCheckBox
-        android:id="@+id/showRatingNotRatedCB"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:text="Not Rated" />
+        <com.google.android.material.checkbox.MaterialCheckBox
+            android:id="@+id/showWarningUnderageCB"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="Underage" />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Warnings" />
+        <com.google.android.material.checkbox.MaterialCheckBox
+            android:id="@+id/showWarningRapeCB"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="Rape/Non-Con" />
 
-    <com.google.android.material.checkbox.MaterialCheckBox
-        android:id="@+id/showWarningNoArchiveWarningsApplyCB"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:text="No Archive Warnings Apply" />
+        <com.google.android.material.checkbox.MaterialCheckBox
+            android:id="@+id/showWarningCreatorChoseNoWarningsCB"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="Creator Chose Not To Use Archive Warnings" />
 
-    <com.google.android.material.checkbox.MaterialCheckBox
-        android:id="@+id/showWarningGraphicViolenceCB"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:text="Graphic Depictions Of Violence" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Categories" />
 
-    <com.google.android.material.checkbox.MaterialCheckBox
-        android:id="@+id/showWarningMajorCharacterDeathCB"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:text="Major Character Death" />
+        <com.google.android.material.checkbox.MaterialCheckBox
+            android:id="@+id/showCategoryGenCB"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="Gen" />
 
-    <com.google.android.material.checkbox.MaterialCheckBox
-        android:id="@+id/showWarningUnderageCB"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:text="Underage" />
+        <com.google.android.material.checkbox.MaterialCheckBox
+            android:id="@+id/showCategoryFMCB"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="F/M" />
 
-    <com.google.android.material.checkbox.MaterialCheckBox
-        android:id="@+id/showWarningRapeCB"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:text="Rape/Non-Con" />
+        <com.google.android.material.checkbox.MaterialCheckBox
+            android:id="@+id/showCategoryMMCB"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="M/M" />
 
-    <com.google.android.material.checkbox.MaterialCheckBox
-        android:id="@+id/showWarningCreatorChoseNoWarningsCB"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:text="Creator Chose Not To Use Archive Warnings" />
+        <com.google.android.material.checkbox.MaterialCheckBox
+            android:id="@+id/showCategoryFFCB"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="F/F" />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Categories" />
+        <com.google.android.material.checkbox.MaterialCheckBox
+            android:id="@+id/showCategoryMultiCB"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="Multi" />
 
-    <com.google.android.material.checkbox.MaterialCheckBox
-        android:id="@+id/showCategoryGenCB"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:text="Gen" />
+        <com.google.android.material.checkbox.MaterialCheckBox
+            android:id="@+id/showCategoryOtherCB"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="Other" />
 
-    <com.google.android.material.checkbox.MaterialCheckBox
-        android:id="@+id/showCategoryFMCB"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:text="F/M" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Crossovers" />
 
-    <com.google.android.material.checkbox.MaterialCheckBox
-        android:id="@+id/showCategoryMMCB"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:text="M/M" />
+        <com.google.android.material.checkbox.MaterialCheckBox
+            android:id="@+id/showCrossoversCB"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="Show crossovers" />
 
-    <com.google.android.material.checkbox.MaterialCheckBox
-        android:id="@+id/showCategoryFFCB"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:text="F/F" />
+        <com.google.android.material.checkbox.MaterialCheckBox
+            android:id="@+id/showNonCrossoversCB"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="Show non-crossovers" />
 
-    <com.google.android.material.checkbox.MaterialCheckBox
-        android:id="@+id/showCategoryMultiCB"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:text="Multi" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Completion Status" />
 
-    <com.google.android.material.checkbox.MaterialCheckBox
-        android:id="@+id/showCategoryOtherCB"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:text="Other" />
+        <com.google.android.material.checkbox.MaterialCheckBox
+            android:id="@+id/showCompletedWorksCB"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="Show completed works" />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Crossovers" />
+        <com.google.android.material.checkbox.MaterialCheckBox
+            android:id="@+id/showIncompleteWorksCB"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="Show incomplete works" />
 
-    <com.google.android.material.checkbox.MaterialCheckBox
-        android:id="@+id/showCrossoversCB"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:text="Show crossovers" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Word Count" />
 
-    <com.google.android.material.checkbox.MaterialCheckBox
-        android:id="@+id/showNonCrossoversCB"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:text="Show non-crossovers" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Date Updated" />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Completion Status" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Search within results" />
 
-    <com.google.android.material.checkbox.MaterialCheckBox
-        android:id="@+id/showCompletedWorksCB"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:text="Show completed works" />
+        <EditText
+            android:id="@+id/searchWithinResultsET"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Search within results"
+            android:inputType="textPersonName" />
 
-    <com.google.android.material.checkbox.MaterialCheckBox
-        android:id="@+id/showIncompleteWorksCB"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:text="Show incomplete works" />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Word Count" />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Date Updated" />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Search within results" />
-
-    <EditText
-        android:id="@+id/searchWithinResultsET"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="Search within results"
-        android:inputType="textPersonName" />
-
-</LinearLayout>
+    </TableLayout>
+</ScrollView>

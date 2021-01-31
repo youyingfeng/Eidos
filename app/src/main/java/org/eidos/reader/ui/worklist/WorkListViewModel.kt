@@ -16,7 +16,7 @@ import timber.log.Timber
 class WorkListViewModel(private val workFilterRequest: WorkFilterRequest) : ViewModel() {
 
     /* BEGIN Variables for WorkListFragment */
-    private var _workBlurbs = MutableLiveData<List<WorkBlurb>>()
+    private var _workBlurbs = MutableLiveData<List<WorkBlurb>>(emptyList())
     val workBlurbs: LiveData<List<WorkBlurb>>
         get() = _workBlurbs
 
@@ -64,5 +64,9 @@ class WorkListViewModel(private val workFilterRequest: WorkFilterRequest) : View
         } else {
             Timber.i("Currently fetching works, extra requests blocked")
         }
+    }
+
+    fun resetPages() {
+        _workBlurbs.value = emptyList()
     }
 }
