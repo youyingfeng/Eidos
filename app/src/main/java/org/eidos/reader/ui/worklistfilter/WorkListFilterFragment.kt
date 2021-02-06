@@ -3,10 +3,13 @@ package org.eidos.reader.ui.worklistfilter
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.text.Editable
+import android.text.TextUtils
 import android.text.TextWatcher
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import android.widget.TextView
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
@@ -35,17 +38,45 @@ class WorkListFilterFragment : DialogFragment() {
         // set autocomplete adapters
         val includeTagsAutocompleteAdapter =
                 AutocompleteStringAdapter { _: View, autocompleteResultString: String ->
-                    hideKeyboard()
                     binding.includeTagsFL.addChip(autocompleteResultString)
+                    binding.includeTagsInputET.text.clear()
                 }
         binding.autocompleteIncludeTagsRV.adapter = includeTagsAutocompleteAdapter
 
         val excludeTagsAutocompleteAdapter =
                 AutocompleteStringAdapter { _: View, autocompleteResultString: String ->
-                    hideKeyboard()
                     binding.excludeTagsFL.addChip(autocompleteResultString)
+                    binding.excludeTagsInputET.text.clear()
                 }
         binding.autocompleteExcludeTagsRV.adapter = excludeTagsAutocompleteAdapter
+
+        // FIXME: Below code does not work
+        // change the enter button on keyboard to ADD
+        // binding.includeTagsInputET.setImeActionLabel("ADD", EditorInfo.IME_ACTION_DONE)
+        // binding.excludeTagsInputET.setImeActionLabel("ADD", EditorInfo.IME_ACTION_DONE)
+
+        // add a chip when user presses enter
+        binding.includeTagsInputET.setOnEditorActionListener { v, actionId, event ->
+            when (actionId) {
+                EditorInfo.IME_ACTION_DONE -> {
+                    binding.includeTagsFL.addChip(binding.includeTagsInputET.text.toString())
+                    binding.includeTagsInputET.text.clear()
+                    return@setOnEditorActionListener true
+                }
+                else -> false
+            }
+        }
+
+        binding.excludeTagsInputET.setOnEditorActionListener { v, actionId, event ->
+            when (actionId) {
+                EditorInfo.IME_ACTION_DONE -> {
+                    binding.excludeTagsFL.addChip(binding.excludeTagsInputET.text.toString())
+                    binding.excludeTagsInputET.text.clear()
+                    return@setOnEditorActionListener true
+                }
+                else -> false
+            }
+        }
 
         // make respective RVs visible when the input field is selected, and hide them when focus is
         // lost
@@ -69,17 +100,22 @@ class WorkListFilterFragment : DialogFragment() {
             }
         }
 
+
+
         // fetch results when user stops typing
         binding.includeTagsInputET.afterTextChangedDelayed { inputString ->
             if (inputString.isNotBlank()) {
                 workListFilterViewModel.fetchAutocompleteResults(inputString)
+            } else {
+                workListFilterViewModel.clearAutocompleteResults()
             }
-
         }
 
         binding.excludeTagsInputET.afterTextChangedDelayed { inputString ->
             if (inputString.isNotBlank()) {
                 workListFilterViewModel.fetchAutocompleteResults(inputString)
+            } else {
+                workListFilterViewModel.clearAutocompleteResults()
             }
         }
 
@@ -98,11 +134,13 @@ class WorkListFilterFragment : DialogFragment() {
     }
 
     fun FlexboxLayout.addChip(chipText: String) {
+        // TODO: convert to textView and Drawables
         val chip = Chip(context)
         chip.text = chipText
         chip.isCloseIconVisible = true
         chip.isClickable = true
         chip.isCheckable = false
+        chip.ellipsize = TextUtils.TruncateAt.END
         this.addView(chip as View, this.childCount - 1)
         chip.setOnCloseIconClickListener { this.removeView(chip as View) }
     }
