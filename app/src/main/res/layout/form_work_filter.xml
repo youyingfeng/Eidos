@@ -200,6 +200,24 @@
             android:layout_marginStart="16dp"
             android:text="Creator Chose Not To Use Archive Warnings" />
 
+        <RadioGroup
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checkedButton="@id/searchContainsAnyWarningsRB">
+
+            <RadioButton
+                android:id="@+id/searchContainsAllWarningsRB"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Works must contain all selected warnings" />
+
+            <RadioButton
+                android:id="@+id/searchContainsAnyWarningsRB"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Works can contain any selected warning" />
+        </RadioGroup>
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

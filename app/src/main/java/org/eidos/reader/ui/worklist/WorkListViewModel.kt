@@ -53,8 +53,12 @@ class WorkListViewModel(private val workFilterRequest: WorkFilterRequest) : View
             isFetchingWorks = true
             largestPageNumber++
             Timber.i("getNextPage() called")
-            workFilterRequest.setPageNumber(largestPageNumber)
+
+            workFilterRequest.pageNumber = largestPageNumber
+            workFilterRequest.updateQueryString()
+
             val currentList : MutableList<WorkBlurb> = workBlurbs.value!!.toMutableList()
+
             viewModelScope.launch(Dispatchers.IO) {
                 currentList.addAll(getWorkBlurbs(workFilterRequest))
                 _workBlurbs.postValue(currentList)
