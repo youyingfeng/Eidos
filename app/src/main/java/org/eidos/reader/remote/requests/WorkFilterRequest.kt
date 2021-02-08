@@ -99,7 +99,7 @@ class WorkFilterRequest(val tagName: String) {
      * These are written as vals to make it more kotlinic
      */
 
-    val includedTagsQueryString : String
+    private val includedTagsQueryString : String
         get() {
             val tagConcat = includedTags.joinToString(
                     separator = "%2C",
@@ -111,7 +111,7 @@ class WorkFilterRequest(val tagName: String) {
             return "&work_search[other_tag_names]=$tagConcat"
         }
 
-    val excludedTagsQueryString : String
+    private val excludedTagsQueryString : String
         get() {
             val tagConcat = excludedTags.joinToString(
                     separator = "%2C",
@@ -123,7 +123,7 @@ class WorkFilterRequest(val tagName: String) {
             return "&work_search[excluded_tag_names]=$tagConcat"
         }
 
-    val showSingleChapterWorksOnlyQueryString : String
+    private val showSingleChapterWorksOnlyQueryString : String
         get() {
             if (showSingleChapterWorksOnly) {
                 return "&work_search[single_chapter]=1"
@@ -132,7 +132,7 @@ class WorkFilterRequest(val tagName: String) {
             }
         }
 
-    val ratingsQueryString : String
+    private val ratingsQueryString : String
         get() {
             var tempRatingsQueryString = ""
 
@@ -159,7 +159,7 @@ class WorkFilterRequest(val tagName: String) {
             return tempRatingsQueryString
         }
 
-    val warningsQueryString : String
+    private val warningsQueryString : String
         get() {
             /**
              * Chose No Warnings    14
@@ -225,7 +225,7 @@ class WorkFilterRequest(val tagName: String) {
             return tempWarningsQueryString
         }
 
-    val crossoversQueryString : String
+    private val crossoversQueryString : String
         get() {
             if (showCrossovers xor showNonCrossovers) {
                 return "&work_search[crossover]=${if (showCrossovers) "T" else "F"}"
@@ -234,7 +234,7 @@ class WorkFilterRequest(val tagName: String) {
             }
         }
 
-    val completionStatusQueryString : String
+    private val completionStatusQueryString : String
         get() {
             if (showCompletedWorks xor showIncompleteWorks) {
                 return "&work_search[complete]=${if (showCompletedWorks) "T" else "F"}"
@@ -243,7 +243,7 @@ class WorkFilterRequest(val tagName: String) {
             }
         }
 
-    val hitsRangeQueryString : String
+    private val hitsRangeQueryString : String
         get() {
             if (hitsRange.first == 0 && hitsRange.second == 0 ||
                     hitsRange.first < 0 ||
@@ -255,12 +255,13 @@ class WorkFilterRequest(val tagName: String) {
                 return "&work_search[hits]=<$hitsRange.second"
             } else if (hitsRange.second == 0) {
                 return "&work_search[hits]=>$hitsRange.first"
-            } else {
-                return "&work_search[hits]=$hitsRange.first-$hitsRange.second"
             }
+
+            return "&work_search[hits]=$hitsRange.first-$hitsRange.second"
+
         }
 
-    val kudosRangeQueryString : String
+    private val kudosRangeQueryString : String
         get() {
             if (kudosRange.first == 0 && kudosRange.second == 0) {
                 return ""
@@ -270,12 +271,14 @@ class WorkFilterRequest(val tagName: String) {
                 return "&work_search[kudos_count]=<$kudosRange.second"
             } else if (kudosRange.second == 0) {
                 return "&work_search[kudos_count]=>$kudosRange.first"
-            } else {
-                return "&work_search[kudos_count]=$kudosRange.first-$kudosRange.second"
             }
+
+            return "&work_search[kudos_count]=$kudosRange.first-$kudosRange.second"
+
         }
 
-    val commentsRangeQueryString : String
+    private val commentsRangeQueryString : String
+        // TODO: should I add happy path to the if conditions explicitly?
         get() {
             if (commentsRange.first == 0 && commentsRange.second == 0) {
                 return ""
@@ -285,12 +288,13 @@ class WorkFilterRequest(val tagName: String) {
                 return "&work_search[comments_count]=<$commentsRange.second"
             } else if (commentsRange.second == 0) {
                 return "&work_search[comments_count]=>$commentsRange.first"
-            } else {
-                return "&work_search[comments_count]=$commentsRange.first-$commentsRange.second"
             }
+
+            return "&work_search[comments_count]=$commentsRange.first-$commentsRange.second"
+
         }
 
-    val bookmarksRangeQueryString : String
+    private val bookmarksRangeQueryString : String
         get() {
             if (bookmarksRange.first == 0 && bookmarksRange.second == 0) {
                 return ""
@@ -300,22 +304,21 @@ class WorkFilterRequest(val tagName: String) {
                 return "&work_search[bookmarks_count]=<$bookmarksRange.second"
             } else if (bookmarksRange.second == 0) {
                 return "&work_search[bookmarks_count]=>$bookmarksRange.first"
-            } else {
-                return "&work_search[bookmarks_count]=$bookmarksRange.first-$bookmarksRange.second"
             }
+
+            return "&work_search[bookmarks_count]=$bookmarksRange.first-$bookmarksRange.second"
         }
 
-    val wordCountRangeQueryString : String
+    private val wordCountRangeQueryString : String
         get() {
             if (wordCountRange.first <= 0 && wordCountRange.second <= 0) {
                 return ""
-            } else {
-                return "&work_search[words_from]=$wordCountRange.first" +
-                        "&work_search[words_to]=$wordCountRange.second"
             }
+            return "&work_search[words_from]=$wordCountRange.first" +
+                    "&work_search[words_to]=$wordCountRange.second"
         }
 
-    val dateUpdatedRangeQueryString : String
+    private val dateUpdatedRangeQueryString : String
         get() {
             if (dateUpdatedRange.first.isEmpty() || dateUpdatedRange.second.isEmpty()) {
                 return ""
@@ -324,22 +327,31 @@ class WorkFilterRequest(val tagName: String) {
             } else if (dateUpdatedRange.first.isEmpty()) {
                 return "&work_search[date_to]=$dateUpdatedRange.second"
                 // FIXME: find a new class to handle dates
-            } else {
-                return "&work_search[date_from]=$dateUpdatedRange.first&work_search[date_to]=$dateUpdatedRange.second"
             }
+
+            return "&work_search[date_from]=$dateUpdatedRange.first&work_search[date_to]=$dateUpdatedRange.second"
         }
 
-    val languageQueryString : String
+    private val searchTermQueryString : String
+        get() {
+            if (searchTerm.isEmpty()) {
+                return ""
+            }
+
+            return "&work_search[query]=$searchTerm"
+        }
+
+    private val languageQueryString : String
         get() {
             return "&work_search[language_id]="
         }
 
-    val sortOrderQueryString : String
+    private val sortOrderQueryString : String
         get() {
             return "&work_search[sort_column]=revised_at"
         }
 
-    val pageNumberQueryString : String
+    private val pageNumberQueryString : String
         get() {
             return "&page=$pageNumber"
         }

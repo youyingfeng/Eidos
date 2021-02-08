@@ -5,14 +5,17 @@ import android.os.CountDownTimer
 import android.text.Editable
 import android.text.TextUtils
 import android.text.TextWatcher
-import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.TextView
+import androidx.core.view.children
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.navigation.NavController
+import androidx.navigation.fragment.findNavController
 import com.google.android.flexbox.FlexboxLayout
 import com.google.android.material.chip.Chip
 import org.eidos.reader.databinding.FormWorkFilterBinding
@@ -24,7 +27,8 @@ import timber.log.Timber
 class WorkListFilterFragment : DialogFragment() {
 
     // by viewModels kotlin delegate is basically a lazy initialiser
-    private val viewModel : WorkListViewModel by viewModels({requireParentFragment()})
+    // FIXME: cannot create instance of VM
+    private val viewModel : WorkListViewModel by activityViewModels()
     private val workListFilterViewModel : WorkListFilterViewModel by viewModels()
     /* The AutocompleteViewModel is meant to provide autocomplete livedata only */
 
@@ -100,8 +104,6 @@ class WorkListFilterFragment : DialogFragment() {
             }
         }
 
-
-
         // fetch results when user stops typing
         binding.includeTagsInputET.afterTextChangedDelayed { inputString ->
             if (inputString.isNotBlank()) {
@@ -125,12 +127,118 @@ class WorkListFilterFragment : DialogFragment() {
             excludeTagsAutocompleteAdapter.data = resultsList
         })
 
+        // bind buttons to functions
+        binding.buttonSubmit.setOnClickListener {
+            submitSelections()
+//            findNavController().navigateUp()
+            findNavController().popBackStack()
+        }
+
+        // load the state of the filter based on the state of the workfilterrequest
+        loadFilterState()
+
         return binding.root
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
+        hideKeyboard()
         _binding = null
+    }
+
+    fun loadFilterState() {
+        viewModel.workFilterRequest.includedTags.forEach { tag ->
+            binding.includeTagsFL.addChip(tag)
+        }
+
+        viewModel.workFilterRequest.excludedTags.forEach { tag ->
+            binding.excludeTagsFL.addChip(tag)
+        }
+
+        binding.showRatingGeneralAudiencesCB.isChecked = viewModel.workFilterRequest.showRatingGeneral
+        binding.showRatingTeenAndUpAudiencesCB.isChecked = viewModel.workFilterRequest.showRatingTeen
+        binding.showRatingMatureCB.isChecked = viewModel.workFilterRequest.showRatingMature
+        binding.showRatingExplicitCB.isChecked = viewModel.workFilterRequest.showRatingExplicit
+        binding.showRatingNotRatedCB.isChecked = viewModel.workFilterRequest.showRatingNotRated
+
+        binding.showWarningNoArchiveWarningsApplyCB.isChecked = viewModel.workFilterRequest.showWarningNone
+        binding.showWarningGraphicViolenceCB.isChecked = viewModel.workFilterRequest.showWarningViolence
+        binding.showWarningMajorCharacterDeathCB.isChecked = viewModel.workFilterRequest.showWarningCharacterDeath
+        binding.showWarningUnderageCB.isChecked = viewModel.workFilterRequest.showWarningUnderage
+        binding.showWarningRapeCB.isChecked = viewModel.workFilterRequest.showWarningRape
+        binding.showWarningCreatorChoseNoWarningsCB.isChecked = viewModel.workFilterRequest.showWarningChoseNoWarnings
+        binding.searchContainsAllWarningsRB.isChecked = viewModel.workFilterRequest.mustContainAllWarnings
+
+        binding.showCategoryGenCB.isChecked = viewModel.workFilterRequest.showCategoryGen
+        binding.showCategoryFMCB.isChecked = viewModel.workFilterRequest.showCategoryFM
+        binding.showCategoryFFCB.isChecked = viewModel.workFilterRequest.showCategoryFF
+        binding.showCategoryMMCB.isChecked = viewModel.workFilterRequest.showCategoryMM
+        binding.showCategoryMultiCB.isChecked = viewModel.workFilterRequest.showCategoryMulti
+        binding.showCategoryOtherCB.isChecked = viewModel.workFilterRequest.showCategoryOther
+
+//                showSingleChapterWorksOnly = false,
+        binding.showCrossoversCB.isChecked = viewModel.workFilterRequest.showCrossovers
+        binding.showNonCrossoversCB.isChecked = viewModel.workFilterRequest.showNonCrossovers
+        binding.showCompletedWorksCB.isChecked = viewModel.workFilterRequest.showCompletedWorks
+        binding.showIncompleteWorksCB.isChecked = viewModel.workFilterRequest.showIncompleteWorks
+    }
+
+    fun submitSelections() {
+        val includedTags: List<String> = binding.includeTagsFL.children
+                .filter { view -> view is Chip }
+                .map { view -> (view as Chip).text.toString() }
+                .toList()
+
+        val excludedTags: List<String> = binding.excludeTagsFL.children
+                .filter { view -> view is Chip }
+                .map { view -> (view as Chip).text.toString() }
+                .toList()
+
+        print(excludedTags)
+
+        viewModel.updateWorkFilter(
+                // TODO: fill this shit in
+                includedTags = includedTags,
+                excludedTags = excludedTags,
+                showRatingGeneral = binding.showRatingGeneralAudiencesCB.isChecked,
+                showRatingTeen = binding.showRatingTeenAndUpAudiencesCB.isChecked,
+                showRatingMature = binding.showRatingMatureCB.isChecked,
+                showRatingExplicit = binding.showRatingExplicitCB.isChecked,
+                showRatingNotRated = binding.showRatingNotRatedCB.isChecked,
+        
+                showWarningNone = binding.showWarningNoArchiveWarningsApplyCB.isChecked,
+                showWarningViolence = binding.showWarningGraphicViolenceCB.isChecked,
+                showWarningCharacterDeath = binding.showWarningMajorCharacterDeathCB.isChecked,
+                showWarningUnderage = binding.showWarningUnderageCB.isChecked,
+                showWarningRape = binding.showWarningRapeCB.isChecked,
+                showWarningChoseNoWarnings = binding.showWarningCreatorChoseNoWarningsCB.isChecked,
+                mustContainAllWarnings = binding.searchContainsAllWarningsRB.isChecked,
+        
+                showCategoryGen = binding.showCategoryGenCB.isChecked,
+                showCategoryFM = binding.showCategoryFMCB.isChecked,
+                showCategoryFF = binding.showCategoryFFCB.isChecked,
+                showCategoryMM = binding.showCategoryMMCB.isChecked,
+                showCategoryMulti = binding.showCategoryMultiCB.isChecked,
+                showCategoryOther = binding.showCategoryOtherCB.isChecked,
+        
+//                showSingleChapterWorksOnly = false,
+                showCrossovers = binding.showCrossoversCB.isChecked,
+                showNonCrossovers = binding.showNonCrossoversCB.isChecked,
+                showCompletedWorks = binding.showCompletedWorksCB.isChecked,
+                showIncompleteWorks = binding.showIncompleteWorksCB.isChecked,
+        
+//                hitsRange = Pair(0, 0),
+//                kudosRange = Pair(0, 0),
+//                commentsRange = Pair(0, 0),
+//                bookmarksRange = Pair(0, 0),
+//                wordCountRange = Pair(0, 0),
+//                dateUpdatedRange = Pair("", ""),
+        
+//                searchTerm = "",
+//                language = "",
+//                sortOrder = "",
+                pageNumber = 1
+        )
     }
 
     fun FlexboxLayout.addChip(chipText: String) {

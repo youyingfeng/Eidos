@@ -3,7 +3,9 @@ package org.eidos.reader.ui.worklist
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.view.*
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
@@ -41,7 +43,9 @@ class WorkListFragment : Fragment() {
         setActivityTitle(tagName)
 
         viewModelFactory = WorkListViewModelFactory(workFilterRequest)
-        viewModel = ViewModelProvider(this, viewModelFactory).get(WorkListViewModel::class.java)
+        // scope this to the activity to enable sharing of data
+        viewModel = ViewModelProvider(activity as AppCompatActivity, viewModelFactory).get(WorkListViewModel::class.java)
+//        viewModel : WorkListViewModel by activityViewModels<>()
 
         // inflates the root
         _binding = FragmentWorkListBinding.inflate(inflater, container, false)

@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.eidos.reader.remote.requests.FandomAutocompleteRequest
+import org.eidos.reader.remote.requests.TagAutocompleteRequest
 import org.eidos.reader.repository.EidosRepository
 
 class WorkListFilterViewModel : ViewModel() {
@@ -68,7 +69,7 @@ class WorkListFilterViewModel : ViewModel() {
     }
 
     private suspend fun getAutocompleteResults(searchInput: String) : List<String> {
-        val autocompleteRequest = FandomAutocompleteRequest(searchInput)
+        val autocompleteRequest = TagAutocompleteRequest(searchInput)
         return EidosRepository.getAutocompleteResultsFromAO3(autocompleteRequest)
     }
 }
