@@ -6,14 +6,14 @@
     android:layout_height="match_parent"
     android:clipToPadding="true"
     android:orientation="vertical"
-    android:paddingBottom="16dp">
+    android:paddingBottom="@dimen/space_medium_16dp">
 
 
     <TableLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginStart="@dimen/space_medium_16dp"
+        android:layout_marginEnd="@dimen/space_medium_16dp"
         android:orientation="vertical">
 
         <TextView
@@ -38,7 +38,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_marginStart="16dp"
+                android:layout_marginStart="@dimen/space_medium_16dp"
                 android:layout_weight="1"
                 app:alignContent="space_around"
                 app:alignItems="stretch"
@@ -84,7 +84,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_marginStart="16dp"
+                android:layout_marginStart="@dimen/space_medium_16dp"
                 android:layout_weight="1"
                 app:alignContent="space_around"
                 app:alignItems="stretch"
@@ -122,7 +122,7 @@
             android:id="@+id/showRatingGeneralAudiencesCB"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="@dimen/space_medium_16dp"
             android:checked="true"
             android:text="General Audiences" />
 
@@ -130,7 +130,7 @@
             android:id="@+id/showRatingTeenAndUpAudiencesCB"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="@dimen/space_medium_16dp"
             android:checked="true"
             android:text="Teen And Up Audiences" />
 
@@ -138,7 +138,7 @@
             android:id="@+id/showRatingMatureCB"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="@dimen/space_medium_16dp"
             android:checked="true"
             android:text="Mature" />
 
@@ -146,7 +146,7 @@
             android:id="@+id/showRatingExplicitCB"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="@dimen/space_medium_16dp"
             android:checked="true"
             android:text="Explicit" />
 
@@ -154,7 +154,7 @@
             android:id="@+id/showRatingNotRatedCB"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="@dimen/space_medium_16dp"
             android:checked="true"
             android:text="Not Rated" />
 
@@ -167,7 +167,7 @@
             android:id="@+id/showWarningNoArchiveWarningsApplyCB"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="@dimen/space_medium_16dp"
             android:checked="true"
             android:text="No Archive Warnings Apply" />
 
@@ -175,7 +175,7 @@
             android:id="@+id/showWarningGraphicViolenceCB"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="@dimen/space_medium_16dp"
             android:checked="true"
             android:text="Graphic Depictions Of Violence" />
 
@@ -183,7 +183,7 @@
             android:id="@+id/showWarningMajorCharacterDeathCB"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="@dimen/space_medium_16dp"
             android:checked="true"
             android:text="Major Character Death" />
 
@@ -191,7 +191,7 @@
             android:id="@+id/showWarningUnderageCB"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="@dimen/space_medium_16dp"
             android:checked="true"
             android:text="Underage" />
 
@@ -199,7 +199,7 @@
             android:id="@+id/showWarningRapeCB"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="@dimen/space_medium_16dp"
             android:checked="true"
             android:text="Rape/Non-Con" />
 
@@ -207,7 +207,7 @@
             android:id="@+id/showWarningCreatorChoseNoWarningsCB"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="@dimen/space_medium_16dp"
             android:checked="true"
             android:text="Creator Chose Not To Use Archive Warnings" />
 
@@ -238,7 +238,7 @@
             android:id="@+id/showCategoryGenCB"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="@dimen/space_medium_16dp"
             android:checked="true"
             android:text="Gen" />
 
@@ -246,7 +246,7 @@
             android:id="@+id/showCategoryFMCB"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="@dimen/space_medium_16dp"
             android:checked="true"
             android:text="F/M" />
 
@@ -254,7 +254,7 @@
             android:id="@+id/showCategoryMMCB"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="@dimen/space_medium_16dp"
             android:checked="true"
             android:text="M/M" />
 
@@ -262,7 +262,7 @@
             android:id="@+id/showCategoryFFCB"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="@dimen/space_medium_16dp"
             android:checked="true"
             android:text="F/F" />
 
@@ -270,7 +270,7 @@
             android:id="@+id/showCategoryMultiCB"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="@dimen/space_medium_16dp"
             android:checked="true"
             android:text="Multi" />
 
@@ -278,7 +278,7 @@
             android:id="@+id/showCategoryOtherCB"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="@dimen/space_medium_16dp"
             android:checked="true"
             android:text="Other" />
 
@@ -291,7 +291,7 @@
             android:id="@+id/showCrossoversCB"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="@dimen/space_medium_16dp"
             android:checked="true"
             android:text="Show crossovers" />
 
@@ -299,7 +299,7 @@
             android:id="@+id/showNonCrossoversCB"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="@dimen/space_medium_16dp"
             android:checked="true"
             android:text="Show non-crossovers" />
 
@@ -312,7 +312,7 @@
             android:id="@+id/showCompletedWorksCB"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="@dimen/space_medium_16dp"
             android:checked="true"
             android:text="Show completed works" />
 
@@ -320,7 +320,7 @@
             android:id="@+id/showIncompleteWorksCB"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="@dimen/space_medium_16dp"
             android:checked="true"
             android:text="Show incomplete works" />
 

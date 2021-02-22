@@ -16,13 +16,13 @@
             android:id="@+id/workBody"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="24sp"
+            android:padding="@dimen/space_large_24dp"
             android:scrollbarStyle="outsideInset" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="16dp">
+            android:padding="@dimen/space_medium_16dp">
 
             <Button
                 android:id="@+id/previousChapterButton"

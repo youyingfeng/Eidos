@@ -5,16 +5,16 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginStart="14dp"
-    android:layout_marginTop="8dp"
+    android:layout_marginTop="@dimen/space_small_8dp"
     android:layout_marginEnd="14dp"
-    android:layout_marginBottom="8dp"
-    app:cardCornerRadius="8dp"
+    android:layout_marginBottom="@dimen/space_small_8dp"
+    app:cardCornerRadius="@dimen/space_small_8dp"
     app:cardElevation="4dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="24sp">
+        android:padding="@dimen/space_large_24dp">
 
         <TextView
             android:id="@+id/workTitle"
@@ -22,7 +22,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="4dp"
             android:fontFamily="sans-serif-condensed"
-            android:text="How To Coexist"
+            android:text="Error retrieving work"
             android:textSize="24sp"
             app:layout_constrainedWidth="true"
             app:layout_constraintEnd_toStartOf="@+id/workDateUpdated"
@@ -34,7 +34,7 @@
             android:id="@+id/workDateUpdated"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="@dimen/space_small_8dp"
             android:layout_weight="1"
             android:drawableStart="@drawable/ic_card_date_updated_16"
             android:drawablePadding="4dp"
@@ -45,8 +45,8 @@
             android:id="@+id/workAuthors"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="spoilerarlert"
+            android:layout_marginTop="@dimen/space_small_8dp"
+            android:text="There was an error retrieving this work from AO3."
             app:layout_constraintStart_toStartOf="@+id/workTitle"
             app:layout_constraintTop_toBottomOf="@+id/workTitle" />
 
@@ -54,10 +54,10 @@
             android:id="@+id/workLanguage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="@dimen/space_medium_16dp"
             android:layout_weight="1"
             android:drawableStart="@drawable/ic_card_language_16"
-            android:drawablePadding="8dp"
+            android:drawablePadding="@dimen/space_small_8dp"
             app:layout_constraintStart_toStartOf="@+id/workAuthors"
             app:layout_constraintTop_toBottomOf="@+id/workAuthors" />
 
@@ -65,10 +65,9 @@
             android:id="@+id/workWarnings"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="@dimen/space_small_8dp"
             android:drawableLeft="@drawable/ic_card_warnings_14"
             android:drawablePadding="10sp"
-            android:text="TextView"
             android:textSize="14sp"
             app:layout_constraintStart_toStartOf="@+id/workLanguage"
             app:layout_constraintTop_toBottomOf="@+id/workLanguage" />
@@ -77,10 +76,9 @@
             android:id="@+id/workRelationships"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="@dimen/space_small_8dp"
             android:drawableLeft="@drawable/ic_card_relationships_14"
             android:drawablePadding="10sp"
-            android:text="TextView"
             app:layout_constraintStart_toStartOf="@+id/workWarnings"
             app:layout_constraintTop_toBottomOf="@+id/workWarnings" />
 
@@ -88,10 +86,9 @@
             android:id="@+id/workCharacters"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="@dimen/space_small_8dp"
             android:drawableLeft="@drawable/ic_card_characters_24"
             android:drawablePadding="10sp"
-            android:text="Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod"
             app:layout_constraintStart_toStartOf="@+id/workRelationships"
             app:layout_constraintTop_toBottomOf="@+id/workRelationships" />
 
@@ -99,10 +96,9 @@
             android:id="@+id/workFreeforms"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="@dimen/space_small_8dp"
             android:drawableLeft="@drawable/ic_card_freeforms_14"
             android:drawablePadding="10sp"
-            android:text="TextView"
             app:layout_constraintStart_toStartOf="@+id/workCharacters"
             app:layout_constraintTop_toBottomOf="@+id/workCharacters" />
 
@@ -110,15 +106,15 @@
             android:id="@+id/workSummary"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras ut lobortis magna. Ut commodo commodo viverra. Phasellus a elit eget purus bibendum suscipit volutpat in dolor. Phasellus at nulla interdum, vehicula sem id, efficitur tellus. Sed a volutpat sem, suscipit blandit justo. Quisque quis libero feugiat, dictum dui quis, pulvinar tortor. Aliquam eget gravida nulla. Interdum et malesuada fames ac ante ipsum primis in faucibus. Morbi consectetur dictum eros. Nulla eu semper nunc. Quisque viverra neque non felis faucibus, id dictum quam finibus.  Ut eget quam lacinia, viverra massa id, dignissim orci. Integer quis enim at nunc vulputate iaculis eget a est. Duis sagittis libero tortor, a fringilla sem mollis in. Nulla semper dignissim tincidunt. Proin a leo faucibus odio laoreet fermentum. Vestibulum ultricies, sapien et luctus placerat, sapien augue tincidunt neque, a egestas metus ante et quam. Phasellus ultrices vitae justo eget pharetra.  Aliquam nec tellus gravida, posuere justo vitae, aliquet turpis. Mauris vehicula a libero a auctor. Curabitur id tristique libero. Nullam porttitor arcu magna, eu porttitor diam tempor id. Nam dictum eget elit id pretium. Mauris tincidunt tempor magna laoreet dictum. Fusce hendrerit mauris nunc. "
+            android:layout_marginTop="@dimen/space_medium_16dp"
+            android:text="A possible cause of this error is a bad internet connection. Please check your connection and try again."
             app:layout_constraintStart_toStartOf="@+id/workFreeforms"
             app:layout_constraintTop_toBottomOf="@+id/workFreeforms" />
 
         <TableLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="@dimen/space_medium_16dp"
             android:stretchColumns="*"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
