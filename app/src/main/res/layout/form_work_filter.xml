@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -28,6 +28,7 @@
 
             <TextView
                 android:id="@+id/includeTagsSectionHeaderTV"
+                style="@style/body_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="top|left"
@@ -74,6 +75,7 @@
 
             <TextView
                 android:id="@+id/excludeTagsSectionHeaderTV"
+                style="@style/body_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="top|left"
@@ -114,12 +116,14 @@
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
         <TextView
+            style="@style/body_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Ratings" />
 
         <com.google.android.material.checkbox.MaterialCheckBox
             android:id="@+id/showRatingGeneralAudiencesCB"
+            style="@style/body_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/space_medium_16dp"
@@ -128,6 +132,7 @@
 
         <com.google.android.material.checkbox.MaterialCheckBox
             android:id="@+id/showRatingTeenAndUpAudiencesCB"
+            style="@style/body_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/space_medium_16dp"
@@ -136,6 +141,7 @@
 
         <com.google.android.material.checkbox.MaterialCheckBox
             android:id="@+id/showRatingMatureCB"
+            style="@style/body_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/space_medium_16dp"
@@ -144,6 +150,7 @@
 
         <com.google.android.material.checkbox.MaterialCheckBox
             android:id="@+id/showRatingExplicitCB"
+            style="@style/body_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/space_medium_16dp"
@@ -152,6 +159,7 @@
 
         <com.google.android.material.checkbox.MaterialCheckBox
             android:id="@+id/showRatingNotRatedCB"
+            style="@style/body_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/space_medium_16dp"
@@ -159,12 +167,14 @@
             android:text="Not Rated" />
 
         <TextView
+            style="@style/body_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Warnings" />
 
         <com.google.android.material.checkbox.MaterialCheckBox
             android:id="@+id/showWarningNoArchiveWarningsApplyCB"
+            style="@style/body_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/space_medium_16dp"
@@ -173,6 +183,7 @@
 
         <com.google.android.material.checkbox.MaterialCheckBox
             android:id="@+id/showWarningGraphicViolenceCB"
+            style="@style/body_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/space_medium_16dp"
@@ -181,6 +192,7 @@
 
         <com.google.android.material.checkbox.MaterialCheckBox
             android:id="@+id/showWarningMajorCharacterDeathCB"
+            style="@style/body_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/space_medium_16dp"
@@ -189,6 +201,7 @@
 
         <com.google.android.material.checkbox.MaterialCheckBox
             android:id="@+id/showWarningUnderageCB"
+            style="@style/body_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/space_medium_16dp"
@@ -197,6 +210,7 @@
 
         <com.google.android.material.checkbox.MaterialCheckBox
             android:id="@+id/showWarningRapeCB"
+            style="@style/body_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/space_medium_16dp"
@@ -205,6 +219,7 @@
 
         <com.google.android.material.checkbox.MaterialCheckBox
             android:id="@+id/showWarningCreatorChoseNoWarningsCB"
+            style="@style/body_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/space_medium_16dp"
@@ -218,24 +233,28 @@
 
             <RadioButton
                 android:id="@+id/searchContainsAllWarningsRB"
+                style="@style/body_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Works must contain all selected warnings" />
 
             <RadioButton
                 android:id="@+id/searchContainsAnyWarningsRB"
+                style="@style/body_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Works can contain any selected warning" />
         </RadioGroup>
 
         <TextView
+            style="@style/body_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Categories" />
 
         <com.google.android.material.checkbox.MaterialCheckBox
             android:id="@+id/showCategoryGenCB"
+            style="@style/body_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/space_medium_16dp"
@@ -244,6 +263,7 @@
 
         <com.google.android.material.checkbox.MaterialCheckBox
             android:id="@+id/showCategoryFMCB"
+            style="@style/body_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/space_medium_16dp"
@@ -252,6 +272,7 @@
 
         <com.google.android.material.checkbox.MaterialCheckBox
             android:id="@+id/showCategoryMMCB"
+            style="@style/body_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/space_medium_16dp"
@@ -260,6 +281,7 @@
 
         <com.google.android.material.checkbox.MaterialCheckBox
             android:id="@+id/showCategoryFFCB"
+            style="@style/body_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/space_medium_16dp"
@@ -268,6 +290,7 @@
 
         <com.google.android.material.checkbox.MaterialCheckBox
             android:id="@+id/showCategoryMultiCB"
+            style="@style/body_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/space_medium_16dp"
@@ -276,6 +299,7 @@
 
         <com.google.android.material.checkbox.MaterialCheckBox
             android:id="@+id/showCategoryOtherCB"
+            style="@style/body_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/space_medium_16dp"
@@ -283,12 +307,14 @@
             android:text="Other" />
 
         <TextView
+            style="@style/body_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Crossovers" />
 
         <com.google.android.material.checkbox.MaterialCheckBox
             android:id="@+id/showCrossoversCB"
+            style="@style/body_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/space_medium_16dp"
@@ -297,6 +323,7 @@
 
         <com.google.android.material.checkbox.MaterialCheckBox
             android:id="@+id/showNonCrossoversCB"
+            style="@style/body_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/space_medium_16dp"
@@ -304,12 +331,14 @@
             android:text="Show non-crossovers" />
 
         <TextView
+            style="@style/body_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Completion Status" />
 
         <com.google.android.material.checkbox.MaterialCheckBox
             android:id="@+id/showCompletedWorksCB"
+            style="@style/body_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/space_medium_16dp"
@@ -318,6 +347,7 @@
 
         <com.google.android.material.checkbox.MaterialCheckBox
             android:id="@+id/showIncompleteWorksCB"
+            style="@style/body_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/space_medium_16dp"
@@ -325,16 +355,19 @@
             android:text="Show incomplete works" />
 
         <TextView
+            style="@style/body_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Word Count" />
 
         <TextView
+            style="@style/body_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Date Updated" />
 
         <TextView
+            style="@style/body_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Search within results" />
@@ -350,10 +383,11 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal" >
+            android:orientation="horizontal">
 
             <Button
                 android:id="@+id/buttonReset"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -368,4 +402,4 @@
         </LinearLayout>
 
     </TableLayout>
-</ScrollView>
+</androidx.core.widget.NestedScrollView>
