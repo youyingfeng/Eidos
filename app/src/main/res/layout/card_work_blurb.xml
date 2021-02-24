@@ -65,15 +65,14 @@
 
         <TextView
             android:id="@+id/workWarnings"
+            style="@style/body_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/space_small_8dp"
             android:drawableLeft="@drawable/ic_card_warnings_14"
             android:drawablePadding="10sp"
-            android:textSize="14sp"
             app:layout_constraintStart_toStartOf="@+id/workLanguage"
-            app:layout_constraintTop_toBottomOf="@+id/workLanguage"
-            style="@style/body_text" />
+            app:layout_constraintTop_toBottomOf="@+id/workLanguage" />
 
         <TextView
             android:id="@+id/workRelationships"
@@ -118,83 +117,93 @@
             app:layout_constraintTop_toBottomOf="@+id/workFreeforms"
             style="@style/body_text" />
 
-        <TableLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/space_medium_16dp"
-            android:stretchColumns="*"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/workSummary">
+            android:layout_marginTop="16dp"
+            android:gravity="center_vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/workSummary"
+            tools:layout_editor_absoluteX="24dp">
 
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/ic_card_word_count_16" />
 
-                <TextView
-                    android:id="@+id/workWordCount"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:drawableStart="@drawable/ic_card_word_count_16"
-                    android:drawablePadding="6dp"
-                    style="@style/body_text" />
+            <TextView
+                android:id="@+id/workWordCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="14sp" />
 
-                <TextView
-                    android:id="@+id/workChapters"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:drawableStart="@drawable/ic_card_chapters_16"
-                    android:drawablePadding="6dp"
-                    style="@style/body_text" />
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/ic_card_chapters_16" />
 
-                <TextView
-                    android:id="@+id/workKudos"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:drawableStart="@drawable/ic_card_kudos_16"
-                    android:drawablePadding="6dp"
-                    style="@style/body_text" />
+            <TextView
+                android:id="@+id/workChapters"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="14sp" />
 
-                <TextView
-                    android:id="@+id/workComments"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:drawableStart="@drawable/ic_card_comments_16"
-                    android:drawablePadding="6dp"
-                    style="@style/body_text" />
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/ic_card_kudos_16" />
 
-                <TextView
-                    android:id="@+id/workBookmarks"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:drawableStart="@drawable/ic_card_bookmarks_16"
-                    android:drawablePadding="6dp"
-                    style="@style/body_text" />
+            <TextView
+                android:id="@+id/workKudos"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="14sp" />
 
-                <TextView
-                    android:id="@+id/workHits"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:drawableStart="@drawable/ic_card_hits_16"
-                    android:drawablePadding="6dp"
-                    style="@style/body_text" />
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/ic_card_comments_16" />
 
-            </TableRow>
+            <TextView
+                android:id="@+id/workComments"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="14sp" />
 
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/ic_card_bookmarks_16" />
 
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+            <TextView
+                android:id="@+id/workBookmarks"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="14sp" />
 
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-        </TableLayout>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/ic_card_hits_16" />
+
+            <TextView
+                android:id="@+id/workHits"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="14sp" />
+
+        </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>
