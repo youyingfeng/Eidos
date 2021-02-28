@@ -3,4 +3,5 @@
     <dimen name="space_large_24dp">24dp</dimen>
     <dimen name="space_small_8dp">8dp</dimen>
     <dimen name="space_medium_16dp">16dp</dimen>
+    <dimen name="space_extra_small_4dp">4dp</dimen>
 </resources>

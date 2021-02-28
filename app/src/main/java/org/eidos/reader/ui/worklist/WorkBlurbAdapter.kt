@@ -51,25 +51,29 @@ class WorkBlurbAdapter(private val onClickAction: (View, WorkBlurb) -> Unit) : R
             Timber.i("WorkBlurb bound!")
             binding.workTitle.text = item.title
             binding.workAuthors.text = item.authors
-                    .fold(StringBuilder()) { acc, next -> acc.append(next).append(", ") }
-                    .removeSuffix(", ")
+                    .fold(StringBuilder()) { acc, next -> acc.append(next).append(" · ") }
+                    .removeSuffix(" · ")
                     .toString()
-
+            binding.workRating.text = item.rating
+            binding.workCategories.text = item.categories
+                    .fold(StringBuilder()) { acc, next -> acc.append(next).append(" · ")}
+                    .removeSuffix(" · ")
+                    .toString()
             binding.workWarnings.text = item.warnings
-                    .fold(StringBuilder()) { acc, next -> acc.append(next).append(", ") }
-                    .removeSuffix(", ")
+                    .fold(StringBuilder()) { acc, next -> acc.append(next).append(" · ") }
+                    .removeSuffix(" · ")
                     .toString()
             binding.workRelationships.text = item.relationships
-                    .fold(StringBuilder()) { acc, next -> acc.append(next).append(", ") }
-                    .removeSuffix(", ")
+                    .fold(StringBuilder()) { acc, next -> acc.append(next).append(" · ") }
+                    .removeSuffix(" · ")
                     .toString()
             binding.workCharacters.text = item.characters
-                    .fold(StringBuilder()) { acc, next -> acc.append(next).append(", ") }
-                    .removeSuffix(", ")
+                    .fold(StringBuilder()) { acc, next -> acc.append(next).append(" · ") }
+                    .removeSuffix(" · ")
                     .toString()
             binding.workFreeforms.text = item.freeforms
-                    .fold(StringBuilder()) { acc, next -> acc.append(next).append(", ") }
-                    .removeSuffix(", ")
+                    .fold(StringBuilder()) { acc, next -> acc.append(next).append(" · ") }
+                    .removeSuffix(" · ")
                     .toString()
 
             binding.workSummary.text = HtmlCompat.fromHtml(item.summary, HtmlCompat.FROM_HTML_MODE_LEGACY)

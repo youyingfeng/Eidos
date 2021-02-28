@@ -18,50 +18,98 @@
 
         <TextView
             android:id="@+id/workTitle"
+            style="@style/heading_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="4dp"
+            android:layout_marginEnd="@dimen/space_extra_small_4dp"
             android:text="Error retrieving work"
             app:layout_constrainedWidth="true"
-            app:layout_constraintEnd_toStartOf="@+id/workDateUpdated"
+            app:layout_constraintEnd_toStartOf="@+id/dateUpdatedLL"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            style="@style/heading_text" />
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/workDateUpdated"
+        <LinearLayout
+            android:id="@+id/dateUpdatedLL"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/space_small_8dp"
-            android:layout_weight="1"
-            android:drawableStart="@drawable/ic_card_date_updated_16"
-            android:drawablePadding="4dp"
+            android:layout_marginTop="@dimen/space_extra_small_4dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/workTitle"
-            style="@style/body_text" />
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:paddingEnd="@dimen/space_extra_small_4dp"
+                app:srcCompat="@drawable/ic_card_date_updated_16" />
+
+            <TextView
+                android:id="@+id/workDateUpdated"
+                style="@style/body_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+        </LinearLayout>
 
         <TextView
             android:id="@+id/workAuthors"
+            style="@style/body_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/space_small_8dp"
             android:text="There was an error retrieving this work from AO3."
             app:layout_constraintStart_toStartOf="@+id/workTitle"
-            app:layout_constraintTop_toBottomOf="@+id/workTitle"
-            style="@style/body_text" />
+            app:layout_constraintTop_toBottomOf="@+id/workTitle" />
+
+        <LinearLayout
+            android:id="@+id/ratingsCategoriesLL"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/space_extra_small_4dp"
+            android:orientation="horizontal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/workAuthors">
+
+            <TextView
+                android:id="@+id/workRating"
+                style="@style/body_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Teen And Up Audiences"
+                android:textSize="14sp" />
+
+            <TextView
+                style="@style/body_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="・"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/workCategories"
+                style="@style/body_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="M/M, F/M, F/F, Multi, Other"
+                android:textSize="14sp" />
+        </LinearLayout>
 
         <TextView
             android:id="@+id/workLanguage"
+            style="@style/body_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/space_medium_16dp"
             android:layout_weight="1"
             android:drawableStart="@drawable/ic_card_language_16"
             android:drawablePadding="@dimen/space_small_8dp"
-            app:layout_constraintStart_toStartOf="@+id/workAuthors"
-            app:layout_constraintTop_toBottomOf="@+id/workAuthors"
-            style="@style/body_text" />
+            app:layout_constraintStart_toStartOf="@+id/ratingsCategoriesLL"
+            app:layout_constraintTop_toBottomOf="@+id/ratingsCategoriesLL" />
 
         <TextView
             android:id="@+id/workWarnings"
@@ -76,48 +124,49 @@
 
         <TextView
             android:id="@+id/workRelationships"
+            style="@style/body_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/space_small_8dp"
             android:drawableLeft="@drawable/ic_card_relationships_14"
             android:drawablePadding="10sp"
             app:layout_constraintStart_toStartOf="@+id/workWarnings"
-            app:layout_constraintTop_toBottomOf="@+id/workWarnings"
-            style="@style/body_text" />
+            app:layout_constraintTop_toBottomOf="@+id/workWarnings" />
 
         <TextView
             android:id="@+id/workCharacters"
+            style="@style/body_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/space_small_8dp"
             android:drawableLeft="@drawable/ic_card_characters_24"
             android:drawablePadding="10sp"
             app:layout_constraintStart_toStartOf="@+id/workRelationships"
-            app:layout_constraintTop_toBottomOf="@+id/workRelationships"
-            style="@style/body_text" />
+            app:layout_constraintTop_toBottomOf="@+id/workRelationships" />
 
         <TextView
             android:id="@+id/workFreeforms"
+            style="@style/body_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/space_small_8dp"
             android:drawableLeft="@drawable/ic_card_freeforms_14"
             android:drawablePadding="10sp"
             app:layout_constraintStart_toStartOf="@+id/workCharacters"
-            app:layout_constraintTop_toBottomOf="@+id/workCharacters"
-            style="@style/body_text" />
+            app:layout_constraintTop_toBottomOf="@+id/workCharacters" />
 
         <TextView
             android:id="@+id/workSummary"
+            style="@style/body_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/space_medium_16dp"
             android:text="A possible cause of this error is a bad internet connection. Please check your connection and try again."
             app:layout_constraintStart_toStartOf="@+id/workFreeforms"
-            app:layout_constraintTop_toBottomOf="@+id/workFreeforms"
-            style="@style/body_text" />
+            app:layout_constraintTop_toBottomOf="@+id/workFreeforms" />
 
         <LinearLayout
+            android:id="@+id/statisticsLL"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"

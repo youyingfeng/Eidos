@@ -3,17 +3,17 @@
     <font
         app:fontStyle="normal"
         app:fontWeight="400"
-        app:font="@font/ibm_plex_sans_medium" />
+        app:font="@font/atkinson_hyperlegible_regular" />
     <font
         app:fontStyle="italic"
         app:fontWeight="400"
-        app:font="@font/ibm_plex_sans_medium_italic" />
+        app:font="@font/atkinson_hyperlegible_italic" />
     <font
         app:fontStyle="normal"
         app:fontWeight="700"
-        app:font="@font/ibm_plex_sans_medium" />
+        app:font="@font/atkinson_hyperlegible_bold" />
     <font
         app:fontStyle="italic"
         app:fontWeight="700"
-        app:font="@font/ibm_plex_sans_medium_italic" />
+        app:font="@font/atkinson_hyperlegible_bolditalic" />
 </font-family>
