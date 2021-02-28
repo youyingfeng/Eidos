@@ -3,9 +3,9 @@
     <font
         app:fontStyle="normal"
         app:fontWeight="600"
-        app:font="@font/libertinus_serif_semibold" />
+        app:font="@font/besley_semibold" />
     <font
         app:fontStyle="italic"
         app:fontWeight="600"
-        app:font="@font/libertinus_serif_semibold_italic" />
+        app:font="@font/besley_semibold_italic" />
 </font-family>
