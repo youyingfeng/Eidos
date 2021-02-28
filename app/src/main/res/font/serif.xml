@@ -7,7 +7,7 @@
     <font
         app:fontStyle="italic"
         app:fontWeight="400"
-        app:font="@font/charis_sil_italic" />
+        app:font="@font/charis_sil_regular_italic" />
     <font
         app:fontStyle="normal"
         app:fontWeight="700"
@@ -15,5 +15,5 @@
     <font
         app:fontStyle="italic"
         app:fontWeight="700"
-        app:font="@font/charis_sil_italic" />
+        app:font="@font/charis_sil_regular_italic" />
 </font-family>

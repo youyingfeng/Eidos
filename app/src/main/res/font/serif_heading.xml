@@ -2,10 +2,10 @@
 <font-family xmlns:app="http://schemas.android.com/apk/res-auto">
     <font
         app:fontStyle="normal"
-        app:fontWeight="400"
-        app:font="@font/libertinus_sans_regular" />
+        app:fontWeight="600"
+        app:font="@font/libertinus_serif_semibold" />
     <font
         app:fontStyle="italic"
-        app:fontWeight="400"
-        app:font="@font/libertinus_sans_regular_italic" />
+        app:fontWeight="600"
+        app:font="@font/libertinus_serif_semibold_italic" />
 </font-family>
