@@ -18,4 +18,13 @@
     <color name="secondaryDarkColor">#8e0000</color>
     <color name="primaryTextColor">#ffffff</color>
     <color name="secondaryTextColor">#ffffff</color>
+
+    <color name="ui_text_standard">#333333</color>
+    <color name="ui_text_dark">#202020</color>
+    <color name="ui_text_light">#505050</color>
+
+    <color name="rating_gen">#469F47</color>
+    <color name="rating_teen">#B4A22B</color>
+    <color name="rating_mature">#CF6E1A</color>
+    <color name="rating_explicit">#B2220F</color>
 </resources>

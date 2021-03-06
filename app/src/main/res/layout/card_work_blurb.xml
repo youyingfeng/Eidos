@@ -16,17 +16,51 @@
         android:layout_height="match_parent"
         android:padding="@dimen/space_large_24dp">
 
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/workRatingIconBackground"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:clipChildren="true"
+            app:cardBackgroundColor="#B2220F"
+            app:cardCornerRadius="2dp"
+            app:cardElevation="4dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clipChildren="true"
+                android:gravity="center">
+
+                <TextView
+                    android:id="@+id/workRatingIcon"
+                    style="@style/body_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/libertinus_serif_semibold"
+                    android:gravity="center"
+                    android:includeFontPadding="false"
+                    android:lineSpacingExtra="0dp"
+                    android:text="F"
+                    android:textColor="#F0F0F0"
+                    android:textSize="40sp" />
+            </RelativeLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
         <TextView
             android:id="@+id/workTitle"
             style="@style/heading_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/space_extra_small_4dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="8dp"
             android:text="Error retrieving work"
             app:layout_constrainedWidth="true"
             app:layout_constraintEnd_toStartOf="@+id/dateUpdatedLL"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/workRatingIconBackground"
             app:layout_constraintTop_toTopOf="parent" />
 
         <LinearLayout
@@ -60,67 +94,44 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="There was an error retrieving this work from AO3."
+            app:layout_constrainedWidth="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/workTitle"
             app:layout_constraintTop_toBottomOf="@+id/workTitle" />
-
-        <LinearLayout
-            android:id="@+id/ratingsCategoriesLL"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginTop="@dimen/space_extra_small_4dp"
-            android:orientation="horizontal"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/workAuthors">
-
-            <TextView
-                android:id="@+id/workRating"
-                style="@style/body_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Teen And Up Audiences"
-                android:textSize="14sp" />
-
-            <TextView
-                style="@style/body_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="・"
-                android:textSize="14sp" />
-
-            <TextView
-                android:id="@+id/workCategories"
-                style="@style/body_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="M/M, F/M, F/F, Multi, Other"
-                android:textSize="14sp" />
-        </LinearLayout>
 
         <TextView
             android:id="@+id/workLanguage"
             style="@style/body_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/space_medium_16dp"
-            android:layout_weight="1"
-            android:drawableStart="@drawable/ic_card_language_16"
-            android:drawablePadding="@dimen/space_small_8dp"
-            app:layout_constraintStart_toStartOf="@+id/ratingsCategoriesLL"
-            app:layout_constraintTop_toBottomOf="@+id/ratingsCategoriesLL" />
+            android:text="English"
+            android:textColor="@color/ui_text_light"
+            app:layout_constraintStart_toStartOf="@+id/workAuthors"
+            app:layout_constraintTop_toBottomOf="@+id/workAuthors" />
 
         <TextView
             android:id="@+id/workWarnings"
             style="@style/body_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/space_small_8dp"
-            android:drawableLeft="@drawable/ic_card_warnings_14"
-            android:drawablePadding="10sp"
-            app:layout_constraintStart_toStartOf="@+id/workLanguage"
+            android:layout_marginTop="16dp"
+            android:layout_weight="1"
+            android:drawableStart="@drawable/ic_card_warnings_14"
+            android:drawablePadding="@dimen/space_small_8dp"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/workLanguage" />
+
+        <TextView
+            android:id="@+id/workCategories"
+            style="@style/body_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_small_8dp"
+            android:drawableStart="@drawable/ic_categories_18dp"
+            android:drawablePadding="10sp"
+            app:layout_constraintStart_toStartOf="@+id/workWarnings"
+            app:layout_constraintTop_toBottomOf="@+id/workWarnings" />
 
         <TextView
             android:id="@+id/workRelationships"
@@ -130,8 +141,8 @@
             android:layout_marginTop="@dimen/space_small_8dp"
             android:drawableLeft="@drawable/ic_card_relationships_14"
             android:drawablePadding="10sp"
-            app:layout_constraintStart_toStartOf="@+id/workWarnings"
-            app:layout_constraintTop_toBottomOf="@+id/workWarnings" />
+            app:layout_constraintStart_toStartOf="@+id/workCategories"
+            app:layout_constraintTop_toBottomOf="@+id/workCategories" />
 
         <TextView
             android:id="@+id/workCharacters"

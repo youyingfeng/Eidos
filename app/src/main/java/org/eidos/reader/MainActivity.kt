@@ -20,11 +20,11 @@ class MainActivity : AppCompatActivity() {
         setContentView(view)
 
         // finding the toolbar
-        val toolbar = binding.toolbar
+//        val toolbar = binding.toolbar
         val navHostFragment = supportFragmentManager
             .findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         val navController = navHostFragment.navController
-        drawerLayout = binding.drawerLayout
+//        drawerLayout = binding.drawerLayout
 
         /*
         This code sets up the tool bar with the hamburger menus and shit
@@ -50,10 +50,10 @@ class MainActivity : AppCompatActivity() {
 
         // FIXME: I don't know what the below code does, but check this code again if toolbar errors pop up.
         // taken from: https://github.com/googlecodelabs/android-navigation/blob/master/app/src/main/java/com/example/android/codelabs/navigation/MainActivity.kt
-        setSupportActionBar(toolbar)    // set the toolbar as the support action bar first
-        NavigationUI.setupActionBarWithNavController(this, navController, drawerLayout)
+//        setSupportActionBar(toolbar)    // set the toolbar as the support action bar first
+//        NavigationUI.setupActionBarWithNavController(this, navController, drawerLayout)
 
-        NavigationUI.setupWithNavController(binding.navView, navController)
+//        NavigationUI.setupWithNavController(binding.navView, navController)
     }
 
     override fun onSupportNavigateUp(): Boolean {

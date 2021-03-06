@@ -1,8 +1,10 @@
 package org.eidos.reader.ui.worklist
 
+import android.content.res.ColorStateList
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.core.text.HtmlCompat
 import androidx.core.view.setPadding
 import androidx.recyclerview.widget.RecyclerView
@@ -54,13 +56,38 @@ class WorkBlurbAdapter(private val onClickAction: (View, WorkBlurb) -> Unit) : R
                     .fold(StringBuilder()) { acc, next -> acc.append(next).append(" · ") }
                     .removeSuffix(" · ")
                     .toString()
-            binding.workRating.text = item.rating
-            binding.workCategories.text = item.categories
-                    .fold(StringBuilder()) { acc, next -> acc.append(next).append(" · ")}
-                    .removeSuffix(" · ")
-                    .toString()
+
+            binding.workRatingIcon.text = when(item.rating) {
+                "Not Rated" -> ""
+                "General" -> "G"
+                "Teen And Up Audiences" -> "T"
+                "Mature" -> "M"
+                "Explicit" -> "E"
+                else -> ""
+            }
+
+            binding.workRatingIconBackground.setCardBackgroundColor(when(item.rating) {
+                "Not Rated" -> ContextCompat.getColor(
+                    binding.workRatingIconBackground.context, R.color.white)
+                "General" -> ContextCompat.getColor(
+                    binding.workRatingIconBackground.context, R.color.rating_gen)
+                "Teen And Up Audiences" -> ContextCompat.getColor(
+                    binding.workRatingIconBackground.context, R.color.rating_teen)
+                "Mature" -> ContextCompat.getColor(
+                    binding.workRatingIconBackground.context, R.color.rating_mature)
+                "Explicit" -> ContextCompat.getColor(
+                    binding.workRatingIconBackground.context, R.color.rating_explicit)
+                else -> ContextCompat.getColor(
+                    binding.workRatingIconBackground.context, R.color.white)
+            })
+
+
             binding.workWarnings.text = item.warnings
                     .fold(StringBuilder()) { acc, next -> acc.append(next).append(" · ") }
+                    .removeSuffix(" · ")
+                    .toString()
+            binding.workCategories.text = item.categories
+                    .fold(StringBuilder()) { acc, next -> acc.append(next).append(" · ")}
                     .removeSuffix(" · ")
                     .toString()
             binding.workRelationships.text = item.relationships
