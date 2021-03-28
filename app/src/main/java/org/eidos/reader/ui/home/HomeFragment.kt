@@ -5,7 +5,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.NavigationUI
+import androidx.navigation.ui.setupWithNavController
+import org.eidos.reader.MainActivity
 import org.eidos.reader.R
 import org.eidos.reader.databinding.FragmentFandomTypeSelectionBinding
 import org.eidos.reader.databinding.FragmentHomeBinding
@@ -35,7 +40,11 @@ class HomeFragment : Fragment() {
         // Inflate the layout for this fragment
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
 
-        // Initialise everything else
+        // Initialise the toolbar
+        val navController = findNavController()
+        (activity as AppCompatActivity).setSupportActionBar(binding.toolbar)
+        binding.toolbar.setupWithNavController(navController, (activity as MainActivity).drawerLayout)
+        // Note: https://stackoverflow.com/a/46070579 fixes title not appearing on toolbar
         // TODO: create search interface for back container
 
         // TODO: write spannable strings to style navigation view - else replace with LL menu

@@ -8,26 +8,41 @@
     android:layout_height="match_parent">
 
     <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appbar"
+
         android:layout_width="match_parent"
-        android:layout_height="192dp"
-        android:orientation="vertical">
+        android:layout_height="wrap_content">
 
-        <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"></com.google.android.material.appbar.MaterialToolbar>
-
-        <com.google.android.material.navigation.NavigationView
+        <com.google.android.material.appbar.CollapsingToolbarLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:itemBackground="@color/primaryColor"
-            app:menu="@menu/navigation_drawer_menu" />
+            app:contentScrim="?attr/colorPrimary"
 
+            app:layout_scrollFlags="scroll|enterAlways|enterAlwaysCollapsed"
+            app:titleEnabled="false"
+            app:toolbarId="@+id/toolbar">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize" />
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>
 
-    <com.google.android.material.card.MaterialCardView
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+
+
+        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
+
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla condimentum nulla urna, eu vulputate nisi maximus sit amet. Sed at tempus libero. Donec eget pulvinar dolor. Nulla at ultricies nibh. Ut vel diam nec arcu consectetur malesuada. Nullam commodo finibus erat a egestas. In rhoncus posuere est, a mattis dui vulputate non.  Phasellus dapibus magna nulla, in tincidunt mi vehicula ac. Aliquam id eros ac ipsum pretium suscipit. Phasellus et elit vel leo facilisis tempus ac sed ex. Etiam ultrices orci eget velit imperdiet, in viverra velit feugiat. Cras efficitur feugiat dolor fermentum finibus. Nunc ornare ex tristique diam ornare, sed semper lorem congue. Nullam non rutrum mauris. Aliquam id dolor fringilla, gravida quam eget, lobortis ex. Fusce libero diam, facilisis id lectus ac, viverra vehicula neque. Pellentesque efficitur, augue sed congue tristique, augue elit iaculis sapien, sed fermentum quam lacus a lacus. Sed pulvinar sed nibh vel ultricies.  Donec malesuada molestie vestibulum. Integer faucibus consequat eros, eget suscipit metus pharetra eget. Duis faucibus magna turpis. In non rutrum odio. Quisque vel tincidunt ex. Vestibulum pulvinar malesuada dui eget elementum. Nullam in tristique sem, eget suscipit nulla. Donec varius sit amet ante quis fermentum. In interdum a nunc quis dapibus.  Praesent ultricies, odio vitae iaculis malesuada, tortor ipsum tristique ligula, sit amet maximus odio nibh sit amet tellus. Duis consequat lacus suscipit nulla iaculis, eu porttitor elit sollicitudin. Cras mi purus, tincidunt auctor ultricies quis, euismod in sem. Proin auctor fringilla diam sed rhoncus. Fusce nec felis non elit dictum pulvinar. Nullam ut magna quis lectus luctus fermentum at a lacus. Mauris mattis purus id diam lacinia interdum. Cras sed venenatis nisl, a blandit enim. Nunc pretium nisi risus, ac convallis metus maximus at. Pellentesque quam turpis, consequat sed quam ac, tincidunt cursus neque. Vestibulum congue sapien consectetur, convallis mauris eleifend, tristique sem. Integer nec tempor enim.  Proin mollis mi in lorem blandit congue. Proin augue nisl, ultrices nec mauris non, posuere convallis lorem. Pellentesque ac libero turpis. Curabitur vestibulum bibendum eros eget efficitur. Morbi convallis libero massa, quis interdum lectus lobortis a. Pellentesque fringilla elit eget nulla imperdiet gravida. Donec auctor feugiat posuere. Aliquam eu euismod risus, a viverra odio. Donec laoreet lacinia justo sed feugiat. Phasellus dictum mollis odio aliquam euismod. Vivamus fringilla at lorem sit amet mollis. Curabitur ultricies lacinia tellus, in interdum velit posuere vitae. Sed ipsum purus, condimentum sed convallis quis, viverra at dolor.  Nam consectetur quam tincidunt risus scelerisque bibendum. Curabitur id ligula augue. In in hendrerit ex. Integer quis neque molestie, molestie ex ac, vulputate dui. Nam vel nisl non turpis condimentum euismod non a orci. Mauris hendrerit arcu ac sem cursus, volutpat finibus ex malesuada. Donec rhoncus mattis nulla. Nam non viverra velit. Duis auctor sem nibh, id dapibus tellus pharetra in. Maecenas a sem vitae sem convallis consectetur. Integer ullamcorper purus ut eleifend dictum. Donec sit amet purus ac augue tincidunt ornare vitae et ante. Aliquam erat volutpat. Etiam placerat nisi vitae ex fermentum, nec scelerisque dolor molestie. Duis sed lorem hendrerit, bibendum augue sed, interdum nisl.  Integer eu suscipit lorem. Pellentesque et fermentum lorem. Proin viverra fermentum massa vitae gravida. In eleifend tempus accumsan. Cras posuere neque ut mauris venenatis, vitae suscipit justo dictum. Proin suscipit felis vel ligula lobortis, in laoreet urna mollis. Duis rhoncus, enim eu posuere scelerisque, erat sem egestas urna, id convallis tellus enim sed erat. Morbi vel molestie lectus. Fusce placerat nisi metus. Vivamus viverra elit id quam interdum porttitor. Integer laoreet tempor diam ut auctor. Nulla et malesuada erat. Etiam eu sem enim. Proin efficitur egestas nisl, ac dignissim mauris lacinia id. Aenean interdum facilisis dictum.  Suspendisse facilisis maximus mauris, nec rhoncus nulla. Donec elementum lobortis lobortis. Ut vitae blandit magna, ac pretium metus. Aliquam enim metus, sollicitudin nec elit id, luctus volutpat dolor. Aenean rutrum ex vitae urna sodales dignissim. Fusce eu urna et dui feugiat euismod in et nibh. Cras eget tortor accumsan leo consequat finibus. Pellentesque ipsum mauris, malesuada nec nibh eu, fringilla lobortis dui. Sed ornare nec magna in iaculis. Phasellus id urna libero. Ut laoreet eros venenatis bibendum cursus. Pellentesque vestibulum molestie quam quis aliquet. Etiam laoreet erat ac ligula porta, vitae aliquam mauris suscipit. Vivamus molestie ac nibh sit amet feugiat. Donec ipsum nisl, fermentum in pharetra vitae, porta vel est. " />
+    </androidx.core.widget.NestedScrollView>
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

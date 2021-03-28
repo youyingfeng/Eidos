@@ -9,7 +9,7 @@ import androidx.navigation.ui.NavigationUI
 import org.eidos.reader.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var drawerLayout: DrawerLayout
+    lateinit var drawerLayout: DrawerLayout
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,7 +24,11 @@ class MainActivity : AppCompatActivity() {
         val navHostFragment = supportFragmentManager
             .findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         val navController = navHostFragment.navController
-//        drawerLayout = binding.drawerLayout
+        drawerLayout = binding.drawerLayout
+
+        // Makes the navigationView (not the drawer) actually work with the navController
+        NavigationUI.setupWithNavController(binding.navView, navController)
+
 
         /*
         This code sets up the tool bar with the hamburger menus and shit
