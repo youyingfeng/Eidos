@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/work_reader"
+    app:startDestination="@id/workReaderFragment">
+
+    <argument
+        android:name="workURL"
+        app:argType="string" />
+
+    <fragment
+        android:id="@+id/workReaderFragment"
+        android:name="org.eidos.reader.ui.reader.WorkReaderFragment"
+        android:label="fragment_work_reader"
+        tools:layout="@layout/fragment_work_reader" />
+</navigation>

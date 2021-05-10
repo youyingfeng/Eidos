@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/browse"
+    app:startDestination="@id/fandomTypeSelectionFragment">
+
+    <fragment
+        android:id="@+id/fandomTypeSelectionFragment"
+        android:name="org.eidos.reader.ui.fandoms.FandomTypeSelectionFragment"
+        android:label="fragment_fandom_type_selection"
+        tools:layout="@layout/fragment_fandom_type_selection" >
+        <action
+            android:id="@+id/action_fandomTypeSelectionFragment_to_workListFragment"
+            app:destination="@id/workListFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/workListFragment"
+        android:name="org.eidos.reader.ui.worklist.WorkListFragment"
+        android:label="fragment_work_list"
+        tools:layout="@layout/fragment_work_list" >
+        <action
+            android:id="@+id/action_workListFragment_to_workListFilterFragment"
+            app:destination="@id/workListFilterFragment" />
+
+        <argument
+            android:name="tagName"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_workListFragment_to_work_reader"
+            app:destination="@id/work_reader">
+            <!--Arguments need to be included in the action as per this SO answer-->
+            <!--https://stackoverflow.com/a/66259109-->
+            <argument
+                android:name="workURL"
+                app:argType="string" />
+        </action>
+    </fragment>
+    <dialog
+        android:id="@+id/workListFilterFragment"
+        android:name="org.eidos.reader.ui.worklistfilter.WorkListFilterFragment"
+        android:label="WorkListFilterFragment" />
+    <include app:graph="@navigation/work_reader" />
+</navigation>

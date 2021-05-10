@@ -1,16 +1,16 @@
 package org.eidos.reader
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.drawerlayout.widget.DrawerLayout
-import androidx.navigation.findNavController
-import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.NavigationUI
+import androidx.lifecycle.LiveData
+import androidx.navigation.NavController
 import org.eidos.reader.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
-    lateinit var drawerLayout: DrawerLayout
+
     private lateinit var binding: ActivityMainBinding
+    private var currentNavController: LiveData<NavController>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -19,51 +19,65 @@ class MainActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
 
-        // finding the toolbar
-//        val toolbar = binding.toolbar
-        val navHostFragment = supportFragmentManager
-            .findFragmentById(R.id.nav_host_fragment) as NavHostFragment
-        val navController = navHostFragment.navController
-        drawerLayout = binding.drawerLayout
+//        val navHostFragment = supportFragmentManager
+//            .findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+//        val navController = navHostFragment.navController
 
-        // Makes the navigationView (not the drawer) actually work with the navController
-        NavigationUI.setupWithNavController(binding.navView, navController)
+        // We will use Google's implementation of multiple backstack using
+        // fragment attachment/detachment. This should be enough for a rudimentary app
+        // with acceptable UX tradeoffs - i.e. navigating to another tab and back using the back
+        // button is not possible iirc unless we implement it.
+        if (savedInstanceState == null) {
+            setupBottomNavigationBar()
+        } // Else, need to wait for onRestoreInstanceState
 
+    }
 
-        /*
-        This code sets up the tool bar with the hamburger menus and shit
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+        // Now that BottomNavigationBar has restored its instance state
+        // and its selectedItemId, we can proceed with setting up the
+        // BottomNavigationBar with Navigation
+        setupBottomNavigationBar()
+    }
 
-        Because the toolbar only appears in one place (aka the activity), the toolbar
-        will be similar throughout the entire application.
+    /**
+     * Called on first creation and when restoring state.
+     */
+    private fun setupBottomNavigationBar() {
+        val bottomNavigationView = binding.navigationBar
 
-        If we want to implement different toolbars for different fragments, we need to
-        set up the tool bar from within each fragment. That way, the fragment can control
-        the visuals of the app bar.
+//        val navGraphIds = listOf(R.navigation.home, R.navigation.list, R.navigation.form)
+        // FIXME: remember to update this line with the list of navigation graphs!!!
+        val navGraphIds = listOf(
+            R.navigation.home,
+            R.navigation.browse,
+            R.navigation.library,
+            R.navigation.read,
+            R.navigation.more
+        )
 
-        non-functional code for reference:
-        NavigationUI.setupActionBarWithNavController(this, navController, drawerLayout)
-        NavigationUI.setupWithNavController(binding.navView, navController)
+        // Setup the bottom navigation view with a list of navigation graphs
+        val controller = bottomNavigationView.setupWithNavController(
+            navGraphIds = navGraphIds,
+            fragmentManager = supportFragmentManager,
+            containerId = R.id.nav_host_container,
+            intent = intent
+        )
 
-        See below for more information about implementing different tool bars:
-        https://developer.android.com/guide/navigation/navigation-ui#support_app_bar_variations
-
-        For implementing the drawer
-        https://stackoverflow.com/questions/26440879/how-do-i-use-drawerlayout-to-display-over-the-actionbar-toolbar-and-under-the-st
-        https://developer.android.com/guide/navigation/navigation-ui#add_a_navigation_drawer
-         */
-
-        // FIXME: I don't know what the below code does, but check this code again if toolbar errors pop up.
-        // taken from: https://github.com/googlecodelabs/android-navigation/blob/master/app/src/main/java/com/example/android/codelabs/navigation/MainActivity.kt
-//        setSupportActionBar(toolbar)    // set the toolbar as the support action bar first
-//        NavigationUI.setupActionBarWithNavController(this, navController, drawerLayout)
-
-//        NavigationUI.setupWithNavController(binding.navView, navController)
+        // Whenever the selected controller changes, setup the action bar.
+//        controller.observe(this, Observer { navController ->
+//            setupActionBarWithNavController(navController)
+//        })
+        currentNavController = controller
     }
 
     override fun onSupportNavigateUp(): Boolean {
-        val navHostFragment = supportFragmentManager
-            .findFragmentById(R.id.nav_host_fragment) as NavHostFragment
-        val navController = navHostFragment.navController
-        return NavigationUI.navigateUp(navController, drawerLayout)
+        return currentNavController?.value?.navigateUp() ?: false
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        // TODO: handle search intent here
+        super.onNewIntent(intent)
     }
 }

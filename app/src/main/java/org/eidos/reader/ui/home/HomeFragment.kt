@@ -1,10 +1,8 @@
 package org.eidos.reader.ui.home
 
 import android.os.Bundle
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -41,9 +39,11 @@ class HomeFragment : Fragment() {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
 
         // Initialise the toolbar
-        val navController = findNavController()
-        (activity as AppCompatActivity).setSupportActionBar(binding.toolbar)
-        binding.toolbar.setupWithNavController(navController, (activity as MainActivity).drawerLayout)
+//        val navController = findNavController()
+//        (activity as AppCompatActivity).setSupportActionBar(binding.toolbar)
+//        binding.toolbar.setupWithNavController(navController, (activity as MainActivity).drawerLayout)
+//
+//        setHasOptionsMenu(true)
         // Note: https://stackoverflow.com/a/46070579 fixes title not appearing on toolbar
         // TODO: create search interface for back container
 
@@ -58,5 +58,10 @@ class HomeFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.home_menu, menu)
+        // TODO: am i missing something?
     }
 }

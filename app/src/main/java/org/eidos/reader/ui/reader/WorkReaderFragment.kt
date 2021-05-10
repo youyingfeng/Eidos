@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.view.ViewTreeObserver
 import androidx.lifecycle.Observer
 import org.eidos.reader.R
+import org.eidos.reader.WorkReaderArgs
 import org.eidos.reader.databinding.FragmentWorkListBinding
 import org.eidos.reader.databinding.FragmentWorkReaderBinding
 import org.eidos.reader.ui.utilities.Utilities.Companion.setActivityTitle
@@ -40,7 +41,7 @@ class WorkReaderFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // get the workURL
-        val args = WorkReaderFragmentArgs.fromBundle(requireArguments())
+        val args = WorkReaderArgs.fromBundle(requireArguments())
         val workURL = args.workURL
 
         // TODO: write factory to pass workURL to VM in constructor

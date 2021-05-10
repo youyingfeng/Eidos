@@ -37,9 +37,9 @@ class PlaceholderFragment : Fragment() {
         binding.submitButton.setOnClickListener { view ->
             val tagName = binding.tagField.text.toString()
 
-            view.findNavController()
-                    .navigate(PlaceholderFragmentDirections
-                            .actionPlaceholderFragmentToWorkListFragment(tagName))
+//            view.findNavController()
+//                    .navigate(PlaceholderFragmentDirections
+//                            .actionPlaceholderFragmentToWorkListFragment(tagName))
         }
 
         return view

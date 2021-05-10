@@ -7,7 +7,7 @@ buildscript {
     }
     dependencies {
         def nav_version = "2.3.2"
-        classpath "com.android.tools.build:gradle:4.1.1"
+        classpath 'com.android.tools.build:gradle:4.2.0'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath "androidx.navigation:navigation-safe-args-gradle-plugin:$nav_version"
         // to allow junit 5 to run on android
