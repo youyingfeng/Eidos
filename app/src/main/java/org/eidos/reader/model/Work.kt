@@ -29,9 +29,11 @@ data class Work(
     // these are new fields
         val preWorkNotes: String,
         val chapters: List<Chapter>,
-        val postWorkNotes: String
+        val postWorkNotes: String,
+        val workskin: String
 ) {
     // FIXME: MISSING FIELDS
     // published date
     // inspirations
+    // workskin
 }

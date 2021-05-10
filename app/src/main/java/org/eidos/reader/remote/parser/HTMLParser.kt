@@ -6,6 +6,7 @@ import org.eidos.reader.model.WorkBlurb
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.jsoup.select.Elements
+import timber.log.Timber
 
 class HTMLParser {
     /**
@@ -176,7 +177,7 @@ class HTMLParser {
         val chapters : List<Chapter>
 
         if (currentChapterCount == 1 && maxChapterCount == 1) {
-            // TODO: execute the following code if it is a oneshot
+            // TODO: execute the following code if it is a completed oneshot
             val chapterText = workDoc.select("div#chapters > div.userstuff")
                     .first()
                     .html()
@@ -190,10 +191,11 @@ class HTMLParser {
                     chapterURL = chapterURLs[0]
             )
 
-            chapters = listOf(chapter)
+            chapters = listOf(chapter)  // singular list
 
         } else {
-            // TODO: Execute this branch if the work is a *completed* oneshot.
+            // TODO: Execute this branch if the work is not a *completed* oneshot.
+            // i.e. this is a multi-work series or incomplete single chapter work etc
             // Get chapter trees
             val chapterTrees = workDoc.select("div#chapters > div.chapter")
 
@@ -240,6 +242,10 @@ class HTMLParser {
 
         val preWorkNotes = getPreWorkNotes(workDoc)
         val postWorkNotes = getPostWorkNotes(workDoc)
+        val workskin = workDoc.select("div#main > style[type='text/css']")
+            .first()
+            ?.html()
+            ?: ""
 
         val work: Work = Work(
                 title = title,
@@ -266,7 +272,8 @@ class HTMLParser {
                 workURL = workURL,
                 preWorkNotes = preWorkNotes,
                 chapters = chapters,
-                postWorkNotes = postWorkNotes
+                postWorkNotes = postWorkNotes,
+                workskin = workskin
         )
 
         return work
