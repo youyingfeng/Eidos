@@ -1,9 +1,8 @@
-package org.eidos.reader.ui.worklist
+package org.eidos.reader.ui.browse.worklist
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import org.eidos.reader.remote.requests.WorkFilterRequest
-import org.eidos.reader.ui.reader.WorkReaderViewModel
 
 class WorkListViewModelFactory(
         private val workFilterRequest: WorkFilterRequest

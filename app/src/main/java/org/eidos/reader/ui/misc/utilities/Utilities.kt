@@ -1,4 +1,4 @@
-package org.eidos.reader.ui.utilities
+package org.eidos.reader.ui.misc.utilities
 
 import android.app.Activity
 import android.content.Context

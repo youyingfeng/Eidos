@@ -5,7 +5,7 @@
     android:id="@+id/mainScrollView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.reader.WorkReaderFragment">
+    tools:context=".ui.read.reader.WorkReaderFragment">
 
     <LinearLayout
         android:layout_width="match_parent"

@@ -1,4 +1,4 @@
-package org.eidos.reader.ui.worklistfilter
+package org.eidos.reader.ui.browse.worklistfilter
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import org.eidos.reader.remote.requests.FandomAutocompleteRequest
 import org.eidos.reader.remote.requests.TagAutocompleteRequest
 import org.eidos.reader.repository.EidosRepository
 

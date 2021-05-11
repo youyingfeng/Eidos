@@ -1,4 +1,4 @@
-package org.eidos.reader.ui.customviews
+package org.eidos.reader.ui.misc.customviews
 
 import android.content.Context
 import com.google.android.material.chip.Chip

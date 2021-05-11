@@ -1,12 +1,10 @@
-package org.eidos.reader.ui.worklist
+package org.eidos.reader.ui.browse.worklist
 
-import android.content.res.ColorStateList
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.core.text.HtmlCompat
-import androidx.core.view.setPadding
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.chip.Chip
 import okhttp3.internal.format

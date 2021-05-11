@@ -1,11 +1,10 @@
-package org.eidos.reader.ui.worklist
+package org.eidos.reader.ui.browse.worklist
 
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
@@ -13,8 +12,8 @@ import androidx.recyclerview.widget.RecyclerView
 import org.eidos.reader.R
 import org.eidos.reader.databinding.FragmentWorkListBinding
 import org.eidos.reader.remote.requests.WorkFilterRequest
-import org.eidos.reader.ui.utilities.Utilities.Companion.hideKeyboard
-import org.eidos.reader.ui.utilities.Utilities.Companion.setActivityTitle
+import org.eidos.reader.ui.misc.utilities.Utilities.Companion.hideKeyboard
+import org.eidos.reader.ui.misc.utilities.Utilities.Companion.setActivityTitle
 import timber.log.Timber
 
 class WorkListFragment : Fragment() {

@@ -1,4 +1,4 @@
-package org.eidos.reader.ui.worklistfilter
+package org.eidos.reader.ui.browse.worklistfilter
 
 import android.os.Bundle
 import android.os.CountDownTimer
@@ -14,14 +14,13 @@ import androidx.core.view.children
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.google.android.flexbox.FlexboxLayout
 import com.google.android.material.chip.Chip
 import org.eidos.reader.databinding.FormWorkFilterBinding
-import org.eidos.reader.ui.autocomplete.AutocompleteStringAdapter
-import org.eidos.reader.ui.utilities.Utilities.Companion.hideKeyboard
-import org.eidos.reader.ui.worklist.WorkListViewModel
+import org.eidos.reader.ui.misc.autocomplete.AutocompleteStringAdapter
+import org.eidos.reader.ui.misc.utilities.Utilities.Companion.hideKeyboard
+import org.eidos.reader.ui.browse.worklist.WorkListViewModel
 import timber.log.Timber
 
 class WorkListFilterFragment : DialogFragment() {

@@ -1,6 +1,5 @@
 package org.eidos.reader.ui.browse.search
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -17,10 +16,8 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.eidos.reader.R
 import org.eidos.reader.databinding.FragmentBrowseSearchBinding
-import org.eidos.reader.databinding.FragmentFandomTypeSelectionBinding
-import org.eidos.reader.remote.requests.*
-import org.eidos.reader.ui.autocomplete.AutocompleteStringAdapter
-import org.eidos.reader.ui.utilities.Utilities.Companion.hideKeyboard
+import org.eidos.reader.ui.misc.autocomplete.AutocompleteStringAdapter
+import org.eidos.reader.ui.misc.utilities.Utilities.Companion.hideKeyboard
 
 class BrowseSearchFragment : Fragment() {
 

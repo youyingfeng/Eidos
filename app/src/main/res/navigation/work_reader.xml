@@ -11,7 +11,7 @@
 
     <fragment
         android:id="@+id/workReaderFragment"
-        android:name="org.eidos.reader.ui.reader.WorkReaderFragment"
+        android:name="org.eidos.reader.ui.read.reader.WorkReaderFragment"
         android:label="fragment_work_reader"
         tools:layout="@layout/fragment_work_reader" />
 </navigation>

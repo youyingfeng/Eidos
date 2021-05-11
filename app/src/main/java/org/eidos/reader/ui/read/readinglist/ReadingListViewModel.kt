@@ -1,4 +1,4 @@
-package org.eidos.reader.ui.readinglist
+package org.eidos.reader.ui.read.readinglist
 
 import androidx.lifecycle.ViewModel
 

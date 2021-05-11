@@ -1,4 +1,4 @@
-package org.eidos.reader.ui.reader
+package org.eidos.reader.ui.read.reader
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

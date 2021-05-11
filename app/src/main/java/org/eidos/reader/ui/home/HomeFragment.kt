@@ -10,9 +10,7 @@ import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupWithNavController
 import org.eidos.reader.MainActivity
 import org.eidos.reader.R
-import org.eidos.reader.databinding.FragmentFandomTypeSelectionBinding
 import org.eidos.reader.databinding.FragmentHomeBinding
-import org.eidos.reader.ui.fandoms.FandomTypeSelectionViewModel
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER

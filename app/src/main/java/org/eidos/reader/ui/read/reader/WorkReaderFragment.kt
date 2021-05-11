@@ -1,20 +1,16 @@
-package org.eidos.reader.ui.reader
+package org.eidos.reader.ui.read.reader
 
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.FOCUS_UP
 import android.view.ViewGroup
 import android.view.ViewTreeObserver
 import androidx.lifecycle.Observer
-import org.eidos.reader.R
 import org.eidos.reader.WorkReaderArgs
-import org.eidos.reader.databinding.FragmentWorkListBinding
 import org.eidos.reader.databinding.FragmentWorkReaderBinding
-import org.eidos.reader.ui.utilities.Utilities.Companion.setActivityTitle
-import org.eidos.reader.ui.worklist.WorkListViewModel
+import org.eidos.reader.ui.misc.utilities.Utilities.Companion.setActivityTitle
 import timber.log.Timber
 
 /*

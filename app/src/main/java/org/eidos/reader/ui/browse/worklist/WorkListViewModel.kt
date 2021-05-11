@@ -1,4 +1,4 @@
-package org.eidos.reader.ui.worklist
+package org.eidos.reader.ui.browse.worklist
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -8,7 +8,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 import org.eidos.reader.model.WorkBlurb
-import org.eidos.reader.remote.AO3
 import org.eidos.reader.remote.requests.WorkFilterRequest
 import org.eidos.reader.repository.EidosRepository
 import timber.log.Timber

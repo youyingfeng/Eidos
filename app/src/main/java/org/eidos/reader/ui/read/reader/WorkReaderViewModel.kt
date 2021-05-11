@@ -1,6 +1,5 @@
-package org.eidos.reader.ui.reader
+package org.eidos.reader.ui.read.reader
 
-import android.app.AlertDialog
 import android.text.Spanned
 import androidx.core.text.HtmlCompat
 import androidx.lifecycle.LiveData

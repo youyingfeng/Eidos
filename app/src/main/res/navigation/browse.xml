@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/workListFragment"
-        android:name="org.eidos.reader.ui.worklist.WorkListFragment"
+        android:name="org.eidos.reader.ui.browse.worklist.WorkListFragment"
         android:label="fragment_work_list"
         tools:layout="@layout/fragment_work_list" >
         <action
@@ -29,7 +29,7 @@
     </fragment>
     <dialog
         android:id="@+id/workListFilterFragment"
-        android:name="org.eidos.reader.ui.worklistfilter.WorkListFilterFragment"
+        android:name="org.eidos.reader.ui.browse.worklistfilter.WorkListFilterFragment"
         android:label="WorkListFilterFragment" />
     <include app:graph="@navigation/work_reader" />
     <fragment

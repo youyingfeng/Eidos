@@ -1,7 +1,6 @@
-package org.eidos.reader.ui.reader
+package org.eidos.reader.ui.read.reader
 
 import android.app.Dialog
-import android.content.Context
 import android.content.DialogInterface
 import android.os.Bundle
 import androidx.fragment.app.DialogFragment
