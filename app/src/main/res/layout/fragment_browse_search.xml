@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+
+
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        app:contentInsetStart="0dp">
+
+        <SearchView
+            android:id="@+id/searchView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:iconifiedByDefault="false"
+            android:queryBackground="@android:color/transparent"
+            android:queryHint="Search all tags" />
+    </androidx.appcompat.widget.Toolbar>
+
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/searchTypeChipGroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/space_medium_16dp"
+        app:checkedChip="@id/allTagsChip"
+        app:singleLine="false"
+        app:singleSelection="true">
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/allTagsChip"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checkable="true"
+            android:text="All Tags"
+            app:chipBackgroundColor="@color/chip_state_colors"
+            app:chipIcon="@drawable/ic_chip_all_tags_16"
+            app:chipIconTint="@color/chip_state_icon_colors"
+            app:chipIconVisible="true" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/fandomsChip"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checkable="true"
+            android:text="Fandoms"
+            app:chipBackgroundColor="@color/chip_state_colors"
+            app:chipIcon="@drawable/ic_drawer_fandoms_24"
+            app:chipIconTint="@color/chip_state_icon_colors"
+            app:chipIconVisible="true" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/charactersChip"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checkable="true"
+            android:text="Characters"
+            app:chipBackgroundColor="@color/chip_state_colors"
+            app:chipIcon="@drawable/ic_card_characters_24"
+            app:chipIconTint="@color/chip_state_icon_colors"
+            app:chipIconVisible="true" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/relationshipsChip"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checkable="true"
+            android:text="Relationships"
+            app:chipBackgroundColor="@color/chip_state_colors"
+            app:chipIcon="@drawable/ic_card_relationships_14"
+            app:chipIconTint="@color/chip_state_icon_colors"
+            app:chipIconVisible="true" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/freeformsChip"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checkable="true"
+            android:text="Freeforms"
+            app:chipBackgroundColor="@color/chip_state_colors"
+            app:chipIcon="@drawable/ic_card_freeforms_14"
+            app:chipIconTint="@color/chip_state_icon_colors"
+            app:chipIconVisible="true" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/usersChip"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checkable="true"
+            android:text="Users"
+            app:chipBackgroundColor="@color/chip_state_colors"
+            app:chipIcon="@drawable/ic_chip_users_16"
+            app:chipIconTint="@color/chip_state_icon_colors"
+            app:chipIconVisible="true" />
+
+    </com.google.android.material.chip.ChipGroup>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/autocompleteResultsDisplay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="true"
+        android:scrollbars="vertical"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+
+</LinearLayout>

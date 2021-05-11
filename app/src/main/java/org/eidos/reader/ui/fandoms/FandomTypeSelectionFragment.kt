@@ -45,8 +45,8 @@ class FandomTypeSelectionFragment : Fragment() {
         val adapter = AutocompleteStringAdapter { holderView: View, autocompleteResultString: String ->
             hideKeyboard()
             holderView.findNavController()
-                .navigate(FandomTypeSelectionFragmentDirections
-                    .actionFandomTypeSelectionFragmentToWorkListFragment(autocompleteResultString))
+//                .navigate(FandomTypeSelectionFragmentDirections
+//                    .actionFandomTypeSelectionFragmentToWorkListFragment(autocompleteResultString))
         }
         binding.autocompleteResultsDisplay.adapter = adapter
 

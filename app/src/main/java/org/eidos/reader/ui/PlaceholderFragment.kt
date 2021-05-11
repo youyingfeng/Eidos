@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import androidx.navigation.findNavController
 import org.eidos.reader.R
 import org.eidos.reader.databinding.FragmentPlaceholderBinding
-import org.eidos.reader.ui.fandoms.FandomTypeSelectionFragmentDirections
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER

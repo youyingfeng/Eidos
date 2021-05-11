@@ -18,6 +18,9 @@
     <color name="secondaryDarkColor">#f0f0f0</color>
     <color name="primaryTextColor">#ffffff</color>
     <color name="secondaryTextColor">#ffffff</color>
+    <color name="uiHighlightColor">#900</color>
+    <color name="chip_unselected_color">#E0E0E0</color>
+
 
     <color name="ui_text_standard">#333333</color>
     <color name="ui_text_dark">#202020</color>
