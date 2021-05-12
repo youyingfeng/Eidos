@@ -6,7 +6,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
 import org.eidos.reader.R
+import org.eidos.reader.databinding.FragmentLibraryBinding
 
 class LibraryFragment : Fragment() {
 
@@ -14,19 +16,21 @@ class LibraryFragment : Fragment() {
         fun newInstance() = LibraryFragment()
     }
 
-    private lateinit var viewModel: LibraryViewModel
+    private val viewModel: LibraryViewModel by viewModels()
+
+    private var _binding: FragmentLibraryBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_library, container, false)
-    }
+        _binding = FragmentLibraryBinding.inflate(inflater, container, false)
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(LibraryViewModel::class.java)
-        // TODO: Use the ViewModel
+        // TODO: Initialise everything else
+        // probably need a connection to the repo + search sqldelight + filters
+
+        return binding.root
     }
 
 }

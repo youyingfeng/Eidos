@@ -29,6 +29,7 @@
         android:layout_height="wrap_content"
         android:padding="@dimen/space_medium_16dp"
         app:checkedChip="@id/allTagsChip"
+        app:selectionRequired="true"
         app:singleLine="false"
         app:singleSelection="true">
 
