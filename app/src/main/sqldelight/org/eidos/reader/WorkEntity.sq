@@ -1,0 +1,36 @@
+CREATE TABLE SavedWork (
+    workURL TEXT,
+    title TEXT,
+    authors TEXT,
+    publishedDate TEXT,
+    lastUpdatedDate TEXT,
+    fandoms BLOB,
+    rating INTEGER,
+    warnings TEXT,
+    categories TEXT,
+    completionStatus INTEGER,
+    characters TEXT,
+    relationships TEXT,
+    freeforms TEXT,
+    summary TEXT,
+    language TEXT,
+    wordCount INTEGER,
+    chapterCount INTEGER,
+    maxChapters INTEGER,
+    -- leave out hits, comments, bookmarks, and kudos, for they are temporary
+    preWorkNotes TEXT,
+    chapters BLOB,
+    postWorkNotes TEXT
+);
+
+getWorksCount:
+SELECT COUNT(*)
+FROM SavedWork;
+
+insert:
+INSERT INTO SavedWork
+VALUES ?;
+
+
+
+-- TODO: Create CRUD statements: 1 create, 1 update, 1 delete, many read (e.g. select by parameter)

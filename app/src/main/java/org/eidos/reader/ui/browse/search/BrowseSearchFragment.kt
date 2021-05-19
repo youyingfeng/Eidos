@@ -122,4 +122,10 @@ class BrowseSearchFragment : Fragment() {
         return binding.root
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        hideKeyboard()
+        _binding = null
+    }
+
 }

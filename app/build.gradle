@@ -3,6 +3,7 @@ plugins {
     id 'kotlin-android'
     id 'de.mannodermaus.android-junit5'
     id 'androidx.navigation.safeargs.kotlin'
+    id 'com.squareup.sqldelight'
 }
 
 // old method of applying plugins
@@ -46,7 +47,6 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.2.0'
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0'
     implementation 'androidx.cardview:cardview:1.0.0'
-    implementation 'com.android.support:cardview-v7:28.0.0'
     implementation 'androidx.preference:preference:1.1.1'
     def nav_version = "2.3.2"
 
@@ -71,12 +71,22 @@ dependencies {
     implementation 'org.jsoup:jsoup:1.13.1'
     implementation 'com.squareup.moshi:moshi:1.11.0'
     implementation 'com.squareup.moshi:moshi-kotlin:1.11.0'
+    implementation 'com.squareup.sqldelight:android-driver:1.5.0'
 
     // testing
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+    testImplementation "com.squareup.sqldelight:sqlite-driver:1.5.0"
+    implementation "com.squareup.sqldelight:android-driver:1.5.0"
     // old tests
     // testImplementation 'junit:junit:4.13.1'
+}
+
+sqldelight {
+    EidosDatabase {
+        packageName = "org.eidos.reader"
+        dialect = "mysql"
+    }
 }

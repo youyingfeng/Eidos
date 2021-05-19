@@ -1,0 +1,35 @@
+package org.eidos.reader.remote.choices
+
+data class WorkFilterChoices(
+    var ratingGen: Boolean = false,
+    var ratingTeen: Boolean = false,
+    var ratingMature: Boolean = false,
+    var ratingExplicit: Boolean = false,
+    var ratingNone: Boolean = false,
+    // warnings,
+    var warningNone: Boolean = false,
+    var warningViolence: Boolean = false,
+    var warningCharacterDeath: Boolean = false,
+    var warningUnderage: Boolean = false,
+    var warningRape: Boolean = false,
+    var warningChoseNoWarnings: Boolean = false,
+    // categories,
+    var categoryGen: Boolean = false,
+    var categoryFM: Boolean = false,
+    var categoryMM: Boolean = false,
+    var categoryFF: Boolean = false,
+    var categoryMulti: Boolean = false,
+    var categoryOther: Boolean = false,
+    // crossovers,
+    var showCrossovers: Boolean = true,
+    var showNonCrossovers: Boolean = true,
+    // completion status,
+    var showCompletedWorks: Boolean = true,
+    var showIncompleteWorks: Boolean = true,
+    var wordCountMin: Int = 0,
+    var wordCountMax: Int = 0,
+    var dateUpdatedMin: String = "",
+    var dateUpdatedMax: String = "",
+) {
+    // stringifying choices should be done in request constructor, not in choices
+}

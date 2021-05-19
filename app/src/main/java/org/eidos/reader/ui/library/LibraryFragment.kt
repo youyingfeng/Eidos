@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import org.eidos.reader.R
 import org.eidos.reader.databinding.FragmentLibraryBinding
+import org.eidos.reader.ui.misc.utilities.Utilities.Companion.hideKeyboard
 
 class LibraryFragment : Fragment() {
 
@@ -31,6 +32,12 @@ class LibraryFragment : Fragment() {
         // probably need a connection to the repo + search sqldelight + filters
 
         return binding.root
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        hideKeyboard()
+        _binding = null
     }
 
 }

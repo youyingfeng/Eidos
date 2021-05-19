@@ -35,5 +35,4 @@ data class Work(
     // FIXME: MISSING FIELDS
     // published date
     // inspirations
-    // workskin
 }

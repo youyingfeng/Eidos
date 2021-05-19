@@ -1,405 +1,591 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:clipToPadding="true"
-    android:orientation="vertical"
-    android:paddingBottom="@dimen/space_medium_16dp">
+    android:clipToPadding="false"
+    android:orientation="vertical">
 
-
-    <TableLayout
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/space_medium_16dp"
-        android:layout_marginEnd="@dimen/space_medium_16dp"
-        android:orientation="vertical">
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        app:title="Filter Works" />
 
-        <TextView
-            android:id="@+id/workFilterTitle"
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Filter Works" />
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:padding="@dimen/space_medium_16dp">
 
             <TextView
-                android:id="@+id/includeTagsSectionHeaderTV"
-                style="@style/body_text"
+                android:id="@+id/ratingsHeader"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="top|left"
-                android:text="Include" />
+                android:text="RATINGS"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-            <com.google.android.flexbox.FlexboxLayout
-                android:id="@+id/includeTagsFL"
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/ratingsChipGroup"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginStart="@dimen/space_medium_16dp"
-                android:layout_weight="1"
-                app:alignContent="space_around"
-                app:alignItems="stretch"
-                app:flexWrap="wrap"
-                app:showDivider="beginning|middle|end">
-                <!--            app:dividerDrawable="@drawable/divider"-->
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/ratingsHeader">
 
-                <EditText
-                    android:id="@+id/includeTagsInputET"
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/genChip"
                     android:layout_width="wrap_content"
-                    android:layout_height="32dp"
-                    android:background="@android:color/transparent"
-                    android:hint="Enter a tag..."
-                    android:imeOptions="actionDone"
-                    android:inputType="text"
-                    app:layout_flexGrow="1" />
+                    android:layout_height="wrap_content"
+                    android:checkable="true"
+                    android:checked="true"
+                    android:text="General Audiences" />
 
-            </com.google.android.flexbox.FlexboxLayout>
-        </TableRow>
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/teenChip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checkable="true"
+                    android:checked="true"
+                    android:text="Teen And Up Audiences" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/autocompleteIncludeTagsRV"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager">
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/matureChip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checkable="true"
+                    android:checked="true"
+                    android:text="Mature" />
 
-        </androidx.recyclerview.widget.RecyclerView>
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/explicitChip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checkable="true"
+                    android:checked="true"
+                    android:text="Explicit" />
 
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/notRatedChip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checkable="true"
+                    android:checked="true"
+                    android:text="Not Rated" />
+
+            </com.google.android.material.chip.ChipGroup>
 
             <TextView
-                android:id="@+id/excludeTagsSectionHeaderTV"
-                style="@style/body_text"
+                android:id="@+id/warningsHeader"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="top|left"
-                android:text="Exclude" />
+                android:text="WARNINGS"
+                app:layout_constraintTop_toBottomOf="@id/ratingsChipGroup" />
 
-            <com.google.android.flexbox.FlexboxLayout
-                android:id="@+id/excludeTagsFL"
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/warningsChipGroup"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginStart="@dimen/space_medium_16dp"
-                android:layout_weight="1"
-                app:alignContent="space_around"
-                app:alignItems="stretch"
-                app:flexWrap="wrap"
-                app:showDivider="beginning|middle|end">
-                <!--            app:dividerDrawable="@drawable/divider"-->
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/warningsHeader">
 
-                <EditText
-                    android:id="@+id/excludeTagsInputET"
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/noWarningsChip"
                     android:layout_width="wrap_content"
-                    android:layout_height="32dp"
-                    android:background="@android:color/transparent"
-                    android:hint="Enter a tag..."
-                    android:imeOptions="actionDone"
-                    android:inputType="text"
-                    app:layout_flexGrow="1" />
+                    android:layout_height="wrap_content"
+                    android:checkable="true"
+                    android:checked="true"
+                    android:text="No Warnings" />
 
-            </com.google.android.flexbox.FlexboxLayout>
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/violenceChip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checkable="true"
+                    android:checked="true"
+                    android:text="Graphic Violence" />
 
-        </TableRow>
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/majorCharacterDeathChip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checkable="true"
+                    android:checked="true"
+                    android:text="Major Character Death" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/autocompleteExcludeTagsRV"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/rapeChip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checkable="true"
+                    android:checked="true"
+                    android:text="Rape/Non-Con" />
 
-        <TextView
-            style="@style/body_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Ratings" />
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/underageChip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checkable="true"
+                    android:checked="true"
+                    android:text="Underage" />
 
-        <com.google.android.material.checkbox.MaterialCheckBox
-            android:id="@+id/showRatingGeneralAudiencesCB"
-            style="@style/body_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/space_medium_16dp"
-            android:checked="true"
-            android:text="General Audiences" />
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/creatorChoseNoWarningsChip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checkable="true"
+                    android:checked="true"
+                    android:text="Not Specified" />
 
-        <com.google.android.material.checkbox.MaterialCheckBox
-            android:id="@+id/showRatingTeenAndUpAudiencesCB"
-            style="@style/body_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/space_medium_16dp"
-            android:checked="true"
-            android:text="Teen And Up Audiences" />
+            </com.google.android.material.chip.ChipGroup>
 
-        <com.google.android.material.checkbox.MaterialCheckBox
-            android:id="@+id/showRatingMatureCB"
-            style="@style/body_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/space_medium_16dp"
-            android:checked="true"
-            android:text="Mature" />
-
-        <com.google.android.material.checkbox.MaterialCheckBox
-            android:id="@+id/showRatingExplicitCB"
-            style="@style/body_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/space_medium_16dp"
-            android:checked="true"
-            android:text="Explicit" />
-
-        <com.google.android.material.checkbox.MaterialCheckBox
-            android:id="@+id/showRatingNotRatedCB"
-            style="@style/body_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/space_medium_16dp"
-            android:checked="true"
-            android:text="Not Rated" />
-
-        <TextView
-            style="@style/body_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Warnings" />
-
-        <com.google.android.material.checkbox.MaterialCheckBox
-            android:id="@+id/showWarningNoArchiveWarningsApplyCB"
-            style="@style/body_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/space_medium_16dp"
-            android:checked="true"
-            android:text="No Archive Warnings Apply" />
-
-        <com.google.android.material.checkbox.MaterialCheckBox
-            android:id="@+id/showWarningGraphicViolenceCB"
-            style="@style/body_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/space_medium_16dp"
-            android:checked="true"
-            android:text="Graphic Depictions Of Violence" />
-
-        <com.google.android.material.checkbox.MaterialCheckBox
-            android:id="@+id/showWarningMajorCharacterDeathCB"
-            style="@style/body_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/space_medium_16dp"
-            android:checked="true"
-            android:text="Major Character Death" />
-
-        <com.google.android.material.checkbox.MaterialCheckBox
-            android:id="@+id/showWarningUnderageCB"
-            style="@style/body_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/space_medium_16dp"
-            android:checked="true"
-            android:text="Underage" />
-
-        <com.google.android.material.checkbox.MaterialCheckBox
-            android:id="@+id/showWarningRapeCB"
-            style="@style/body_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/space_medium_16dp"
-            android:checked="true"
-            android:text="Rape/Non-Con" />
-
-        <com.google.android.material.checkbox.MaterialCheckBox
-            android:id="@+id/showWarningCreatorChoseNoWarningsCB"
-            style="@style/body_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/space_medium_16dp"
-            android:checked="true"
-            android:text="Creator Chose Not To Use Archive Warnings" />
-
-        <RadioGroup
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:checkedButton="@id/searchContainsAnyWarningsRB">
-
-            <RadioButton
-                android:id="@+id/searchContainsAllWarningsRB"
-                style="@style/body_text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Works must contain all selected warnings" />
-
-            <RadioButton
-                android:id="@+id/searchContainsAnyWarningsRB"
-                style="@style/body_text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Works can contain any selected warning" />
-        </RadioGroup>
-
-        <TextView
-            style="@style/body_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Categories" />
-
-        <com.google.android.material.checkbox.MaterialCheckBox
-            android:id="@+id/showCategoryGenCB"
-            style="@style/body_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/space_medium_16dp"
-            android:checked="true"
-            android:text="Gen" />
-
-        <com.google.android.material.checkbox.MaterialCheckBox
-            android:id="@+id/showCategoryFMCB"
-            style="@style/body_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/space_medium_16dp"
-            android:checked="true"
-            android:text="F/M" />
-
-        <com.google.android.material.checkbox.MaterialCheckBox
-            android:id="@+id/showCategoryMMCB"
-            style="@style/body_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/space_medium_16dp"
-            android:checked="true"
-            android:text="M/M" />
-
-        <com.google.android.material.checkbox.MaterialCheckBox
-            android:id="@+id/showCategoryFFCB"
-            style="@style/body_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/space_medium_16dp"
-            android:checked="true"
-            android:text="F/F" />
-
-        <com.google.android.material.checkbox.MaterialCheckBox
-            android:id="@+id/showCategoryMultiCB"
-            style="@style/body_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/space_medium_16dp"
-            android:checked="true"
-            android:text="Multi" />
-
-        <com.google.android.material.checkbox.MaterialCheckBox
-            android:id="@+id/showCategoryOtherCB"
-            style="@style/body_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/space_medium_16dp"
-            android:checked="true"
-            android:text="Other" />
-
-        <TextView
-            style="@style/body_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Crossovers" />
-
-        <com.google.android.material.checkbox.MaterialCheckBox
-            android:id="@+id/showCrossoversCB"
-            style="@style/body_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/space_medium_16dp"
-            android:checked="true"
-            android:text="Show crossovers" />
-
-        <com.google.android.material.checkbox.MaterialCheckBox
-            android:id="@+id/showNonCrossoversCB"
-            style="@style/body_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/space_medium_16dp"
-            android:checked="true"
-            android:text="Show non-crossovers" />
-
-        <TextView
-            style="@style/body_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Completion Status" />
-
-        <com.google.android.material.checkbox.MaterialCheckBox
-            android:id="@+id/showCompletedWorksCB"
-            style="@style/body_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/space_medium_16dp"
-            android:checked="true"
-            android:text="Show completed works" />
-
-        <com.google.android.material.checkbox.MaterialCheckBox
-            android:id="@+id/showIncompleteWorksCB"
-            style="@style/body_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/space_medium_16dp"
-            android:checked="true"
-            android:text="Show incomplete works" />
-
-        <TextView
-            style="@style/body_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Word Count" />
-
-        <TextView
-            style="@style/body_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Date Updated" />
-
-        <TextView
-            style="@style/body_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Search within results" />
-
-        <EditText
-            android:id="@+id/searchWithinResultsET"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="Search within results"
-            android:inputType="textPersonName" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/buttonReset"
-                style="@style/Widget.MaterialComponents.Button.TextButton"
+            <TextView
+                android:id="@+id/categoriesHeader"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Reset" />
+                android:text="RELATIONSHIP CATEGORIES"
+                app:layout_constraintTop_toBottomOf="@id/warningsChipGroup" />
 
-            <Button
-                android:id="@+id/buttonSubmit"
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/categoriesChipGroup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/categoriesHeader">
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/relationshipGenChip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checkable="true"
+                    android:checked="true"
+                    android:text="Gen" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/relationshipFMChip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checkable="true"
+                    android:checked="true"
+                    android:text="F/M" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/relationshipFFChip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checkable="true"
+                    android:checked="true"
+                    android:text="F/F" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/relationshipMMChip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checkable="true"
+                    android:checked="true"
+                    android:text="M/M" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/relationshipMultiChip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checkable="true"
+                    android:checked="true"
+                    android:text="Multi" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/relationshipOtherChip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checkable="true"
+                    android:checked="true"
+                    android:text="Others" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/relationshipNotSpecifiedChip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checkable="true"
+                    android:checked="true"
+                    android:text="Not Specified" />
+
+            </com.google.android.material.chip.ChipGroup>
+
+            <TextView
+                android:id="@+id/additionalTagsHeader"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Filter" />
-        </LinearLayout>
+                android:text="ADDITIONAL TAGS"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/categoriesChipGroup" />
 
-    </TableLayout>
-</androidx.core.widget.NestedScrollView>
+            <TextView
+                android:id="@+id/titleInclude"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Include"
+                app:layout_constrainedWidth="true"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/additionalTagsHeader" />
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/includedTagsChipGroup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constrainedWidth="true"
+                app:layout_constraintStart_toEndOf="@+id/titleInclude"
+                app:layout_constraintTop_toTopOf="@+id/titleInclude" />
+
+            <EditText
+                android:id="@+id/includedTagsEditText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:text="Name"
+                app:layout_constrainedWidth="true"
+                app:layout_constraintStart_toEndOf="@id/verticalDivider"
+                app:layout_constraintTop_toBottomOf="@id/includedTagsChipGroup" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/includedTagsAutocompleteRecyclerView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:layout_constrainedWidth="true"
+                app:layout_constraintStart_toEndOf="@id/verticalDivider"
+                app:layout_constraintTop_toBottomOf="@id/includedTagsEditText" />
+
+            <androidx.constraintlayout.widget.Barrier
+                android:id="@+id/includedTagsDivider"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:barrierDirection="bottom"
+                app:constraint_referenced_ids="includedTagsAutocompleteRecyclerView" />
+
+            <TextView
+                android:id="@+id/titleExclude"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Exclude"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/includedTagsDivider" />
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/excludedTagsChipGroup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constrainedWidth="true"
+                app:layout_constraintStart_toEndOf="@+id/verticalDivider"
+                app:layout_constraintTop_toTopOf="@+id/titleExclude" />
+
+            <EditText
+                android:id="@+id/excludedTagsEditText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:text="Name"
+                app:layout_constrainedWidth="true"
+                app:layout_constraintStart_toEndOf="@id/verticalDivider"
+                app:layout_constraintTop_toBottomOf="@id/excludedTagsChipGroup"
+                tools:layout_editor_absoluteX="74dp"
+                tools:layout_editor_absoluteY="16dp" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/excludedTagsAutocompleteRecyclerView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:layout_constrainedWidth="true"
+                app:layout_constraintStart_toEndOf="@id/verticalDivider"
+                app:layout_constraintTop_toBottomOf="@id/excludedTagsEditText" />
+
+            <androidx.constraintlayout.widget.Barrier
+                android:id="@+id/excludedTagsDivider"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:barrierDirection="bottom"
+                app:constraint_referenced_ids="excludedTagsAutocompleteRecyclerView" />
+
+            <androidx.constraintlayout.widget.Barrier
+                android:id="@+id/verticalDivider"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:barrierDirection="right"
+                app:constraint_referenced_ids="titleInclude"
+                tools:layout_editor_absoluteX="16dp"
+                tools:layout_editor_absoluteY="16dp" />
+
+            <TextView
+                android:id="@+id/crossoversHeader"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="CROSSOVERS"
+                app:layout_constraintTop_toBottomOf="@id/excludedTagsDivider" />
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/crossoversChipGroup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/crossoversHeader"
+                app:selectionRequired="true">
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/showCrossoversChip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checkable="true"
+                    android:checked="true"
+                    android:text="Show crossovers" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/showNonCrossoversChip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checkable="true"
+                    android:checked="true"
+                    android:text="Show non-crossovers" />
+
+            </com.google.android.material.chip.ChipGroup>
+
+            <TextView
+                android:id="@+id/completionHeader"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="COMPLETION STATUS"
+                app:layout_constraintTop_toBottomOf="@id/crossoversChipGroup" />
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/completionChipGroup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/completionHeader"
+                app:selectionRequired="true">
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/showCompletedChip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checkable="true"
+                    android:checked="true"
+                    android:text="Show completed works" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/showIncompleteChip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checkable="true"
+                    android:checked="true"
+                    android:text="Show incomplete works" />
+
+            </com.google.android.material.chip.ChipGroup>
+
+            <TextView
+                android:id="@+id/hitsHeader"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="HITS"
+                app:layout_constraintTop_toBottomOf="@id/completionChipGroup" />
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/hitsFromEditText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:hint="From"
+                app:layout_constraintEnd_toStartOf="@+id/hitsToEditText"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/hitsHeader" />
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/hitsToEditText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:hint="To"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/hitsFromEditText"
+                app:layout_constraintTop_toTopOf="@id/hitsFromEditText" />
+
+            <TextView
+                android:id="@+id/kudosHeader"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="KUDOS"
+                app:layout_constraintTop_toBottomOf="@id/hitsToEditText" />
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/kudosFromEditText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:hint="From"
+                app:layout_constraintEnd_toStartOf="@+id/kudosToEditText"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/kudosHeader" />
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/kudosToEditText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:hint="To"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/kudosFromEditText"
+                app:layout_constraintTop_toTopOf="@id/kudosFromEditText" />
+
+            <TextView
+                android:id="@+id/bookmarksHeader"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="BOOKMARKS"
+                app:layout_constraintTop_toBottomOf="@id/kudosToEditText" />
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/bookmarksFromEditText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:hint="From"
+                app:layout_constraintEnd_toStartOf="@+id/bookmarksToEditText"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/bookmarksHeader" />
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/bookmarksToEditText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:hint="To"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/bookmarksFromEditText"
+                app:layout_constraintTop_toTopOf="@id/bookmarksFromEditText" />
+
+            <TextView
+                android:id="@+id/wordCountHeader"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="WORD COUNT"
+                app:layout_constraintTop_toBottomOf="@id/bookmarksToEditText" />
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/wordCountFromEditText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:hint="From"
+                app:layout_constraintEnd_toStartOf="@+id/wordCountToEditText"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/wordCountHeader" />
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/wordCountToEditText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:hint="To"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/wordCountFromEditText"
+                app:layout_constraintTop_toTopOf="@id/wordCountFromEditText" />
+
+            <TextView
+                android:id="@+id/dateUpdatedHeader"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="DATE UPDATED"
+                app:layout_constraintTop_toBottomOf="@id/wordCountToEditText" />
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/dateUpdatedFromEditText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:hint="From"
+                app:layout_constraintEnd_toStartOf="@+id/dateUpdatedToEditText"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/dateUpdatedHeader" />
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/dateUpdatedToEditText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:hint="To"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/dateUpdatedFromEditText"
+                app:layout_constraintTop_toTopOf="@id/dateUpdatedFromEditText" />
+
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/oneshotsOnlyToggle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Show oneshots only"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/dateUpdatedToEditText" />
+
+            <TextView
+                android:id="@+id/searchInputHeader"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="SEARCH WITHIN WORKS"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/oneshotsOnlyToggle" />
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/searchInputEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Search within results"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/searchInputHeader" />
+
+            <TextView
+                android:id="@+id/languageHeader"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="LANGUAGE"
+                app:layout_constraintTop_toBottomOf="@id/searchInputEditText" />
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/languageDropdown"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/languageHeader" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/clearButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="CLEAR"
+                android:textColor="@color/off_black"
+                app:layout_constraintEnd_toStartOf="@+id/confirmButton"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/languageDropdown" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/confirmButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="SUBMIT"
+                android:textColor="@color/off_black"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/clearButton"
+                app:layout_constraintTop_toTopOf="@id/clearButton" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+
+</LinearLayout>
