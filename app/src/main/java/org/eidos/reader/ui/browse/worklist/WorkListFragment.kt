@@ -6,8 +6,12 @@ import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.NavigationUI
+import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.recyclerview.widget.RecyclerView
 import org.eidos.reader.R
 import org.eidos.reader.databinding.FragmentWorkListBinding
@@ -34,24 +38,28 @@ class WorkListFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // TODO: Use the viewmodel
+        // inflates the root
+        _binding = FragmentWorkListBinding.inflate(inflater, container, false)
+        val view = binding.root
+
         val args = WorkListFragmentArgs.fromBundle(requireArguments())
         val tagName = args.tagName
         val workFilterRequest = WorkFilterRequest(tagName)
 
+        (activity as AppCompatActivity).setSupportActionBar(binding.toolbar)
+        (activity as AppCompatActivity).setupActionBarWithNavController(findNavController())
         setActivityTitle(tagName)
+        setHasOptionsMenu(true)
+
+//        NavigationUI.setupWithNavController(binding.toolbar, findNavController())
+//        binding.toolbar.title = tagName
 
         viewModelFactory = WorkListViewModelFactory(workFilterRequest)
         // scope this to the activity to enable sharing of data
         viewModel = ViewModelProvider(activity as AppCompatActivity, viewModelFactory).get(WorkListViewModel::class.java)
 //        viewModel : WorkListViewModel by activityViewModels<>()
 
-        // inflates the root
-        _binding = FragmentWorkListBinding.inflate(inflater, container, false)
-        val view = binding.root
 
-        // sets the options menu
-        setHasOptionsMenu(true)
 
         // create the adapter
         val adapter = WorkBlurbAdapter { holderView, workBlurb ->

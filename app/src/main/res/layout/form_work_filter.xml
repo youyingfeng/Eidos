@@ -14,7 +14,7 @@
         android:background="?attr/colorPrimary"
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme"
-        app:title="Filter Works" />
+        app:title="Filter Options" />
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -244,16 +244,23 @@
                 app:layout_constraintStart_toEndOf="@+id/titleInclude"
                 app:layout_constraintTop_toTopOf="@+id/titleInclude" />
 
-            <EditText
+            <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/includedTagsEditText"
-                android:layout_width="wrap_content"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:ems="10"
-                android:inputType="textPersonName"
-                android:text="Name"
+                android:layout_marginStart="16dp"
                 app:layout_constrainedWidth="true"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/verticalDivider"
-                app:layout_constraintTop_toBottomOf="@id/includedTagsChipGroup" />
+                app:layout_constraintTop_toBottomOf="@id/includedTagsChipGroup"
+                android:hint="Enter a tag">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+            </com.google.android.material.textfield.TextInputLayout>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/includedTagsAutocompleteRecyclerView"
@@ -287,18 +294,23 @@
                 app:layout_constraintStart_toEndOf="@+id/verticalDivider"
                 app:layout_constraintTop_toTopOf="@+id/titleExclude" />
 
-            <EditText
+            <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/excludedTagsEditText"
-                android:layout_width="wrap_content"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:ems="10"
-                android:inputType="textPersonName"
-                android:text="Name"
+                android:layout_marginStart="16dp"
                 app:layout_constrainedWidth="true"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/verticalDivider"
                 app:layout_constraintTop_toBottomOf="@id/excludedTagsChipGroup"
-                tools:layout_editor_absoluteX="74dp"
-                tools:layout_editor_absoluteY="16dp" />
+                android:hint="Enter a tag">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+            </com.google.android.material.textfield.TextInputLayout>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/excludedTagsAutocompleteRecyclerView"
@@ -396,25 +408,43 @@
                 android:text="HITS"
                 app:layout_constraintTop_toBottomOf="@id/completionChipGroup" />
 
-            <com.google.android.material.textfield.TextInputEditText
+            <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/hitsFromEditText"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
                 android:hint="From"
+                app:boxStrokeColor="@color/uiHighlightColor"
+                app:hintTextColor="@color/uiHighlightColor"
                 app:layout_constraintEnd_toStartOf="@+id/hitsToEditText"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/hitsHeader" />
+                app:layout_constraintTop_toBottomOf="@id/hitsHeader">
 
-            <com.google.android.material.textfield.TextInputEditText
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/hitsToEditText"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:hint="To"
+                app:boxStrokeColor="@color/uiHighlightColor"
+                app:hintTextColor="@color/uiHighlightColor"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/hitsFromEditText"
-                app:layout_constraintTop_toTopOf="@id/hitsFromEditText" />
+                app:layout_constraintTop_toTopOf="@id/hitsFromEditText">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
                 android:id="@+id/kudosHeader"
@@ -423,25 +453,44 @@
                 android:text="KUDOS"
                 app:layout_constraintTop_toBottomOf="@id/hitsToEditText" />
 
-            <com.google.android.material.textfield.TextInputEditText
+            <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/kudosFromEditText"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
                 android:hint="From"
+                app:boxStrokeColor="@color/uiHighlightColor"
+                app:hintTextColor="@color/uiHighlightColor"
                 app:layout_constraintEnd_toStartOf="@+id/kudosToEditText"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/kudosHeader" />
+                app:layout_constraintTop_toBottomOf="@id/kudosHeader">
 
-            <com.google.android.material.textfield.TextInputEditText
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/kudosToEditText"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:hint="To"
+                app:boxStrokeColor="@color/uiHighlightColor"
+                app:hintTextColor="@color/uiHighlightColor"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/kudosFromEditText"
-                app:layout_constraintTop_toTopOf="@id/kudosFromEditText" />
+                app:layout_constraintTop_toTopOf="@id/kudosFromEditText">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+            </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
                 android:id="@+id/bookmarksHeader"
@@ -450,25 +499,44 @@
                 android:text="BOOKMARKS"
                 app:layout_constraintTop_toBottomOf="@id/kudosToEditText" />
 
-            <com.google.android.material.textfield.TextInputEditText
+            <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/bookmarksFromEditText"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
                 android:hint="From"
+                app:boxStrokeColor="@color/uiHighlightColor"
+                app:hintTextColor="@color/uiHighlightColor"
                 app:layout_constraintEnd_toStartOf="@+id/bookmarksToEditText"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/bookmarksHeader" />
+                app:layout_constraintTop_toBottomOf="@id/bookmarksHeader">
 
-            <com.google.android.material.textfield.TextInputEditText
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/bookmarksToEditText"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:hint="To"
+                app:boxStrokeColor="@color/uiHighlightColor"
+                app:hintTextColor="@color/uiHighlightColor"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/bookmarksFromEditText"
-                app:layout_constraintTop_toTopOf="@id/bookmarksFromEditText" />
+                app:layout_constraintTop_toTopOf="@id/bookmarksFromEditText">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+            </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
                 android:id="@+id/wordCountHeader"
@@ -477,25 +545,44 @@
                 android:text="WORD COUNT"
                 app:layout_constraintTop_toBottomOf="@id/bookmarksToEditText" />
 
-            <com.google.android.material.textfield.TextInputEditText
+            <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/wordCountFromEditText"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
                 android:hint="From"
+                app:boxStrokeColor="@color/uiHighlightColor"
+                app:hintTextColor="@color/uiHighlightColor"
                 app:layout_constraintEnd_toStartOf="@+id/wordCountToEditText"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/wordCountHeader" />
+                app:layout_constraintTop_toBottomOf="@id/wordCountHeader">
 
-            <com.google.android.material.textfield.TextInputEditText
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/wordCountToEditText"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:hint="To"
+                app:boxStrokeColor="@color/uiHighlightColor"
+                app:hintTextColor="@color/uiHighlightColor"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/wordCountFromEditText"
-                app:layout_constraintTop_toTopOf="@id/wordCountFromEditText" />
+                app:layout_constraintTop_toTopOf="@id/wordCountFromEditText">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+            </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
                 android:id="@+id/dateUpdatedHeader"
@@ -504,25 +591,44 @@
                 android:text="DATE UPDATED"
                 app:layout_constraintTop_toBottomOf="@id/wordCountToEditText" />
 
-            <com.google.android.material.textfield.TextInputEditText
+            <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/dateUpdatedFromEditText"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
                 android:hint="From"
+                app:boxStrokeColor="@color/uiHighlightColor"
+                app:hintTextColor="@color/uiHighlightColor"
                 app:layout_constraintEnd_toStartOf="@+id/dateUpdatedToEditText"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/dateUpdatedHeader" />
+                app:layout_constraintTop_toBottomOf="@id/dateUpdatedHeader">
 
-            <com.google.android.material.textfield.TextInputEditText
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/dateUpdatedToEditText"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:hint="To"
+                app:boxStrokeColor="@color/uiHighlightColor"
+                app:hintTextColor="@color/uiHighlightColor"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/dateUpdatedFromEditText"
-                app:layout_constraintTop_toTopOf="@id/dateUpdatedFromEditText" />
+                app:layout_constraintTop_toTopOf="@id/dateUpdatedFromEditText">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+            </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.switchmaterial.SwitchMaterial
                 android:id="@+id/oneshotsOnlyToggle"
@@ -532,21 +638,20 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/dateUpdatedToEditText" />
 
-            <TextView
-                android:id="@+id/searchInputHeader"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="SEARCH WITHIN WORKS"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/oneshotsOnlyToggle" />
-
-            <com.google.android.material.textfield.TextInputEditText
+            <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/searchInputEditText"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Search within results"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/searchInputHeader" />
+                app:layout_constraintTop_toBottomOf="@id/oneshotsOnlyToggle">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+            </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
                 android:id="@+id/languageHeader"
@@ -558,14 +663,25 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/languageDropdown"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/languageHeader" />
+                android:hint="Select a Language"
+                app:layout_constraintTop_toBottomOf="@id/languageHeader"
+                tools:layout_editor_absoluteX="16dp">
+
+                <AutoCompleteTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="none" />
+
+            </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/clearButton"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
                 android:text="CLEAR"
                 android:textColor="@color/off_black"
                 app:layout_constraintEnd_toStartOf="@+id/confirmButton"

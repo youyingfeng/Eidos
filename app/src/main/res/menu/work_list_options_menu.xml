@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
         android:id="@+id/filterWorksAction"
-        android:title="Filter works" />
+        android:icon="@drawable/ic_menu_options_filter_24"
+        android:title="Filter works"
+        app:showAsAction="ifRoom" />
 </menu>

@@ -10,9 +10,6 @@
         android:name="org.eidos.reader.ui.browse.worklist.WorkListFragment"
         android:label="fragment_work_list"
         tools:layout="@layout/fragment_work_list" >
-        <action
-            android:id="@+id/action_workListFragment_to_workListFilterFragment"
-            app:destination="@id/workListFilterFragment" />
 
         <argument
             android:name="tagName"
@@ -26,11 +23,10 @@
                 android:name="workURL"
                 app:argType="string" />
         </action>
+        <action
+            android:id="@+id/action_workListFragment_to_workListFilterFragment"
+            app:destination="@id/workListFilterFragment" />
     </fragment>
-    <dialog
-        android:id="@+id/workListFilterFragment"
-        android:name="org.eidos.reader.ui.browse.worklistfilter.WorkListFilterFragment"
-        android:label="WorkListFilterFragment" />
     <include app:graph="@navigation/work_reader" />
     <fragment
         android:id="@+id/browseSearchFragment"
@@ -40,4 +36,8 @@
             android:id="@+id/action_browseSearchFragment_to_workListFragment"
             app:destination="@id/workListFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/workListFilterFragment"
+        android:name="org.eidos.reader.ui.browse.worklistfilter.WorkListFilterFragment"
+        android:label="Filter Options" />
 </navigation>
