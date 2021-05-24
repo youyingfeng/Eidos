@@ -46,13 +46,11 @@ class WorkListFragment : Fragment() {
         val tagName = args.tagName
         val workFilterRequest = WorkFilterRequest(tagName)
 
+        // Set up back button, title and filter button in the toolbar
         (activity as AppCompatActivity).setSupportActionBar(binding.toolbar)
         (activity as AppCompatActivity).setupActionBarWithNavController(findNavController())
         setActivityTitle(tagName)
         setHasOptionsMenu(true)
-
-//        NavigationUI.setupWithNavController(binding.toolbar, findNavController())
-//        binding.toolbar.title = tagName
 
         viewModelFactory = WorkListViewModelFactory(workFilterRequest)
         // scope this to the activity to enable sharing of data
@@ -83,11 +81,11 @@ class WorkListFragment : Fragment() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 if (!recyclerView.canScrollVertically(1) && dy > 0) {
                     // this should hit when you have scrolled to the bottom of the list
-                    Timber.i("Bottom of the list reached")
+                    // Timber.i("Bottom of the list reached")
                     viewModel.getNextPage()
                 } else if (recyclerView.canScrollVertically(-1) && dy < 0) {
                     // this should only hit when you scroll to the very top of the list
-                    Timber.i("Top of the list reached")
+                    // Timber.i("Top of the list reached")
                 }
             }
         })
@@ -113,11 +111,14 @@ class WorkListFragment : Fragment() {
         }
 
         // return true to consume the event here, false to forward the event elsewhere
-        return true
+        // calling super method allows the parent to handle the back button press
+        // as mentioned in this answer: https://stackoverflow.com/a/48659833
+        return super.onOptionsItemSelected(item)
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
+        hideKeyboard()
         _binding = null
         setHasOptionsMenu(false)
     }

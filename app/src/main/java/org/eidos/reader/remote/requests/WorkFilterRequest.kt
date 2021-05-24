@@ -1,5 +1,6 @@
 package org.eidos.reader.remote.requests
 
+import org.eidos.reader.remote.choices.WorkFilterChoices
 import java.net.URLEncoder
 
 /* ATTENTION: NOTES ON WORK FILTER CAN BE FOUND AT THE BOTTOM */
@@ -15,7 +16,10 @@ import java.net.URLEncoder
 
 // TODO: Refactor the methods to use variables so that any accidental extra calls will not screw up the queryString.
 
-class WorkFilterRequest(val tagName: String) {
+class WorkFilterRequest(
+    val tagName: String,
+    var workFilterChoices: WorkFilterChoices = WorkFilterChoices()
+) {
     companion object {
         // Utility methods
         private fun encodeMainTag(tag: String) : String {
@@ -28,70 +32,51 @@ class WorkFilterRequest(val tagName: String) {
         }
     }
 
-    // FIXME: encoding doesn't really work well when fetching synonyms - should convert to actual synonym tag
-    var queryString = "/tags/${encodeMainTag(tagName)}/works?utf8=✓&commit=Sort+and+Filter"
-
-    var includedTags : List<String> = emptyList()
-    var excludedTags : List<String> = emptyList()
-
-    var showRatingGeneral = true
-    var showRatingTeen = true
-    var showRatingMature = true
-    var showRatingExplicit = true
-    var showRatingNotRated = true
-
-    var showWarningNone = true
-    var showWarningViolence = true
-    var showWarningCharacterDeath = true
-    var showWarningUnderage = true
-    var showWarningRape = true
-    var showWarningChoseNoWarnings = true
-    var mustContainAllWarnings = false
-
-    var showCategoryGen = true
-    var showCategoryFM = true
-    var showCategoryFF = true
-    var showCategoryMM = true
-    var showCategoryMulti = true
-    var showCategoryOther = true
-
-    var showSingleChapterWorksOnly = false
-    var showCrossovers = true
-    var showNonCrossovers = true
-    var showCompletedWorks = true
-    var showIncompleteWorks = true
-
-    var hitsRange : Pair<Int, Int> = Pair(0, 0)
-    var kudosRange : Pair<Int, Int> = Pair(0, 0)
-    var commentsRange : Pair<Int, Int> = Pair(0, 0)
-    var bookmarksRange : Pair<Int, Int> = Pair(0, 0)
-    var wordCountRange : Pair<Int, Int> = Pair(0, 0)
-    var dateUpdatedRange : Pair<String, String> = Pair("", "")
-
-    var searchTerm : String = ""
-    var language : String = ""
-    var sortOrder : String = ""
+    private val BASE_QUERY_STRING = "/tags/${encodeMainTag(tagName)}/works?utf8=✓&commit=Sort+and+Filter"
     var pageNumber : Int = 1
 
-    fun updateQueryString() {
-        queryString = StringBuilder("/tags/${encodeMainTag(tagName)}/works?utf8=✓&commit=Sort+and+Filter")
-                .append(includedTagsQueryString)
-                .append(excludedTagsQueryString)
-                .append(showSingleChapterWorksOnlyQueryString)
-                .append(ratingsQueryString)
-                .append(warningsQueryString)
-                .append(crossoversQueryString)
-                .append(completionStatusQueryString)
-                .append(hitsRangeQueryString)
-                .append(kudosRangeQueryString)
-                .append(commentsRangeQueryString)
-                .append(bookmarksRangeQueryString)
-                .append(wordCountRangeQueryString)
-                .append(dateUpdatedRangeQueryString)
-                .append(languageQueryString)
-                .append(sortOrderQueryString)
-                .append(pageNumberQueryString)
-                .toString()
+    // FIXME: encoding doesn't really work well when fetching synonyms - should convert to actual synonym tag
+    var queryStringWithoutPageArgs = StringBuilder(BASE_QUERY_STRING)
+        .append(includedTagsQueryString)
+        .append(excludedTagsQueryString)
+        .append(showSingleChapterWorksOnlyQueryString)
+        .append(ratingsQueryString)
+        .append(warningsQueryString)
+        .append(crossoversQueryString)
+        .append(completionStatusQueryString)
+        .append(hitsRangeQueryString)
+        .append(kudosRangeQueryString)
+        .append(commentsRangeQueryString)
+        .append(bookmarksRangeQueryString)
+        .append(wordCountRangeQueryString)
+        .append(dateUpdatedRangeQueryString)
+        .append(languageQueryString)
+        .append(sortOrderQueryString)
+        .toString()
+
+    val queryString: String
+        get() = queryStringWithoutPageArgs + pageNumberQueryString
+
+    fun updateChoices(workFilterChoices: WorkFilterChoices) {
+        this.workFilterChoices = workFilterChoices
+        queryStringWithoutPageArgs = StringBuilder(BASE_QUERY_STRING)
+            .append(includedTagsQueryString)
+            .append(excludedTagsQueryString)
+            .append(showSingleChapterWorksOnlyQueryString)
+            .append(ratingsQueryString)
+            .append(warningsQueryString)
+            .append(crossoversQueryString)
+            .append(completionStatusQueryString)
+            .append(hitsRangeQueryString)
+            .append(kudosRangeQueryString)
+            .append(commentsRangeQueryString)
+            .append(bookmarksRangeQueryString)
+            .append(wordCountRangeQueryString)
+            .append(dateUpdatedRangeQueryString)
+            .append(languageQueryString)
+            .append(sortOrderQueryString)
+            .toString()
+        pageNumber = 1
     }
 
     /**
@@ -101,7 +86,7 @@ class WorkFilterRequest(val tagName: String) {
 
     private val includedTagsQueryString : String
         get() {
-            val tagConcat = includedTags.joinToString(
+            val tagConcat = workFilterChoices.includedTags.joinToString(
                     separator = "%2C",
                     transform = {
                         encodeAdditionalTag(it)
@@ -113,7 +98,7 @@ class WorkFilterRequest(val tagName: String) {
 
     private val excludedTagsQueryString : String
         get() {
-            val tagConcat = excludedTags.joinToString(
+            val tagConcat = workFilterChoices.excludedTags.joinToString(
                     separator = "%2C",
                     transform = {
                         encodeAdditionalTag(it)
@@ -125,7 +110,7 @@ class WorkFilterRequest(val tagName: String) {
 
     private val showSingleChapterWorksOnlyQueryString : String
         get() {
-            if (showSingleChapterWorksOnly) {
+            if (workFilterChoices.showSingleChapterWorksOnly) {
                 return "&work_search[single_chapter]=1"
             } else {
                 return ""
@@ -136,23 +121,23 @@ class WorkFilterRequest(val tagName: String) {
         get() {
             var tempRatingsQueryString = ""
 
-            if (!showRatingNotRated) {
+            if (!workFilterChoices.showRatingNotRated) {
                 tempRatingsQueryString += "&exclude_work_search[rating_ids][]=9"
             }
 
-            if (!showRatingGeneral) {
+            if (!workFilterChoices.showRatingGeneral) {
                 tempRatingsQueryString += "&exclude_work_search[rating_ids][]=10"
             }
 
-            if (!showRatingTeen) {
+            if (!workFilterChoices.showRatingTeen) {
                 tempRatingsQueryString += "&exclude_work_search[rating_ids][]=11"
             }
 
-            if (!showRatingMature) {
+            if (!workFilterChoices.showRatingMature) {
                 tempRatingsQueryString += "&exclude_work_search[rating_ids][]=12"
             }
 
-            if (!showRatingExplicit) {
+            if (!workFilterChoices.showRatingExplicit) {
                 tempRatingsQueryString += "&exclude_work_search[rating_ids][]=13"
             }
 
@@ -171,53 +156,53 @@ class WorkFilterRequest(val tagName: String) {
              */
             var tempWarningsQueryString = ""
 
-            if (mustContainAllWarnings) {
-                if (showWarningNone) {
+            if (workFilterChoices.mustContainAllWarnings) {
+                if (workFilterChoices.showWarningNone) {
                     tempWarningsQueryString += "&include_work_search[archive_warning_ids][]=16"
                 }
 
-                if (showWarningViolence) {
+                if (workFilterChoices.showWarningViolence) {
                     tempWarningsQueryString += "&include_work_search[archive_warning_ids][]=17"
                 }
 
-                if (showWarningCharacterDeath) {
+                if (workFilterChoices.showWarningCharacterDeath) {
                     tempWarningsQueryString += "&include_work_search[archive_warning_ids][]=18"
                 }
 
-                if (showWarningRape) {
+                if (workFilterChoices.showWarningRape) {
                     tempWarningsQueryString += "&include_work_search[archive_warning_ids][]=19"
                 }
 
-                if (showWarningUnderage) {
+                if (workFilterChoices.showWarningUnderage) {
                     tempWarningsQueryString += "&include_work_search[archive_warning_ids][]=20"
                 }
 
-                if (showWarningChoseNoWarnings) {
+                if (workFilterChoices.showWarningChoseNoWarnings) {
                     tempWarningsQueryString += "&include_work_search[archive_warning_ids][]=14"
                 }
 
             } else {
-                if (!showWarningNone) {
+                if (!workFilterChoices.showWarningNone) {
                     tempWarningsQueryString += "&exclude_work_search[archive_warning_ids][]=16"
                 }
 
-                if (!showWarningViolence) {
+                if (!workFilterChoices.showWarningViolence) {
                     tempWarningsQueryString += "&exclude_work_search[archive_warning_ids][]=17"
                 }
 
-                if (!showWarningCharacterDeath) {
+                if (!workFilterChoices.showWarningCharacterDeath) {
                     tempWarningsQueryString += "&exclude_work_search[archive_warning_ids][]=18"
                 }
 
-                if (!showWarningRape) {
+                if (!workFilterChoices.showWarningRape) {
                     tempWarningsQueryString += "&exclude_work_search[archive_warning_ids][]=19"
                 }
 
-                if (!showWarningUnderage) {
+                if (!workFilterChoices.showWarningUnderage) {
                     tempWarningsQueryString += "&exclude_work_search[archive_warning_ids][]=20"
                 }
 
-                if (!showWarningChoseNoWarnings) {
+                if (!workFilterChoices.showWarningChoseNoWarnings) {
                     tempWarningsQueryString += "&exclude_work_search[archive_warning_ids][]=14"
                 }
             }
@@ -227,8 +212,8 @@ class WorkFilterRequest(val tagName: String) {
 
     private val crossoversQueryString : String
         get() {
-            if (showCrossovers xor showNonCrossovers) {
-                return "&work_search[crossover]=${if (showCrossovers) "T" else "F"}"
+            if (workFilterChoices.showCrossovers xor workFilterChoices.showNonCrossovers) {
+                return "&work_search[crossover]=${if (workFilterChoices.showCrossovers) "T" else "F"}"
             } else {
                 return ""
             }
@@ -236,8 +221,8 @@ class WorkFilterRequest(val tagName: String) {
 
     private val completionStatusQueryString : String
         get() {
-            if (showCompletedWorks xor showIncompleteWorks) {
-                return "&work_search[complete]=${if (showCompletedWorks) "T" else "F"}"
+            if (workFilterChoices.showCompletedWorks xor workFilterChoices.showIncompleteWorks) {
+                return "&work_search[complete]=${if (workFilterChoices.showCompletedWorks) "T" else "F"}"
             } else {
                 return ""
             }
@@ -245,100 +230,100 @@ class WorkFilterRequest(val tagName: String) {
 
     private val hitsRangeQueryString : String
         get() {
-            if (hitsRange.first == 0 && hitsRange.second == 0 ||
-                    hitsRange.first < 0 ||
-                    hitsRange.second <= 0) {
+            if (workFilterChoices.hitsMin == 0 && workFilterChoices.hitsMax == 0 ||
+                    workFilterChoices.hitsMin < 0 ||
+                    workFilterChoices.hitsMax <= 0) {
                 return ""
-            } else if (hitsRange.first == hitsRange.second) {
-                return "&work_search[hits]=$hitsRange.first"
-            } else if (hitsRange.first == 0) {
-                return "&work_search[hits]=<$hitsRange.second"
-            } else if (hitsRange.second == 0) {
-                return "&work_search[hits]=>$hitsRange.first"
+            } else if (workFilterChoices.hitsMin == workFilterChoices.hitsMax) {
+                return "&work_search[hits]=${workFilterChoices.hitsMin}"
+            } else if (workFilterChoices.hitsMin == 0) {
+                return "&work_search[hits]=<${workFilterChoices.hitsMax}"
+            } else if (workFilterChoices.hitsMax == 0) {
+                return "&work_search[hits]=>${workFilterChoices.hitsMin}"
             }
 
-            return "&work_search[hits]=$hitsRange.first-$hitsRange.second"
+            return "&work_search[hits]=${workFilterChoices.hitsMin}-${workFilterChoices.hitsMax}"
 
         }
 
     private val kudosRangeQueryString : String
         get() {
-            if (kudosRange.first == 0 && kudosRange.second == 0) {
+            if (workFilterChoices.kudosMin == 0 && workFilterChoices.kudosMax == 0) {
                 return ""
-            } else if (kudosRange.first == kudosRange.second) {
-                return "&work_search[kudos_count]=$kudosRange.first"
-            } else if (kudosRange.first == 0) {
-                return "&work_search[kudos_count]=<$kudosRange.second"
-            } else if (kudosRange.second == 0) {
-                return "&work_search[kudos_count]=>$kudosRange.first"
+            } else if (workFilterChoices.kudosMin == workFilterChoices.kudosMax) {
+                return "&work_search[kudos_count]=${workFilterChoices.kudosMin}"
+            } else if (workFilterChoices.kudosMin == 0) {
+                return "&work_search[kudos_count]=<${workFilterChoices.kudosMax}"
+            } else if (workFilterChoices.kudosMax == 0) {
+                return "&work_search[kudos_count]=>${workFilterChoices.kudosMin}"
             }
 
-            return "&work_search[kudos_count]=$kudosRange.first-$kudosRange.second"
+            return "&work_search[kudos_count]=${workFilterChoices.kudosMin}-${workFilterChoices.kudosMax}"
 
         }
 
     private val commentsRangeQueryString : String
         // TODO: should I add happy path to the if conditions explicitly?
         get() {
-            if (commentsRange.first == 0 && commentsRange.second == 0) {
+            if (workFilterChoices.commentsMin == 0 && workFilterChoices.commentsMax == 0) {
                 return ""
-            } else if (commentsRange.first == commentsRange.second) {
-                return "&work_search[comments_count]=$commentsRange.first"
-            } else if (commentsRange.first == 0) {
-                return "&work_search[comments_count]=<$commentsRange.second"
-            } else if (commentsRange.second == 0) {
-                return "&work_search[comments_count]=>$commentsRange.first"
+            } else if (workFilterChoices.commentsMin == workFilterChoices.commentsMax) {
+                return "&work_search[comments_count]=${workFilterChoices.commentsMin}"
+            } else if (workFilterChoices.commentsMin == 0) {
+                return "&work_search[comments_count]=<${workFilterChoices.commentsMax}"
+            } else if (workFilterChoices.commentsMax == 0) {
+                return "&work_search[comments_count]=>${workFilterChoices.commentsMin}"
             }
 
-            return "&work_search[comments_count]=$commentsRange.first-$commentsRange.second"
+            return "&work_search[comments_count]=${workFilterChoices.commentsMin}-${workFilterChoices.commentsMax}"
 
         }
 
     private val bookmarksRangeQueryString : String
         get() {
-            if (bookmarksRange.first == 0 && bookmarksRange.second == 0) {
+            if (workFilterChoices.bookmarksMin == 0 && workFilterChoices.bookmarksMax == 0) {
                 return ""
-            } else if (bookmarksRange.first == bookmarksRange.second) {
-                return "&work_search[bookmarks_count]=$bookmarksRange.first"
-            } else if (bookmarksRange.first == 0) {
-                return "&work_search[bookmarks_count]=<$bookmarksRange.second"
-            } else if (bookmarksRange.second == 0) {
-                return "&work_search[bookmarks_count]=>$bookmarksRange.first"
+            } else if (workFilterChoices.bookmarksMin == workFilterChoices.bookmarksMax) {
+                return "&work_search[bookmarks_count]=${workFilterChoices.bookmarksMin}"
+            } else if (workFilterChoices.bookmarksMin == 0) {
+                return "&work_search[bookmarks_count]=<${workFilterChoices.bookmarksMax}"
+            } else if (workFilterChoices.bookmarksMax == 0) {
+                return "&work_search[bookmarks_count]=>${workFilterChoices.bookmarksMin}"
             }
 
-            return "&work_search[bookmarks_count]=$bookmarksRange.first-$bookmarksRange.second"
+            return "&work_search[bookmarks_count]=${workFilterChoices.bookmarksMin}-${workFilterChoices.bookmarksMax}"
         }
 
     private val wordCountRangeQueryString : String
         get() {
-            if (wordCountRange.first <= 0 && wordCountRange.second <= 0) {
+            if (workFilterChoices.wordCountMin <= 0 && workFilterChoices.wordCountMax <= 0) {
                 return ""
             }
-            return "&work_search[words_from]=$wordCountRange.first" +
-                    "&work_search[words_to]=$wordCountRange.second"
+            return "&work_search[words_from]=${workFilterChoices.wordCountMin}" +
+                    "&work_search[words_to]=${workFilterChoices.wordCountMax}"
         }
 
     private val dateUpdatedRangeQueryString : String
         get() {
-            if (dateUpdatedRange.first.isEmpty() || dateUpdatedRange.second.isEmpty()) {
+            if (workFilterChoices.dateUpdatedMin.isEmpty() || workFilterChoices.dateUpdatedMax.isEmpty()) {
                 return ""
-            } else if (dateUpdatedRange.second.isEmpty()) {
-                return "&work_search[date_from]=$dateUpdatedRange.first"
-            } else if (dateUpdatedRange.first.isEmpty()) {
-                return "&work_search[date_to]=$dateUpdatedRange.second"
+            } else if (workFilterChoices.dateUpdatedMax.isEmpty()) {
+                return "&work_search[date_from]=${workFilterChoices.dateUpdatedMin}"
+            } else if (workFilterChoices.dateUpdatedMin.isEmpty()) {
+                return "&work_search[date_to]=${workFilterChoices.dateUpdatedMax}"
                 // FIXME: find a new class to handle dates
             }
 
-            return "&work_search[date_from]=$dateUpdatedRange.first&work_search[date_to]=$dateUpdatedRange.second"
+            return "&work_search[date_from]=${workFilterChoices.dateUpdatedMin}&work_search[date_to]=${workFilterChoices.dateUpdatedMax}"
         }
 
     private val searchTermQueryString : String
         get() {
-            if (searchTerm.isEmpty()) {
+            if (workFilterChoices.searchTerm.isEmpty()) {
                 return ""
             }
 
-            return "&work_search[query]=$searchTerm"
+            return "&work_search[query]=${workFilterChoices.searchTerm}"
         }
 
     private val languageQueryString : String

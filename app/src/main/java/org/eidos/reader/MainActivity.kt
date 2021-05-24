@@ -6,6 +6,7 @@ import android.os.Bundle
 import androidx.lifecycle.LiveData
 import androidx.navigation.NavController
 import org.eidos.reader.databinding.ActivityMainBinding
+import timber.log.Timber
 
 class MainActivity : AppCompatActivity() {
 
@@ -73,6 +74,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onSupportNavigateUp(): Boolean {
+        Timber.i("Navigate Up Initiated, check if succeeded?")
         return currentNavController?.value?.navigateUp() ?: false
     }
 

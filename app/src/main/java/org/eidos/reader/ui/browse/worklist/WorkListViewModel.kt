@@ -57,7 +57,7 @@ class WorkListViewModel(val workFilterRequest: WorkFilterRequest) : ViewModel() 
             Timber.i("getNextPage() called")
 
             workFilterRequest.pageNumber = largestPageNumber
-            workFilterRequest.updateQueryString()
+//            workFilterRequest.updateQueryString()
 
             val currentList : MutableList<WorkBlurb> = workBlurbs.value!!.toMutableList()
 
@@ -82,95 +82,4 @@ class WorkListViewModel(val workFilterRequest: WorkFilterRequest) : ViewModel() 
      * This method expects the input to be the full state of the form, not the diff.
      */
     // FIXME: This is tightly coupled to the workFilterRequest
-    fun updateWorkFilter(
-            includedTags: List<String> = emptyList(),
-            excludedTags: List<String> = emptyList(),
-
-            showRatingGeneral: Boolean = true,
-            showRatingTeen: Boolean = true,
-            showRatingMature: Boolean = true,
-            showRatingExplicit: Boolean = true,
-            showRatingNotRated: Boolean = true,
-
-            showWarningNone: Boolean = true,
-            showWarningViolence: Boolean = true,
-            showWarningCharacterDeath: Boolean = true,
-            showWarningUnderage: Boolean = true,
-            showWarningRape: Boolean = true,
-            showWarningChoseNoWarnings: Boolean = true,
-            mustContainAllWarnings: Boolean = false,
-
-            showCategoryGen: Boolean = true,
-            showCategoryFM: Boolean = true,
-            showCategoryFF: Boolean = true,
-            showCategoryMM: Boolean = true,
-            showCategoryMulti: Boolean = true,
-            showCategoryOther: Boolean = true,
-
-            showSingleChapterWorksOnly: Boolean = false,
-            showCrossovers: Boolean = true,
-            showNonCrossovers: Boolean = true,
-            showCompletedWorks: Boolean = true,
-            showIncompleteWorks: Boolean = true,
-
-            hitsRange: Pair<Int, Int> = Pair(0, 0),
-            kudosRange: Pair<Int, Int> = Pair(0, 0),
-            commentsRange: Pair<Int, Int> = Pair(0, 0),
-            bookmarksRange: Pair<Int, Int> = Pair(0, 0),
-            wordCountRange: Pair<Int, Int> = Pair(0, 0),
-            dateUpdatedRange: Pair<String, String> = Pair("", ""),
-
-            searchTerm: String = "",
-            language: String = "",
-            sortOrder: String = "",
-            pageNumber: Int = 1
-    ) {
-        workFilterRequest.includedTags = includedTags
-        workFilterRequest.excludedTags = excludedTags
-
-        workFilterRequest.showRatingGeneral = showRatingGeneral
-        workFilterRequest.showRatingTeen = showRatingTeen
-        workFilterRequest.showRatingMature = showRatingMature
-        workFilterRequest.showRatingExplicit = showRatingExplicit
-        workFilterRequest.showRatingNotRated = showRatingNotRated
-
-        workFilterRequest.showWarningCharacterDeath = showWarningCharacterDeath
-        workFilterRequest.showWarningChoseNoWarnings = showWarningChoseNoWarnings
-        workFilterRequest.showWarningNone = showWarningNone
-        workFilterRequest.showWarningRape = showWarningRape
-        workFilterRequest.showWarningUnderage = showWarningUnderage
-        workFilterRequest.showWarningViolence = showWarningViolence
-        workFilterRequest.mustContainAllWarnings = mustContainAllWarnings
-
-        workFilterRequest.showCategoryGen = showCategoryGen
-        workFilterRequest.showCategoryFF = showCategoryFF
-        workFilterRequest.showCategoryFM = showCategoryFM
-        workFilterRequest.showCategoryMM = showCategoryMM
-        workFilterRequest.showCategoryMulti = showCategoryMulti
-        workFilterRequest.showCategoryOther = showCategoryOther
-
-        workFilterRequest.showSingleChapterWorksOnly = showSingleChapterWorksOnly
-        workFilterRequest.showCompletedWorks = showCompletedWorks
-        workFilterRequest.showIncompleteWorks = showIncompleteWorks
-        workFilterRequest.showCrossovers = showCrossovers
-        workFilterRequest.showNonCrossovers = showNonCrossovers
-
-        workFilterRequest.hitsRange = hitsRange
-        workFilterRequest.kudosRange = kudosRange
-        workFilterRequest.commentsRange = commentsRange
-        workFilterRequest.bookmarksRange = bookmarksRange
-        workFilterRequest.wordCountRange = wordCountRange
-        workFilterRequest.dateUpdatedRange = dateUpdatedRange
-
-        workFilterRequest.searchTerm = searchTerm
-        workFilterRequest.language = language
-        workFilterRequest.sortOrder = sortOrder
-        workFilterRequest.pageNumber = pageNumber
-
-        // update the string
-        workFilterRequest.updateQueryString()
-
-        // resubmit request
-        initialiseWorkBlurbs()
-    }
 }

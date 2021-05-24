@@ -81,24 +81,24 @@ class WorkBlurbAdapter(private val onClickAction: (View, WorkBlurb) -> Unit) : R
 
 
             binding.workWarnings.text = item.warnings
-                    .fold(StringBuilder()) { acc, next -> acc.append(next).append(" · ") }
-                    .removeSuffix(" · ")
+                    .fold(StringBuilder()) { acc, next -> acc.append(next).append(", ") }
+                    .removeSuffix(", ")
                     .toString()
             binding.workCategories.text = item.categories
-                    .fold(StringBuilder()) { acc, next -> acc.append(next).append(" · ")}
-                    .removeSuffix(" · ")
+                    .fold(StringBuilder()) { acc, next -> acc.append(next).append(", ")}
+                    .removeSuffix(", ")
                     .toString()
             binding.workRelationships.text = item.relationships
-                    .fold(StringBuilder()) { acc, next -> acc.append(next).append(" · ") }
-                    .removeSuffix(" · ")
+                    .fold(StringBuilder()) { acc, next -> acc.append(next).append(", ") }
+                    .removeSuffix(", ")
                     .toString()
             binding.workCharacters.text = item.characters
-                    .fold(StringBuilder()) { acc, next -> acc.append(next).append(" · ") }
-                    .removeSuffix(" · ")
+                    .fold(StringBuilder()) { acc, next -> acc.append(next).append(", ") }
+                    .removeSuffix(", ")
                     .toString()
             binding.workFreeforms.text = item.freeforms
-                    .fold(StringBuilder()) { acc, next -> acc.append(next).append(" · ") }
-                    .removeSuffix(" · ")
+                    .fold(StringBuilder()) { acc, next -> acc.append(next).append(", ") }
+                    .removeSuffix(", ")
                     .toString()
 
             binding.workSummary.text = HtmlCompat.fromHtml(item.summary, HtmlCompat.FROM_HTML_MODE_LEGACY)
@@ -106,7 +106,7 @@ class WorkBlurbAdapter(private val onClickAction: (View, WorkBlurb) -> Unit) : R
             binding.workLanguage.text = item.language
             binding.workWordCount.text = formatNumber(item.wordCount)
             binding.workChapters.text = "${item.chapterCount}/${if (item.maxChapters == 0) "?" else item.maxChapters.toString()}"
-            binding.workDateUpdated.text = "18-02-20"
+            binding.workDateUpdated.text = item.lastUpdatedDate
             binding.workKudos.text = formatNumber(item.kudosCount)
             binding.workComments.text = formatNumber(item.commentsCount)
             binding.workBookmarks.text = formatNumber(item.bookmarksCount)
