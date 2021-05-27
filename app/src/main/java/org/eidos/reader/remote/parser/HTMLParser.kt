@@ -1,16 +1,14 @@
 package org.eidos.reader.remote.parser
 
-import org.eidos.reader.model.Chapter
-import org.eidos.reader.model.Work
-import org.eidos.reader.model.WorkBlurb
+import org.eidos.reader.model.*
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
+import org.jsoup.nodes.Element
 import org.jsoup.select.Elements
-import timber.log.Timber
 
 class HTMLParser {
     /**
-     * Extracts the list of works from the http file.
+     * Extracts the list of works from the html file.
      * Selector syntax can be found at https://jsoup.org/cookbook/extracting-data/selector-syntax
      */
     fun parseWorksList(html: String) : List<WorkBlurb> {
@@ -83,7 +81,7 @@ class HTMLParser {
         return workBlurbList
     }
 
-    fun parseWorkAlternate(workHtml: String, navigationHtml: String, workURL: String) : Work {
+    fun parseWork(workHtml: String, navigationHtml: String, workURL: String) : Work {
         val workDoc = Jsoup.parse(workHtml)
         val navigationDoc = Jsoup.parse(navigationHtml)
         // get the list of URLs to zip with the contents later
@@ -279,6 +277,138 @@ class HTMLParser {
         return work
     }
 
+    fun parseCommentsJS(js: String) : List<Comment> {
+        /*
+        As of 26 May 2021, the response script contains 12 lines - 11 lines with content and one
+        empty line.
+        The ordered list of comments starts at line 7, and the closing tag is at line 8.
+         */
+
+        val lines = js.lines()
+        val commentsOrderedListHTML = lines[6]
+            .removePrefix("\$j(\"#comments_placeholder\").append(\"")
+            .removeSuffix("\");")
+            .plus("</ol>")
+
+        val doc = Jsoup.parseBodyFragment(commentsOrderedListHTML)
+
+        // ol.thread > li.comment gets all comments, but without info about their depth
+        // body > ol.thread > li.comment gets top level lists (whether comment or thread)
+        val commentThreadObjects = doc.select("body > ol.thread > li")  // with hierarchy
+        val commentObjects = doc.select("ol.thread > li.comment") // flattened
+
+        val commentDepths = commentThreadObjects.map { it -> getCommentDepth(it) }
+
+        // "more comments" links appear at the same depth as the last visible comment in a thread,
+        // right below it.
+
+        // IDEA: add the information about the hidden comments to the comment above the link,
+        // and toss the link away
+        // e.g. ... comment, link, ..., we put info from link into the comment before it, and
+        // discard link
+
+        /*
+        Structure of link:
+        <li.comment>
+            <p>
+                <a href="/comments/$PREVIOUS_COMMENT_ID">some string</a>
+            </p>
+        </li>
+
+        Structure of actual comment:
+        <li.comment.group.even>
+            <h4>
+                <a href>$USERNAME</a>
+        </li>
+        TODO: Refer to bottom for sample comment
+
+         */
+
+        val comments: MutableList<Comment> = mutableListOf<Comment>()
+        for ((commentObject, depth) in commentObjects zip commentDepths) {
+            // check for a href
+            // if a href="/comments/$PREVIOUS_COMMENT_ID", this hides previous comments
+            // else this refers to a non-anonymous user
+
+            // if no a href then this is an anon user.
+
+            val registeredUserHeaderElement = commentObject.selectFirst("h4.heading > a[href]")
+
+            if (registeredUserHeaderElement != null) {
+                // registered user
+                // href already selected
+                val userURL = registeredUserHeaderElement.attr("href")
+                // URL must be of format /users/$USERNAME/pseuds/$PSEUDONYM
+                val temp = userURL.removePrefix("/users/").split("/pseuds/")
+
+                val author = Pseud(temp[0], temp[1])
+                val chapter = commentObject.selectFirst("h4.heading > span.parent")
+                    .ownText()
+                    .removePrefix("on Chapter ")
+                    .toInt()
+                val datetime = commentObject.selectFirst("h4.heading > span.datetime").text()
+                val body = commentObject.selectFirst("h4.heading > blockquote.userstuff").wholeText()
+                val commentID = commentObject.id().removePrefix("comment_")
+
+                val newComment = Comment(
+                    commentID = commentID,
+                    author = author,
+                    chapter = chapter,
+                    postedDateTime = datetime,
+                    body = body,
+                    commentDepth = depth
+                )
+
+                comments.add(newComment)
+            } else {
+                val anonymousUserHeaderElement = commentObject.selectFirst("h4.heading")
+
+                if (anonymousUserHeaderElement != null) {
+                    // anonymous user
+                    // basically the same as the registered user case, except that the author changes
+                    val username = anonymousUserHeaderElement.ownText()
+
+                    val author = AnonymousUser(username)
+                    val chapter = commentObject.selectFirst("h4.heading > span.parent")
+                        .ownText()
+                        .removePrefix("on Chapter ")
+                        .toInt()
+                    val datetime = commentObject.selectFirst("h4.heading > span.datetime").text()
+                    val body = commentObject.selectFirst("h4.heading > blockquote.userstuff").wholeText()
+                    val commentID = commentObject.id().removePrefix("comment_")
+
+                    val newComment = Comment(
+                        commentID = commentID,
+                        author = author,
+                        chapter = chapter,
+                        postedDateTime = datetime,
+                        body = body,
+                        commentDepth = depth
+                    )
+
+                    comments.add(newComment)
+                } else {
+                    // hidden comment
+                    val numCommentsHidden = commentObject.selectFirst("p > a[href]")
+                        .text() // Format: "11 more comments in this thread"
+                        .removeSuffix(" more comments in this thread")
+                        .toInt()
+
+                    val previousComment = comments.last()
+
+                    // replace last comment with new comment that has $numCommentsHidden
+                    // hidden children
+                    comments[comments.lastIndex] = previousComment.copy(
+                        hasHiddenChildren = true,
+                        numHiddenChildren = numCommentsHidden
+                    )
+                }
+            }
+        }
+
+        return comments
+    }
+
     /* Auxiliary small functions that should not be called from anywhere other than this class */
     private fun getPreWorkNotes(doc: Document) : String {
         val preWorkNotes : String = doc
@@ -299,4 +429,54 @@ class HTMLParser {
 
         return postWorkNotes
     }
+
+    private fun getCommentDepth(topLevelCommentHTML: Element) : Int {
+        var currentDepth = 0
+        var temp = topLevelCommentHTML
+
+        while (temp != null) {
+            temp = temp.selectFirst("ol.thread > li")
+            currentDepth += 1
+        }
+
+        return currentDepth
+        // currentDepth is guaranteed to be >= 1
+    }
 }
+
+/*
+<li class="comment group even" id="comment_282123784" role="article">
+        <h4 class="heading byline">
+                    <a href="/users/ASWF/pseuds/ASWF">ASWF</a>
+          <span class="posted datetime">
+            <abbr class="day" title="Tuesday">Tue</abbr> <span class="date">18</span>
+                                                 <abbr class="month" title="February">Feb</abbr> <span class="year">2020</span>
+                                                 <span class="time">07:20PM</span> <abbr class="timezone" title="Eastern Time (US &amp; Canada)">EST</abbr>
+          </span>
+        </h4>
+        <div class="icon">
+                  <a href="/users/ASWF/pseuds/ASWF"><img alt="" class="icon" src="https://s3.amazonaws.com/otw-ao3-icons/icons/285992/standard.PNG?1508376654"></a>
+        </div>
+        <blockquote class="userstuff"><p>Site owner pays site servers etc, knowing they need it for their site to work. </p><p>These apps sell fanfic. Content creators did not consent, and gain nothing. <br>App users pay in money, user data and seeing ads. </p><p>And i would not have consented anyway, even if someone asked (they did not) or granted me a contract (they did not). <br>I would've become a writer if i'd wanted to sell my words. </p><p>Also: other writers got their polite requests to take down their work rejected (see other comments). Only the DMCAs got through. Do not pretend that FPAL understands consent or the concept of artistic rights. </p><p>Whatever your personal interest in FPAL is, DMCAs do not go through for no reason. </p><p>i actually code professionally in real life, and hope to gods that this level of logic is not coming from a fellow colleague.</p></blockquote>
+      <!-- end caching -->
+
+      <h5 class="landmark heading">Comment Actions</h5>
+
+<ul class="actions" id="navigation_for_comment_282123784">
+    <li id="add_comment_reply_link_282123784"><a data-remote="true" href="/comments/add_comment_reply?admin_post_id=15103&amp;id=282123784&amp;page=2">Reply</a></li>
+    <li><a href="/comments/282123784">Thread</a></li>
+      <li>
+        <a href="/comments/281866159">Parent Thread</a>
+      </li>
+</ul>
+
+<!-- this is where the comment delete confirmation will be displayed if we have javascript -->
+<!-- if not, here is where we will render the delete-comment form -->
+  <div id="delete_comment_placeholder_282123784" style="display:none;">
+  </div>
+
+    <div id="add_comment_reply_placeholder_282123784" style="display: none;">
+    </div>
+
+</li>
+ */

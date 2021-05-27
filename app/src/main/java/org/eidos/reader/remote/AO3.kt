@@ -5,13 +5,19 @@ import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import org.eidos.reader.model.Work
 import org.eidos.reader.model.WorkBlurb
 import org.eidos.reader.network.Network
-import okhttp3.OkHttpClient
+import org.eidos.reader.model.Comment
 import org.eidos.reader.remote.parser.HTMLParser
 import org.eidos.reader.remote.requests.AutocompleteRequest
+import org.eidos.reader.remote.requests.CommentsRequest
 import org.eidos.reader.remote.requests.WorkFilterRequest
 import org.eidos.reader.remote.requests.WorkRequest
 
-class AO3(private val network: Network = Network(), private val parser: HTMLParser = HTMLParser()) {
+class AO3
+    constructor(
+        private val network: Network = Network(),
+        private val parser: HTMLParser = HTMLParser()
+    )
+{
 
     private val moshi: Moshi = Moshi.Builder()
         .addLast(KotlinJsonAdapterFactory())
@@ -44,7 +50,7 @@ class AO3(private val network: Network = Network(), private val parser: HTMLPars
         try {
             val workResponseBody = network.get(workUrlString)
             val navigationIndexResponseBody = network.get(navigationIndexUrlString)
-            return parser.parseWorkAlternate(
+            return parser.parseWork(
                     workHtml = workResponseBody,
                     navigationHtml = navigationIndexResponseBody,
                     workURL = workRequest.url
@@ -54,8 +60,6 @@ class AO3(private val network: Network = Network(), private val parser: HTMLPars
         }
     }
 
-    /* SEARCH FUNCTIONS */
-    // FIXME: autocomplete results dont fetch unless a prior request was fired off from the actual site
     fun getAutocompleteResults(autocompleteRequest: AutocompleteRequest) : List<String> {
         val urlString = "https://archiveofourown.org/autocomplete" + autocompleteRequest.queryString
         println(urlString)
@@ -83,6 +87,18 @@ class AO3(private val network: Network = Network(), private val parser: HTMLPars
         }
 
         return results
+    }
+
+    fun getComments(commentsRequest: CommentsRequest) : List<Comment> {
+        val urlString = "https://archiveofourown.org${commentsRequest.queryString}"
+
+        val responseBody: String = try {
+            network.getJS(urlString)
+        } catch (e: Network.NetworkException) {
+            throw e
+        }
+
+        return parser.parseCommentsJS(responseBody)
     }
 
     private class AutocompleteResult(

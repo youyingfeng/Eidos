@@ -9,5 +9,6 @@ data class Chapter(
     val postChapterNotes: String,
     val chapterURL : String
 ) {
-
+    // gets the part after "/chapters/"
+    val chapterID: String = chapterURL.split("/chapters/")[1]
 }
