@@ -155,12 +155,16 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                android:id="@+id/commentsSwipeRefresh"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:minHeight="48dp">
 
                 <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/commentsDisplay"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    android:layout_height="match_parent"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
             </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
         </LinearLayout>
 

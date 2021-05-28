@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import org.eidos.reader.model.Comment
 
 import org.eidos.reader.model.WorkBlurb
 import org.eidos.reader.remote.requests.WorkFilterRequest

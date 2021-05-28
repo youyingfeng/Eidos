@@ -93,12 +93,14 @@ class AO3
         val urlString = "https://archiveofourown.org${commentsRequest.queryString}"
 
         val responseBody: String = try {
-            network.getJS(urlString)
+            network.get(urlString)
         } catch (e: Network.NetworkException) {
             throw e
         }
 
-        return parser.parseCommentsJS(responseBody)
+//        println(responseBody)
+
+        return parser.parseCommentsHTML(responseBody)
     }
 
     private class AutocompleteResult(

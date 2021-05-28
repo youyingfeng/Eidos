@@ -9,7 +9,9 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.eidos.reader.model.Comment
 import org.eidos.reader.model.Work
+import org.eidos.reader.remote.requests.CommentsRequest
 import org.eidos.reader.remote.requests.WorkRequest
 import org.eidos.reader.repository.EidosRepository
 import timber.log.Timber
@@ -113,5 +115,30 @@ class WorkReaderViewModel(private var workURL: String) : ViewModel() {
         _currentChapterTitle.postValue(work.chapters[currentChapterIndex].title)
         _currentChapterIndicatorString.postValue("${currentChapterIndex + 1}/${work.chapterCount}"
         )
+    }
+
+    /* COMMENTS */
+    private var _comments = MutableLiveData<List<Comment>>(emptyList())
+    val comments: LiveData<List<Comment>>
+        get() = _comments
+
+    private val commentsPage = 1
+
+    fun getNextCommentsPage() {
+        Timber.i("getNextCommentsPage called!")
+        viewModelScope.launch(Dispatchers.IO) {
+            val commentsRequest = CommentsRequest(
+                work.chapters[currentChapterIndex].chapterID,
+                commentsPage
+            )
+
+            val newComments = EidosRepository.getCommentsFromAO3(commentsRequest)
+
+            var currentList = comments.value!!.toMutableList()
+            currentList.addAll(newComments)
+            _comments.postValue(currentList)
+            Timber.i("currentlist size = ${currentList.size}")
+            Timber.i("getNextCommentsPage posted!")
+        }
     }
 }

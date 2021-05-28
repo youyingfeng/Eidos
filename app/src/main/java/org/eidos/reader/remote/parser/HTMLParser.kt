@@ -4,6 +4,8 @@ import org.eidos.reader.model.*
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.jsoup.nodes.Element
+import org.jsoup.nodes.Entities
+import org.jsoup.parser.Parser
 import org.jsoup.select.Elements
 
 class HTMLParser {
@@ -285,17 +287,30 @@ class HTMLParser {
          */
 
         val lines = js.lines()
-        val commentsOrderedListHTML = lines[6]
+
+        var commentsOrderedListHTML = lines[6]
             .removePrefix("\$j(\"#comments_placeholder\").append(\"")
             .removeSuffix("\");")
             .plus("</ol>")
 
-        val doc = Jsoup.parseBodyFragment(commentsOrderedListHTML)
+//        commentsOrderedListHTML = Parser.unescapeEntities(commentsOrderedListHTML, false)
+
+        println(commentsOrderedListHTML)
+
+        var doc = Jsoup.parseBodyFragment(commentsOrderedListHTML)
+//        doc.outputSettings().escapeMode(Entities.EscapeMode.xhtml)
+
+//        println(Parser.unescapeEntities(doc.html(), false))
+//
+//        doc = Jsoup.parse(commentsOrderedListHTML)
+
 
         // ol.thread > li.comment gets all comments, but without info about their depth
         // body > ol.thread > li.comment gets top level lists (whether comment or thread)
         val commentThreadObjects = doc.select("body > ol.thread > li")  // with hierarchy
         val commentObjects = doc.select("ol.thread > li.comment") // flattened
+
+        println("comments = ${commentThreadObjects.size}")
 
         val commentDepths = commentThreadObjects.map { it -> getCommentDepth(it) }
 
@@ -409,6 +424,132 @@ class HTMLParser {
         return comments
     }
 
+    fun parseCommentsHTML(html: String) : List<Comment> {
+
+        val doc = Jsoup.parseBodyFragment(html)
+        val commentsPlaceholder = doc.getElementById("comments_placeholder")
+
+        // ol.thread > li.comment gets all comments, but without info about their depth
+        // body > ol.thread > li.comment gets top level lists (whether comment or thread)
+//        val commentThreadObjects = doc.select("div#comments_placeholder > ol.thread > li")  // with hierarchy
+        val commentThreadObjects = commentsPlaceholder.select("div#comments_placeholder > ol.thread > li")
+        val commentObjects = commentsPlaceholder.select("ol.thread > li.comment") // flattened
+
+        println("comments = ${commentObjects.size}")
+
+        val commentDepths = commentThreadObjects.map { it -> getCommentDepth(it) }
+
+        // "more comments" links appear at the same depth as the last visible comment in a thread,
+        // right below it.
+
+        // IDEA: add the information about the hidden comments to the comment above the link,
+        // and toss the link away
+        // e.g. ... comment, link, ..., we put info from link into the comment before it, and
+        // discard link
+
+        /*
+        Structure of link:
+        <li.comment>
+            <p>
+                <a href="/comments/$PREVIOUS_COMMENT_ID">some string</a>
+            </p>
+        </li>
+
+        Structure of actual comment:
+        <li.comment.group.even>
+            <h4>
+                <a href>$USERNAME</a>
+        </li>
+        TODO: Refer to bottom for sample comment
+
+         */
+
+        val comments: MutableList<Comment> = mutableListOf<Comment>()
+        for ((commentObject, depth) in commentObjects zip commentDepths) {
+            // check for a href
+            // if a href="/comments/$PREVIOUS_COMMENT_ID", this hides previous comments
+            // else this refers to a non-anonymous user
+
+            // if no a href then this is an anon user.
+            println(commentObject)
+
+            val registeredUserHeaderElement = commentObject.selectFirst("h4.heading > a[href]")
+
+            if (registeredUserHeaderElement != null) {
+                // registered user
+                // href already selected
+                val userURL = registeredUserHeaderElement.attr("href")
+                // URL must be of format /users/$USERNAME/pseuds/$PSEUDONYM
+                val temp = userURL.removePrefix("/users/").split("/pseuds/")
+
+                val author = Pseud(temp[0], temp[1])
+                val chapter = commentObject.selectFirst("h4.heading > span.parent")
+                    .ownText()
+                    .removePrefix("on Chapter ")
+                    .toInt()
+                val datetime = commentObject.selectFirst("h4.heading > span.posted.datetime").text()
+                val body = commentObject.selectFirst("li.comment > blockquote.userstuff").wholeText()
+                val commentID = commentObject.id().removePrefix("comment_")
+
+                val newComment = Comment(
+                    commentID = commentID,
+                    author = author,
+                    chapter = chapter,
+                    postedDateTime = datetime,
+                    body = body,
+                    commentDepth = depth
+                )
+
+                comments.add(newComment)
+            } else {
+                val anonymousUserHeaderElement = commentObject.selectFirst("h4.heading")
+
+                if (anonymousUserHeaderElement != null) {
+                    // anonymous user
+                    // basically the same as the registered user case, except that the author changes
+                    val username = anonymousUserHeaderElement.ownText()
+
+                    val author = AnonymousUser(username)
+                    val chapter = commentObject.selectFirst("h4.heading > span.parent")
+                        .ownText()
+                        .removePrefix("on Chapter ")
+                        .toInt()
+                    val datetime = commentObject.selectFirst("h4.heading > span.datetime").text()
+                    val body = commentObject.selectFirst("h4.heading > blockquote.userstuff").wholeText()
+                    val commentID = commentObject.id().removePrefix("comment_")
+
+                    val newComment = Comment(
+                        commentID = commentID,
+                        author = author,
+                        chapter = chapter,
+                        postedDateTime = datetime,
+                        body = body,
+                        commentDepth = depth
+                    )
+
+                    comments.add(newComment)
+                } else {
+                    // hidden comment
+                    val numCommentsHidden = commentObject.selectFirst("p > a[href]")
+                        .text() // Format: "11 more comments in this thread"
+                        .removeSuffix(" more comments in this thread")
+                        .toInt()
+
+                    val previousComment = comments.last()
+
+                    // replace last comment with new comment that has $numCommentsHidden
+                    // hidden children
+                    comments[comments.lastIndex] = previousComment.copy(
+                        hasHiddenChildren = true,
+                        numHiddenChildren = numCommentsHidden
+                    )
+                }
+            }
+        }
+
+        return comments
+    }
+
     /* Auxiliary small functions that should not be called from anywhere other than this class */
     private fun getPreWorkNotes(doc: Document) : String {
         val preWorkNotes : String = doc
@@ -432,7 +573,7 @@ class HTMLParser {
 
     private fun getCommentDepth(topLevelCommentHTML: Element) : Int {
         var currentDepth = 0
-        var temp = topLevelCommentHTML
+        var temp: Element? = topLevelCommentHTML
 
         while (temp != null) {
             temp = temp.selectFirst("ol.thread > li")

@@ -2,10 +2,12 @@ package org.eidos.reader.repository
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
+import org.eidos.reader.model.Comment
 import org.eidos.reader.model.Work
 import org.eidos.reader.model.WorkBlurb
 import org.eidos.reader.remote.AO3
 import org.eidos.reader.remote.requests.AutocompleteRequest
+import org.eidos.reader.remote.requests.CommentsRequest
 import org.eidos.reader.remote.requests.WorkFilterRequest
 import org.eidos.reader.remote.requests.WorkRequest
 
@@ -31,6 +33,10 @@ object EidosRepository {
 
     fun getAutocompleteResultsFromAO3(autocompleteRequest: AutocompleteRequest): List<String> {
         return remote.getAutocompleteResults(autocompleteRequest)
+    }
+
+    fun getCommentsFromAO3(commentsRequest: CommentsRequest): List<Comment> {
+        return remote.getComments(commentsRequest)
     }
 
     // TODO: Change the repo and VM to use flows
