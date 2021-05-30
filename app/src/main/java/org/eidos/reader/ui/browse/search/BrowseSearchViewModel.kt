@@ -4,9 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.launch
 import org.eidos.reader.R
 import org.eidos.reader.remote.requests.*
 import org.eidos.reader.repository.EidosRepository
@@ -19,9 +18,21 @@ class BrowseSearchViewModel : ViewModel() {
     val autocompleteResults : LiveData<List<String>>
         get() = _autocompleteResults
 
+    private lateinit var currentRunningJob: Job
+
     fun fetchAutocompleteResults(searchInput: String, searchTypeID: Int) {
-        viewModelScope.launch(Dispatchers.IO) {
-            _autocompleteResults.postValue(getAutocompleteResults(searchInput, searchTypeID))
+        // FIXME: This is a hacky ass fix - nested coroutines? wtf bro.
+        // FIXME: but it works.
+        viewModelScope.launch {
+            if (::currentRunningJob.isInitialized) {
+                currentRunningJob.cancelAndJoin()
+            }
+
+            currentRunningJob = viewModelScope.launch(Dispatchers.IO) {
+                delay(100L)
+                val result = getAutocompleteResults(searchInput, searchTypeID)
+                _autocompleteResults.postValue(result)
+            }
         }
     }
 

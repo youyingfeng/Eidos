@@ -18,6 +18,7 @@ import org.eidos.reader.R
 import org.eidos.reader.databinding.FragmentBrowseSearchBinding
 import org.eidos.reader.ui.misc.autocomplete.AutocompleteStringAdapter
 import org.eidos.reader.ui.misc.utilities.Utilities.Companion.hideKeyboard
+import timber.log.Timber
 
 class BrowseSearchFragment : Fragment() {
 
@@ -32,7 +33,7 @@ class BrowseSearchFragment : Fragment() {
     private val binding get() = _binding!!
 
     // FIXME: should I dump this in ViewModel? Technically I don't do much processing on this.
-    private lateinit var queryTextChangedJob: Job
+//    private lateinit var queryTextChangedJob: Job
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -66,31 +67,19 @@ class BrowseSearchFragment : Fragment() {
             android.widget.SearchView.OnQueryTextListener {
 
             override fun onQueryTextSubmit(query: String?): Boolean {
-                if (::queryTextChangedJob.isInitialized) {
-                    queryTextChangedJob.cancel()
+                query?.let {
+                    viewModel.fetchAutocompleteResults(it, binding.searchTypeChipGroup.checkedChipId)
                 }
 
-                queryTextChangedJob = lifecycleScope.launch(Dispatchers.IO) {
-                    delay(100L)
-                    query?.let { viewModel.fetchAutocompleteResults(it,
-                        binding.searchTypeChipGroup.checkedChipId) }
-                }
-
-                return false
+                return true
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                if (::queryTextChangedJob.isInitialized) {
-                    queryTextChangedJob.cancel()
+                newText?.let {
+                    viewModel.fetchAutocompleteResults(it, binding.searchTypeChipGroup.checkedChipId)
                 }
 
-                queryTextChangedJob = lifecycleScope.launch(Dispatchers.IO) {
-                    delay(100L)
-                    newText?.let { viewModel.fetchAutocompleteResults(it,
-                        binding.searchTypeChipGroup.checkedChipId) }
-                }
-
-                return false
+                return true
             }
 
         })
@@ -107,15 +96,8 @@ class BrowseSearchFragment : Fragment() {
                 R.id.usersChip -> binding.searchView.queryHint = "Search for users"
             }
 
-            // Fetches new results from the repository
-            if (::queryTextChangedJob.isInitialized) {
-                queryTextChangedJob.cancel()
-            }
-
-            queryTextChangedJob = lifecycleScope.launch(Dispatchers.IO) {
-                delay(100L)
-                binding.searchView.query?.let { viewModel.fetchAutocompleteResults(it.toString(),
-                    binding.searchTypeChipGroup.checkedChipId) }
+            binding.searchView.query?.let {
+                viewModel.fetchAutocompleteResults(it.toString(), binding.searchTypeChipGroup.checkedChipId)
             }
         }
 
