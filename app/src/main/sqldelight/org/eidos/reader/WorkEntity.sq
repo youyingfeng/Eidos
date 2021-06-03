@@ -1,17 +1,21 @@
+import kotlin.collections.List;
+import org.eidos.reader.model.Chapter;
+
 CREATE TABLE SavedWork (
-    workURL TEXT,
+    workURL TEXT PRIMARY KEY,
     title TEXT,
-    authors TEXT,
+    authors TEXT AS List<String>,
+    giftees TEXT AS List<String>,
     publishedDate TEXT,
     lastUpdatedDate TEXT,
-    fandoms BLOB,
+    fandoms TEXT AS List<String>,
     rating INTEGER,
-    warnings TEXT,
-    categories TEXT,
+    warnings TEXT AS List<String>,
+    categories TEXT AS List<String>,
     completionStatus INTEGER,
-    characters TEXT,
-    relationships TEXT,
-    freeforms TEXT,
+    characters TEXT AS List<String>,
+    relationships TEXT AS List<String>,
+    freeforms TEXT AS List<String>,
     summary TEXT,
     language TEXT,
     wordCount INTEGER,
@@ -19,9 +23,45 @@ CREATE TABLE SavedWork (
     maxChapters INTEGER,
     -- leave out hits, comments, bookmarks, and kudos, for they are temporary
     preWorkNotes TEXT,
-    chapters BLOB,
+    chapters BLOB  AS List<Chapter>,
     postWorkNotes TEXT
 );
+
+-- CREATE TABLE SavedWorkAuthor (
+--     workURL TEXT,
+--     author TEXT
+-- );
+--
+-- CREATE TABLE SavedWorkFandom (
+--     workURL TEXT,
+--     fandom TEXT
+-- );
+--
+-- CREATE TABLE SavedWorkWarning (
+--     workURL TEXT,
+--     warning TEXT
+-- );
+--
+-- CREATE TABLE SavedWorkCategory (
+--     workURL TEXT,
+--     category TEXT
+-- );
+--
+-- CREATE TABLE SavedWorkCharacter (
+--     workURL TEXT,
+--     character TEXT
+-- );
+--
+-- CREATE TABLE SavedWorkRelationship (
+--     workURL TEXT,
+--     relationship TEXT
+-- );
+--
+-- CREATE TABLE SavedWorkFreeform (
+--     workURL TEXT,
+--     freeform TEXT
+-- );
+
 
 getWorksCount:
 SELECT COUNT(*)
@@ -30,6 +70,29 @@ FROM SavedWork;
 insert:
 INSERT INTO SavedWork
 VALUES ?;
+
+getAllWorkBlurbs:
+SELECT
+workURL,
+title,
+authors,
+lastUpdatedDate,
+fandoms,
+rating,
+warnings,
+categories,
+summary,
+language,
+wordCount,
+chapterCount,
+maxChapters
+FROM SavedWork;
+
+getWork:
+SELECT *
+FROM SavedWork
+WHERE workURL = ?
+LIMIT 1;
 
 
 
