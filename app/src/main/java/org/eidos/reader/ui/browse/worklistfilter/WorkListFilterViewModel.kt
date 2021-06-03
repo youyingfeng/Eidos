@@ -9,7 +9,12 @@ import kotlinx.coroutines.launch
 import org.eidos.reader.remote.requests.TagAutocompleteRequest
 import org.eidos.reader.repository.EidosRepository
 
-class WorkListFilterViewModel : ViewModel() {
+class WorkListFilterViewModel
+    constructor(
+        private val repository: EidosRepository
+    )
+    : ViewModel()
+{
     /**
      * We can use one LiveData field to supply results for multiple input fields, because only one
      * input field can be active at any given time.
@@ -69,6 +74,6 @@ class WorkListFilterViewModel : ViewModel() {
 
     private suspend fun getAutocompleteResults(searchInput: String) : List<String> {
         val autocompleteRequest = TagAutocompleteRequest(searchInput)
-        return EidosRepository.getAutocompleteResultsFromAO3(autocompleteRequest)
+        return repository.getAutocompleteResultsFromAO3(autocompleteRequest)
     }
 }

@@ -1,7 +1,5 @@
 package org.eidos.reader.repository
 
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOf
 import org.eidos.reader.model.Comment
 import org.eidos.reader.model.Work
 import org.eidos.reader.model.WorkBlurb
@@ -20,29 +18,26 @@ import org.eidos.reader.remote.requests.WorkRequest
  * This class is implemented as a singleton first (object keyword), but will have to be reworked to
  * adhere to proper dependency injection. Currently this class is not very testable as-is.
  */
-object EidosRepository {
-    private val remote: AO3 = AO3()
+class EidosRepository(private val remoteDataSource: AO3) {
+    // TODO: Implement local data source and cache (not as important)
 
     fun getWorkFromAO3(workRequest: WorkRequest): Work {
-        return remote.getWork(workRequest)
+        return remoteDataSource.getWork(workRequest)
     }
 
     fun getWorkBlurbsFromAO3(workFilterRequest: WorkFilterRequest): List<WorkBlurb> {
-        return remote.getWorkBlurbs(workFilterRequest)
+        return remoteDataSource.getWorkBlurbs(workFilterRequest)
     }
 
     fun getAutocompleteResultsFromAO3(autocompleteRequest: AutocompleteRequest): List<String> {
-        return remote.getAutocompleteResults(autocompleteRequest)
+        return remoteDataSource.getAutocompleteResults(autocompleteRequest)
     }
 
     fun getCommentsFromAO3(commentsRequest: CommentsRequest): List<Comment> {
-        return remote.getComments(commentsRequest)
+        return remoteDataSource.getComments(commentsRequest)
     }
 
-    // TODO: Change the repo and VM to use flows
-    val _autocompleteResults : Flow<List<String>> = flowOf(listOf<String>())
-
-    suspend fun updateAutocompleteResults(autocompleteRequest: AutocompleteRequest) {
-        // update the value of flow
+    fun getWorkFromDatabase(workURL: String): Work {
+        TODO("Not implemented yet")
     }
 }

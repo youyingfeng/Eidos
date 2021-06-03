@@ -17,11 +17,16 @@
         <action
             android:id="@+id/action_workListFragment_to_work_reader"
             app:destination="@id/work_reader">
-            <!--Arguments need to be included in the action as per this SO answer-->
-            <!--https://stackoverflow.com/a/66259109-->
+            <!--Arguments need to be included in the action and nested graph as per this SO answer-->
+            <!--https://stackoverflow.com/questions/59391787/pass-arguments-safely-to-nested-graph-with-navigation-component-->
+            <!--Read the page in its entirety!-->
             <argument
                 android:name="workURL"
                 app:argType="string" />
+            <argument
+                android:name="fetchFromDatabase"
+                app:argType="boolean"
+                android:defaultValue="false" />
         </action>
         <action
             android:id="@+id/action_workListFragment_to_workListFilterFragment"

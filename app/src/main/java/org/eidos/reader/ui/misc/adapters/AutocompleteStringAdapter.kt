@@ -1,4 +1,4 @@
-package org.eidos.reader.ui.misc.autocomplete
+package org.eidos.reader.ui.misc.adapters
 
 import android.view.LayoutInflater
 import android.view.View

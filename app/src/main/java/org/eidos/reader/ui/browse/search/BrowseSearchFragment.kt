@@ -1,5 +1,6 @@
 package org.eidos.reader.ui.browse.search
 
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -8,17 +9,13 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import org.eidos.reader.EidosApplication
 import org.eidos.reader.R
+import org.eidos.reader.container.AppContainer
 import org.eidos.reader.databinding.FragmentBrowseSearchBinding
-import org.eidos.reader.ui.misc.autocomplete.AutocompleteStringAdapter
+import org.eidos.reader.ui.misc.adapters.AutocompleteStringAdapter
 import org.eidos.reader.ui.misc.utilities.Utilities.Companion.hideKeyboard
-import timber.log.Timber
 
 class BrowseSearchFragment : Fragment() {
 
@@ -26,20 +23,22 @@ class BrowseSearchFragment : Fragment() {
         fun newInstance() = BrowseSearchFragment()
     }
 
-    private val viewModel: BrowseSearchViewModel by viewModels()
+    private val viewModel: BrowseSearchViewModel by viewModels {
+        BrowseSearchViewModelFactory(appContainer.repository)
+    }
 
     private var _binding: FragmentBrowseSearchBinding? = null
     // This property is only valid between onCreateView and onDestroyView.
     private val binding get() = _binding!!
 
-    // FIXME: should I dump this in ViewModel? Technically I don't do much processing on this.
-//    private lateinit var queryTextChangedJob: Job
+    private lateinit var appContainer: AppContainer
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentBrowseSearchBinding.inflate(inflater, container, false)
+        appContainer = (requireActivity().application as EidosApplication).appContainer
 
         val adapter = AutocompleteStringAdapter { holderView: View, autocompleteResultString: String ->
             hideKeyboard()

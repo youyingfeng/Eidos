@@ -13,7 +13,13 @@ import org.eidos.reader.remote.requests.WorkFilterRequest
 import org.eidos.reader.repository.EidosRepository
 import timber.log.Timber
 
-class WorkListViewModel(val workFilterRequest: WorkFilterRequest) : ViewModel() {
+class WorkListViewModel
+    constructor(
+        val workFilterRequest: WorkFilterRequest,
+        val repository: EidosRepository
+    )
+    : ViewModel()
+{
 
     /* BEGIN Variables for WorkListFragment */
     private var _workBlurbs = MutableLiveData<List<WorkBlurb>>(emptyList())
@@ -47,7 +53,7 @@ class WorkListViewModel(val workFilterRequest: WorkFilterRequest) : ViewModel() 
     }
 
     private suspend fun getWorkBlurbs(request: WorkFilterRequest) : List<WorkBlurb> {
-        return EidosRepository.getWorkBlurbsFromAO3(request)
+        return repository.getWorkBlurbsFromAO3(request)
     }
 
     fun getNextPage() {
@@ -76,11 +82,4 @@ class WorkListViewModel(val workFilterRequest: WorkFilterRequest) : ViewModel() 
     fun resetPages() {
         _workBlurbs.value = emptyList()
     }
-
-    // oh dear the param list is like 30 bloody lines
-    /**
-     * Sets the WorkFilterRequest params to the params supplied below.
-     * This method expects the input to be the full state of the form, not the diff.
-     */
-    // FIXME: This is tightly coupled to the workFilterRequest
 }

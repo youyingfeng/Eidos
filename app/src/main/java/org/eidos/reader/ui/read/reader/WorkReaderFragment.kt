@@ -9,7 +9,9 @@ import android.view.ViewGroup
 import android.view.ViewTreeObserver
 import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
+import org.eidos.reader.EidosApplication
 import org.eidos.reader.WorkReaderArgs
+import org.eidos.reader.container.AppContainer
 import org.eidos.reader.databinding.FragmentWorkReaderBinding
 import org.eidos.reader.ui.misc.utilities.Utilities.Companion.setActivityTitle
 import timber.log.Timber
@@ -35,20 +37,24 @@ class WorkReaderFragment : Fragment() {
     // This property is only valid between onCreateView and onDestroyView.
     private val binding get() = _binding!!
 
+    private lateinit var appContainer: AppContainer
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        appContainer = (requireActivity().application as EidosApplication).appContainer
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        // get the workURL
-        val args = WorkReaderArgs.fromBundle(requireArguments())
-        val workURL = args.workURL
-
-        // TODO: write factory to pass workURL to VM in constructor
-        viewModelFactory = WorkReaderViewModelFactory(workURL)
-        viewModel = ViewModelProvider(this, viewModelFactory)
-            .get(WorkReaderViewModel::class.java)
-
         // Inflates the view
         _binding = FragmentWorkReaderBinding.inflate(inflater, container, false)
-        val view = binding.root
+        appContainer = (requireActivity().application as EidosApplication).appContainer
+
+        // Set up the ViewModel
+        val args = WorkReaderArgs.fromBundle(requireArguments())
+        viewModelFactory = WorkReaderViewModelFactory(args.workURL, args.fetchFromDatabase, appContainer.repository)
+        viewModel = ViewModelProvider(this, viewModelFactory)
+            .get(WorkReaderViewModel::class.java)
 
         /* Setting observers */
         viewModel.currentChapterBody.observe(viewLifecycleOwner, { chapterBody ->
@@ -140,7 +146,7 @@ class WorkReaderFragment : Fragment() {
         })
 
 
-        return view
+        return binding.root
     }
 
     override fun onDestroyView() {

@@ -5,13 +5,28 @@
     android:id="@+id/work_reader"
     app:startDestination="@id/workReaderFragment">
 
+    <!--Arguments need to be included in the action and nested graph as per this SO answer-->
+    <!--https://stackoverflow.com/questions/59391787/pass-arguments-safely-to-nested-graph-with-navigation-component-->
+    <!--Read the page in its entirety!-->
     <argument
         android:name="workURL"
         app:argType="string" />
+    <argument
+        android:name="fetchFromDatabase"
+        app:argType="boolean"
+        android:defaultValue="false" />
 
     <fragment
         android:id="@+id/workReaderFragment"
         android:name="org.eidos.reader.ui.read.reader.WorkReaderFragment"
         android:label="fragment_work_reader"
-        tools:layout="@layout/fragment_work_reader" />
+        tools:layout="@layout/fragment_work_reader" >
+        <argument
+            android:name="workURL"
+            app:argType="string" />
+        <argument
+            android:name="fetchFromDatabase"
+            app:argType="boolean"
+            android:defaultValue="false" />
+    </fragment>
 </navigation>

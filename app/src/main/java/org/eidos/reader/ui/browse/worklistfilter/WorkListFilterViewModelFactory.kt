@@ -1,20 +1,18 @@
-package org.eidos.reader.ui.read.reader
+package org.eidos.reader.ui.browse.worklistfilter
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import org.eidos.reader.repository.EidosRepository
 
-class WorkReaderViewModelFactory
+class WorkListFilterViewModelFactory
     constructor(
-        private val workURL: String,
-        private val fetchFromDatabase: Boolean,
         private val repository: EidosRepository
     )
     : ViewModelProvider.Factory
 {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(WorkReaderViewModel::class.java)) {
-            return WorkReaderViewModel(workURL, fetchFromDatabase, repository) as T
+        if (modelClass.isAssignableFrom(WorkListFilterViewModel::class.java)) {
+            return WorkListFilterViewModel(repository) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

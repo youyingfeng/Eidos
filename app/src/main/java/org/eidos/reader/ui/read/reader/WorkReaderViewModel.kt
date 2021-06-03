@@ -16,7 +16,14 @@ import org.eidos.reader.remote.requests.WorkRequest
 import org.eidos.reader.repository.EidosRepository
 import timber.log.Timber
 
-class WorkReaderViewModel(private var workURL: String) : ViewModel() {
+class WorkReaderViewModel
+    constructor(
+        private val workURL: String,
+        private val fetchFromDatabase: Boolean,
+        private val repository: EidosRepository
+    )
+    : ViewModel()
+{
     // TODO: make this non-nullable after writing coroutine
     private lateinit var work : Work
 
@@ -51,14 +58,19 @@ class WorkReaderViewModel(private var workURL: String) : ViewModel() {
 
     init {
         viewModelScope.launch {
-            getWorkFromRemote()
+            if (fetchFromDatabase) {
+                getWorkFromDatabase()
+            } else {
+                getWorkFromRemote()
+            }
+
         }
     }
 
     private suspend fun getWorkFromRemote() {
         withContext(Dispatchers.IO) {
             val workRequest = WorkRequest(workURL)
-            work = EidosRepository.getWorkFromAO3(workRequest)
+            work = repository.getWorkFromAO3(workRequest)
             loadFirstChapter()
             _chapterTitles.postValue(work.chapters.let { chapterList ->
                 val titles = mutableListOf<String>()
@@ -69,6 +81,10 @@ class WorkReaderViewModel(private var workURL: String) : ViewModel() {
             })
             Timber.i("Coroutines: Work fetched from Remote")
         }
+    }
+
+    private suspend fun getWorkFromDatabase() {
+        TODO("fill this shit in")
     }
 
     /* Chapter loaders */
@@ -132,7 +148,7 @@ class WorkReaderViewModel(private var workURL: String) : ViewModel() {
                 commentsPage
             )
 
-            val newComments = EidosRepository.getCommentsFromAO3(commentsRequest)
+            val newComments = repository.getCommentsFromAO3(commentsRequest)
 
             var currentList = comments.value!!.toMutableList()
             currentList.addAll(newComments)

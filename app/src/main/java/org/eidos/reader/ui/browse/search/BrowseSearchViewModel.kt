@@ -11,9 +11,7 @@ import org.eidos.reader.remote.requests.*
 import org.eidos.reader.repository.EidosRepository
 import java.lang.Exception
 
-class BrowseSearchViewModel : ViewModel() {
-    // TODO: use Flows
-
+class BrowseSearchViewModel(val repository: EidosRepository) : ViewModel() {
     private var _autocompleteResults = MutableLiveData<List<String>>()
     val autocompleteResults : LiveData<List<String>>
         get() = _autocompleteResults
@@ -46,6 +44,6 @@ class BrowseSearchViewModel : ViewModel() {
             R.id.usersChip -> PseudAutocompleteRequest(searchInput)
             else -> throw Exception("what dis yuhh this be wrong ID man")
         }
-        return EidosRepository.getAutocompleteResultsFromAO3(autocompleteRequest)
+        return repository.getAutocompleteResultsFromAO3(autocompleteRequest)
     }
 }

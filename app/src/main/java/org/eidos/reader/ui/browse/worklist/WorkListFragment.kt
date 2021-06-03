@@ -13,7 +13,9 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.recyclerview.widget.RecyclerView
+import org.eidos.reader.EidosApplication
 import org.eidos.reader.R
+import org.eidos.reader.container.AppContainer
 import org.eidos.reader.databinding.FragmentWorkListBinding
 import org.eidos.reader.remote.requests.WorkFilterRequest
 import org.eidos.reader.ui.misc.utilities.Utilities.Companion.hideKeyboard
@@ -34,17 +36,28 @@ class WorkListFragment : Fragment() {
     // onDestroyView.
     private val binding get() = _binding!!
 
+    private lateinit var appContainer: AppContainer
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // inflates the root
         _binding = FragmentWorkListBinding.inflate(inflater, container, false)
-        val view = binding.root
+        appContainer = (requireActivity().application as EidosApplication).appContainer
 
         val args = WorkListFragmentArgs.fromBundle(requireArguments())
         val tagName = args.tagName
         val workFilterRequest = WorkFilterRequest(tagName)
+
+        viewModelFactory = WorkListViewModelFactory(workFilterRequest, appContainer.repository)
+        // scopes this to the activity to enable sharing of data
+        viewModel = ViewModelProvider(activity as AppCompatActivity, viewModelFactory).get(WorkListViewModel::class.java)
 
         // Set up back button, title and filter button in the toolbar
         (activity as AppCompatActivity).setSupportActionBar(binding.toolbar)
@@ -52,18 +65,11 @@ class WorkListFragment : Fragment() {
         setActivityTitle(tagName)
         setHasOptionsMenu(true)
 
-        viewModelFactory = WorkListViewModelFactory(workFilterRequest)
-        // scope this to the activity to enable sharing of data
-        viewModel = ViewModelProvider(activity as AppCompatActivity, viewModelFactory).get(WorkListViewModel::class.java)
-//        viewModel : WorkListViewModel by activityViewModels<>()
-
-
-
         // create the adapter
         val adapter = WorkBlurbAdapter { holderView, workBlurb ->
             holderView.findNavController()
                     .navigate(WorkListFragmentDirections
-                            .actionWorkListFragmentToWorkReader(workBlurb.workURL))
+                            .actionWorkListFragmentToWorkReader(workBlurb.workURL, false))
         }
         binding.workListDisplay.adapter = adapter
 
@@ -92,7 +98,7 @@ class WorkListFragment : Fragment() {
 
         Timber.i("WorkListFragment onCreateView completed")
 
-        return view
+        return binding.root
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

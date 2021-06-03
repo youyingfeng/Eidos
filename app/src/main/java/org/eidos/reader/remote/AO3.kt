@@ -24,7 +24,6 @@ class AO3
         .build()
 
     fun getWorkBlurbs(workListRequest: WorkFilterRequest) : List<WorkBlurb> {
-        // TODO: send request to okhttp3
         val urlString = "https://archiveofourown.org" + workListRequest.queryString
         println(urlString)
 

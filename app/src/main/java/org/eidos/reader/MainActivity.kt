@@ -20,10 +20,6 @@ class MainActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
 
-//        val navHostFragment = supportFragmentManager
-//            .findFragmentById(R.id.nav_host_fragment) as NavHostFragment
-//        val navController = navHostFragment.navController
-
         // We will use Google's implementation of multiple backstack using
         // fragment attachment/detachment. This should be enough for a rudimentary app
         // with acceptable UX tradeoffs - i.e. navigating to another tab and back using the back

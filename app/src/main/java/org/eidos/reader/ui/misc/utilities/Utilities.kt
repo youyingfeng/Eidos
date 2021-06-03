@@ -7,11 +7,12 @@ import android.view.inputmethod.InputMethodManager
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModel
+import org.eidos.reader.EidosApplication
+import org.eidos.reader.container.AppContainer
 
 class Utilities {
     companion object {
-        // public static extension functions for android miscellania like closing keyboards
-
         /* Extension functions to hide the keyboard from anywhere */
         // solution taken from: https://stackoverflow.com/questions/41790357/close-hide-the-android-soft-keyboard-with-kotlin
         fun Fragment.hideKeyboard() {
@@ -36,6 +37,9 @@ class Utilities {
         fun Fragment.setActivityTitle(title: String) {
             (activity as AppCompatActivity?)!!.supportActionBar?.title = title
         }
+
+
+
 
     }
 }
