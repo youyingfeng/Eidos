@@ -8,6 +8,7 @@ import org.eidos.reader.remote.requests.AutocompleteRequest
 import org.eidos.reader.remote.requests.CommentsRequest
 import org.eidos.reader.remote.requests.WorkFilterRequest
 import org.eidos.reader.remote.requests.WorkRequest
+import org.eidos.reader.storage.Storage
 
 /**
  * This repository/facade provides a unified API through which the ViewModel can interact with to
@@ -18,7 +19,7 @@ import org.eidos.reader.remote.requests.WorkRequest
  * This class is implemented as a singleton first (object keyword), but will have to be reworked to
  * adhere to proper dependency injection. Currently this class is not very testable as-is.
  */
-class EidosRepository(private val remoteDataSource: AO3) {
+class EidosRepository(private val remoteDataSource: AO3, private val localDataSource: Storage) {
     // TODO: Implement local data source and cache (not as important)
 
     fun getWorkFromAO3(workRequest: WorkRequest): Work {
@@ -38,6 +39,6 @@ class EidosRepository(private val remoteDataSource: AO3) {
     }
 
     fun getWorkFromDatabase(workURL: String): Work {
-        TODO("Not implemented yet")
+        return localDataSource.getWork(workURL)
     }
 }

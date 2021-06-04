@@ -79,7 +79,6 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
     testImplementation "com.squareup.sqldelight:sqlite-driver:1.5.0"
-    implementation "com.squareup.sqldelight:android-driver:1.5.0"
     // old tests
     // testImplementation 'junit:junit:4.13.1'
 }
