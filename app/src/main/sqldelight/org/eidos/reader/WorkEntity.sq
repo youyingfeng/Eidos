@@ -24,7 +24,8 @@ CREATE TABLE SavedWork (
     -- leave out hits, comments, bookmarks, and kudos, for they are temporary
     preWorkNotes TEXT,
     chapters TEXT AS List<Chapter> NOT NULL,
-    postWorkNotes TEXT
+    postWorkNotes TEXT,
+    workskin TEXT
 );
 
 -- CREATE TABLE SavedWorkAuthor (
