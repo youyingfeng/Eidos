@@ -13,7 +13,52 @@ import org.eidos.reader.model.Chapter
 import org.eidos.reader.model.Work
 import org.eidos.reader.model.WorkBlurb
 
-class Storage(database: EidosDatabase) {
+class Storage(private val database: EidosDatabase) {
+    private val workEntityQueries = database.workEntityQueries
+
+    fun getWork(workURL: String): Work {
+        return workEntityQueries.getWork(workURL, workMapper).executeAsOne()
+    }
+
+    fun getAllWorkBlurbs(): List<WorkBlurb> {
+        return workEntityQueries.getAllWorkBlurbs(workBlurbMapper).executeAsList()
+    }
+
+    fun insertWork(work: Work) {
+        // TODO: make this an upsert? not important. probably needs an sql change.
+        val savedWork = SavedWork(
+            workURL = work.workURL,
+            title = work.title,
+            authors = work.authors,
+            giftees = emptyList(),
+            publishedDate = work.publishedDate,
+            lastUpdatedDate = work.lastUpdatedDate,
+            fandoms = work.fandoms,
+            rating = work.rating,
+            warnings = work.warnings,
+            categories = work.categories,
+            completionStatus = work.completionStatus,
+            characters = work.characters,
+            relationships = work.relationships,
+            freeforms = work.freeforms,
+            summary = work.summary,
+            language = work.language,
+            wordCount = work.wordCount,
+            chapterCount = work.chapterCount,
+            maxChapters = work.maxChapters,
+            preWorkNotes = work.preWorkNotes,
+            chapters = work.chapters,
+            postWorkNotes = work.postWorkNotes,
+            workskin = work.workskin
+        )
+
+        return workEntityQueries.insert(savedWork)
+    }
+
+    fun deleteWork(workURL: String) {
+        return workEntityQueries.delete(workURL)
+    }
+
     companion object {
         // moshi setup
         private val moshi: Moshi = Moshi.Builder()
@@ -25,7 +70,7 @@ class Storage(database: EidosDatabase) {
         // Adapters
         val listOfStringsAdapter = object : ColumnAdapter<List<String>, String> {
             override fun decode(databaseValue: String) =
-                if (databaseValue.isEmpty()) {
+                if (databaseValue.isBlank()) {
                     listOf()
                 } else {
                     databaseValue.split(",")
@@ -38,7 +83,6 @@ class Storage(database: EidosDatabase) {
             override fun decode(databaseValue: String) = jsonAdapter.fromJson(databaseValue)!!
 
             override fun encode(value: List<Chapter>) = jsonAdapter.toJson(value)
-
         }
 
         // custom mappers
@@ -53,7 +97,7 @@ class Storage(database: EidosDatabase) {
                 rating: String,
                 warnings: List<String>,
                 categories: List<String>,
-                completionStatus: Int,
+                completionStatus: Boolean,
                 characters: List<String>?,
                 relationships: List<String>?,
                 freeforms: List<String>?,
@@ -62,11 +106,11 @@ class Storage(database: EidosDatabase) {
                 wordCount: Int,
                 chapterCount: Int,
                 maxChapters: Int,
-                preWorkNotes: String?,
+                preWorkNotes: String,
                 chapters: List<Chapter>,
-                postWorkNotes: String?,
-                workskin: String?
-                ->
+                postWorkNotes: String,
+                workskin: String
+            ->
             Work(
                 title = title,
                 authors = authors,
@@ -76,7 +120,7 @@ class Storage(database: EidosDatabase) {
                 rating = rating,
                 warnings = warnings,
                 categories = categories,
-                completionStatus = completionStatus != 0,
+                completionStatus = completionStatus,
                 characters = characters ?: emptyList(),
                 relationships = relationships ?: emptyList(),
                 freeforms = freeforms ?: emptyList(),
@@ -97,49 +141,50 @@ class Storage(database: EidosDatabase) {
             )
         }
 
-//        val workBlurbMapper = {
-//                workURL: String,
-//                title: String,
-//                authors: List<String>,
-//                lastUpdatedDate: String,
-//                fandoms: List<String>,
-//                rating: String,
-//                warnings: List<String>,
-//                categories: List<String>,
-//                summary: String,
-//                language: String,
-//                wordCount: Int,
-//                chapterCount: Int,
-//                maxChapters: Int
-//                ->
-//            WorkBlurb(
-//                title = title,
-//                authors = authors,
-//                giftees = emptyList(),
-//                lastUpdatedDate = lastUpdatedDate,
-//                fandoms = fandoms,
-//                rating = rating,
-//                warnings = warnings,
-//                categories = categories,
-//                completionStatus = chapterCount == maxChapters,
-//                characters = characters ?: emptyList(),
-//                relationships = relationships,
-//                freeforms = freeforms,
-//                summary = summary,
-//                language = language,
-//                wordCount = words,
-//                chapterCount = currentChapterCount,
-//                maxChapters = maxChapterCount,
-//                commentsCount = comments,
-//                kudosCount = kudos,
-//                bookmarksCount = bookmarks,
-//                hitCount = hits,
-//                workURL = workURL
-//            )
-//        }
-    }
-
-    fun getWork(workURL: String): Work {
-        TODO("Not implemented yet")
+        val workBlurbMapper = {
+                workURL: String,
+                title: String,
+                authors: List<String>,
+                giftees: List<String>?,
+                lastUpdatedDate: String,
+                fandoms: List<String>,
+                rating: String,
+                warnings: List<String>,
+                categories: List<String>,
+                completionStatus: Boolean,
+                characters: List<String>?,
+                relationships: List<String>?,
+                freeforms: List<String>?,
+                summary: String,
+                language: String,
+                wordCount: Int,
+                chapterCount: Int,
+                maxChapters: Int
+            ->
+            WorkBlurb(
+                title = title,
+                authors = authors,
+                giftees = giftees ?: emptyList(),
+                lastUpdatedDate = lastUpdatedDate,
+                fandoms = fandoms,
+                rating = rating,
+                warnings = warnings,
+                categories = categories,
+                completionStatus = completionStatus,
+                characters = characters ?: emptyList(),
+                relationships = relationships ?: emptyList(),
+                freeforms = freeforms ?: emptyList(),
+                summary = summary,
+                language = language,
+                wordCount = wordCount,
+                chapterCount = chapterCount,
+                maxChapters = maxChapters,
+                commentsCount = 0,
+                kudosCount = 0,
+                bookmarksCount = 0,
+                hitCount = 0,
+                workURL = workURL
+            )
+        }
     }
 }

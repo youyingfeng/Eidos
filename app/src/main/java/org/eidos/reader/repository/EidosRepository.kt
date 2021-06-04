@@ -38,7 +38,24 @@ class EidosRepository(private val remoteDataSource: AO3, private val localDataSo
         return remoteDataSource.getComments(commentsRequest)
     }
 
+    fun getWorkBlurbsFromDatabase(): List<WorkBlurb> {
+        return localDataSource.getAllWorkBlurbs()
+    }
+
     fun getWorkFromDatabase(workURL: String): Work {
         return localDataSource.getWork(workURL)
+    }
+
+    fun insertWorkIntoDatabase(work: Work) {
+        return localDataSource.insertWork(work)
+    }
+
+    fun deleteWorkFromDatabase(workURL: String) {
+        return localDataSource.deleteWork(workURL)
+    }
+
+    private fun insertWorkIntoDatabase(workURL: String) {
+        TODO("Do not implement until MVP complete")
+        // unprivate this function once implemented
     }
 }

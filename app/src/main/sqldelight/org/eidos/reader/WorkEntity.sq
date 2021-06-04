@@ -12,7 +12,7 @@ CREATE TABLE SavedWork (
     rating TEXT NOT NULL,
     warnings TEXT AS List<String> NOT NULL,
     categories TEXT AS List<String> NOT NULL,
-    completionStatus INTEGER NOT NULL,
+    completionStatus INTEGER AS Boolean NOT NULL ,
     characters TEXT AS List<String>,
     relationships TEXT AS List<String>,
     freeforms TEXT AS List<String>,
@@ -22,10 +22,10 @@ CREATE TABLE SavedWork (
     chapterCount INTEGER NOT NULL,
     maxChapters INTEGER NOT NULL,
     -- leave out hits, comments, bookmarks, and kudos, for they are temporary
-    preWorkNotes TEXT,
+    preWorkNotes TEXT NOT NULL,
     chapters TEXT AS List<Chapter> NOT NULL,
-    postWorkNotes TEXT,
-    workskin TEXT
+    postWorkNotes TEXT NOT NULL,
+    workskin TEXT NOT NULL
 );
 
 -- CREATE TABLE SavedWorkAuthor (
@@ -72,16 +72,25 @@ insert:
 INSERT INTO SavedWork
 VALUES ?;
 
+delete:
+DELETE FROM SavedWork
+WHERE workURL = ?;
+
 getAllWorkBlurbs:
 SELECT
 workURL,
 title,
 authors,
+giftees,
 lastUpdatedDate,
 fandoms,
 rating,
 warnings,
 categories,
+completionStatus,
+characters,
+relationships,
+freeforms,
 summary,
 language,
 wordCount,
