@@ -2,14 +2,15 @@ package org.eidos.reader.ui.read.reader
 
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
+import android.view.*
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.view.ViewTreeObserver
 import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.setupActionBarWithNavController
 import org.eidos.reader.EidosApplication
+import org.eidos.reader.R
 import org.eidos.reader.WorkReaderArgs
 import org.eidos.reader.container.AppContainer
 import org.eidos.reader.databinding.FragmentWorkReaderBinding
@@ -55,6 +56,10 @@ class WorkReaderFragment : Fragment() {
         viewModelFactory = WorkReaderViewModelFactory(args.workURL, args.fetchFromDatabase, appContainer.repository)
         viewModel = ViewModelProvider(this, viewModelFactory)
             .get(WorkReaderViewModel::class.java)
+
+        (activity as AppCompatActivity).setSupportActionBar(binding.toolbar)
+        (activity as AppCompatActivity).setupActionBarWithNavController(findNavController())
+        setHasOptionsMenu(true)
 
         /* Setting observers */
         viewModel.currentChapterBody.observe(viewLifecycleOwner, { chapterBody ->
@@ -152,6 +157,23 @@ class WorkReaderFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_work_reader, menu)
+//        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.saveWork -> {
+                Timber.i("Save work pressed and received!")
+                viewModel.saveWorkToDatabase()
+                return true
+            }
+        }
+
+        return false
     }
 
     // methods for handling chapter selection dialog

@@ -12,7 +12,15 @@
         tools:layout="@layout/fragment_library" >
         <action
             android:id="@+id/action_libraryFragment_to_work_reader"
-            app:destination="@id/work_reader" />
+            app:destination="@id/work_reader">
+            <argument
+                android:name="workURL"
+                app:argType="string" />
+            <argument
+                android:name="fetchFromDatabase"
+                app:argType="boolean"
+                android:defaultValue="false" />
+        </action>
     </fragment>
     <include app:graph="@navigation/work_reader" />
 </navigation>

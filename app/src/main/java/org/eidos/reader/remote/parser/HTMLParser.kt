@@ -340,9 +340,10 @@ class HTMLParser {
 
                 val author = Pseud(temp[0], temp[1])
                 val chapter = commentObject.selectFirst("h4.heading > span.parent")
-                    .ownText()
-                    .removePrefix("on Chapter ")
-                    .toInt()
+                    ?.ownText()
+                    ?.removePrefix("on Chapter ")
+                    ?.toInt()
+                    ?: 1
                 val datetime = commentObject.selectFirst("h4.heading > span.posted.datetime").text()
                 val body = commentObject.selectFirst("li.comment > blockquote.userstuff").wholeText()
                 val commentID = commentObject.id().removePrefix("comment_")
@@ -367,11 +368,12 @@ class HTMLParser {
 
                     val author = AnonymousUser(username)
                     val chapter = commentObject.selectFirst("h4.heading > span.parent")
-                        .ownText()
-                        .removePrefix("on Chapter ")
-                        .toInt()
+                        ?.ownText()
+                        ?.removePrefix("on Chapter ")
+                        ?.toInt()
+                        ?: 1
                     val datetime = commentObject.selectFirst("h4.heading > span.datetime").text()
-                    val body = commentObject.selectFirst("h4.heading > blockquote.userstuff").wholeText()
+                    val body = commentObject.selectFirst("li.comment > blockquote.userstuff").wholeText()
                     val commentID = commentObject.id().removePrefix("comment_")
 
                     val newComment = Comment(

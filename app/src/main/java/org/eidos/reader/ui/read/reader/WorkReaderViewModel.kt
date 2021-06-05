@@ -6,9 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 import org.eidos.reader.model.Comment
 import org.eidos.reader.model.Work
 import org.eidos.reader.remote.requests.CommentsRequest
@@ -84,7 +82,20 @@ class WorkReaderViewModel
     }
 
     private suspend fun getWorkFromDatabase() {
-        TODO("fill this shit in")
+        withContext(Dispatchers.IO) {
+            work = repository.getWorkFromDatabase(workURL)
+
+            // TODO: refactor out below code as this is duplicate
+            loadFirstChapter()
+            _chapterTitles.postValue(work.chapters.let { chapterList ->
+                val titles = mutableListOf<String>()
+                for (i in chapterList.indices) {
+                    titles.add("Chapter ${i + 1}: ${chapterList[i].title}")
+                }
+                return@let titles
+            })
+            Timber.i("Coroutines: Work fetched from DB")
+        }
     }
 
     /* Chapter loaders */
@@ -155,6 +166,13 @@ class WorkReaderViewModel
             _comments.postValue(currentList)
             Timber.i("currentlist size = ${currentList.size}")
             Timber.i("getNextCommentsPage posted!")
+        }
+    }
+
+    fun saveWorkToDatabase() {
+        CoroutineScope(Dispatchers.IO).launch {
+            repository.insertWorkIntoDatabase(work)
+            Timber.i("Work saved!")
         }
     }
 }

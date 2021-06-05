@@ -76,6 +76,9 @@ delete:
 DELETE FROM SavedWork
 WHERE workURL = ?;
 
+deleteAll:
+DELETE FROM SavedWork;
+
 getAllWorkBlurbs:
 SELECT
 workURL,
@@ -103,6 +106,33 @@ SELECT *
 FROM SavedWork
 WHERE workURL = ?
 LIMIT 1;
+
+-- Full params for future use
+-- (
+--     workURL,
+--     title,
+--     authors,
+--     giftees,
+--     publishedDate,
+--     lastUpdatedDate,
+--     fandoms,
+--     rating,
+--     warnings,
+--     categories,
+--     completionStatus,
+--     characters,
+--     relationships,
+--     freeforms,
+--     summary,
+--     language,
+--     wordCount,
+--     chapterCount,
+--     maxChapters,
+--     preWorkNotes,
+--     chapters,
+--     postWorkNotes,
+--     workskin
+-- )
 
 
 

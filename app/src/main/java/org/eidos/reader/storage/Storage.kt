@@ -12,6 +12,7 @@ import org.eidos.reader.SavedWork
 import org.eidos.reader.model.Chapter
 import org.eidos.reader.model.Work
 import org.eidos.reader.model.WorkBlurb
+import timber.log.Timber
 
 class Storage(private val database: EidosDatabase) {
     private val workEntityQueries = database.workEntityQueries
@@ -21,7 +22,9 @@ class Storage(private val database: EidosDatabase) {
     }
 
     fun getAllWorkBlurbs(): List<WorkBlurb> {
-        return workEntityQueries.getAllWorkBlurbs(workBlurbMapper).executeAsList()
+        val workBlurbs = workEntityQueries.getAllWorkBlurbs(workBlurbMapper).executeAsList()
+        Timber.i("Number of works retrieved = ${workBlurbs.size}")
+        return workBlurbs
     }
 
     fun insertWork(work: Work) {
@@ -51,12 +54,16 @@ class Storage(private val database: EidosDatabase) {
             postWorkNotes = work.postWorkNotes,
             workskin = work.workskin
         )
-
+        Timber.i("Storage: savedwork created")
         return workEntityQueries.insert(savedWork)
     }
 
     fun deleteWork(workURL: String) {
         return workEntityQueries.delete(workURL)
+    }
+
+    fun deleteAllWorks() {
+        return workEntityQueries.deleteAll()
     }
 
     companion object {

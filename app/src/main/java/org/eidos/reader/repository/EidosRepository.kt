@@ -54,6 +54,10 @@ class EidosRepository(private val remoteDataSource: AO3, private val localDataSo
         return localDataSource.deleteWork(workURL)
     }
 
+    fun deleteAllWorksFromDatabase(workURL: String) {
+        return localDataSource.deleteAllWorks()
+    }
+
     private fun insertWorkIntoDatabase(workURL: String) {
         TODO("Do not implement until MVP complete")
         // unprivate this function once implemented
