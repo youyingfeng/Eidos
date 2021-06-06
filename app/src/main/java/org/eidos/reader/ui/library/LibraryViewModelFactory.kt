@@ -10,8 +10,9 @@ class LibraryViewModelFactory
 {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(LibraryViewModel::class.java)) {
+            @Suppress("UNCHECKED_CAST")
             return LibraryViewModel(repository) as T
         }
-        throw IllegalArgumentException("Unknown ViewModel class")
+        throw IllegalArgumentException("Factory cannot make ViewModel of type ${modelClass.simpleName}")
     }
 }

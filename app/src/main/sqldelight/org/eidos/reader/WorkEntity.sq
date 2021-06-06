@@ -18,9 +18,9 @@ CREATE TABLE SavedWork (
     freeforms TEXT AS List<String>,
     summary TEXT NOT NULL,
     language TEXT NOT NULL,
-    wordCount INTEGER NOT NULL,
-    chapterCount INTEGER NOT NULL,
-    maxChapters INTEGER NOT NULL,
+    wordCount INTEGER AS Int NOT NULL,
+    chapterCount INTEGER AS Int NOT NULL,
+    maxChapters INTEGER AS Int NOT NULL,
     -- leave out hits, comments, bookmarks, and kudos, for they are temporary
     preWorkNotes TEXT NOT NULL,
     chapters TEXT AS List<Chapter> NOT NULL,

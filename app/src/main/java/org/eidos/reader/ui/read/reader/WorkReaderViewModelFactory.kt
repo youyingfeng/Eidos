@@ -14,8 +14,9 @@ class WorkReaderViewModelFactory
 {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(WorkReaderViewModel::class.java)) {
+            @Suppress("UNCHECKED_CAST")
             return WorkReaderViewModel(workURL, fetchFromDatabase, repository) as T
         }
-        throw IllegalArgumentException("Unknown ViewModel class")
+        throw IllegalArgumentException("Factory cannot make ViewModel of type ${modelClass.simpleName}")
     }
 }

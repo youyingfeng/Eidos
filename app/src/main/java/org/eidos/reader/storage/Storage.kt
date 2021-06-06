@@ -7,14 +7,14 @@ import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import com.squareup.sqldelight.ColumnAdapter
 import com.squareup.sqldelight.android.AndroidSqliteDriver
 import com.squareup.sqldelight.db.SqlDriver
-import org.eidos.reader.EidosDatabase
+import org.eidos.reader.Database
 import org.eidos.reader.SavedWork
 import org.eidos.reader.model.Chapter
 import org.eidos.reader.model.Work
 import org.eidos.reader.model.WorkBlurb
 import timber.log.Timber
 
-class Storage(private val database: EidosDatabase) {
+class Storage(private val database: Database) {
     private val workEntityQueries = database.workEntityQueries
 
     fun getWork(workURL: String): Work {

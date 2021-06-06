@@ -3,7 +3,7 @@ package org.eidos.reader.container
 import android.content.Context
 import com.squareup.sqldelight.android.AndroidSqliteDriver
 import com.squareup.sqldelight.db.SqlDriver
-import org.eidos.reader.EidosDatabase
+import org.eidos.reader.Database
 import org.eidos.reader.SavedWork
 import org.eidos.reader.network.Network
 import org.eidos.reader.remote.AO3
@@ -17,8 +17,8 @@ class AppContainer(context: Context) {
     private val remoteDataSource = AO3(network, parser)
 
     // the db name is called test.db
-    private val driver: SqlDriver = AndroidSqliteDriver(EidosDatabase.Schema, context, "test.db")
-    private val database = EidosDatabase(
+    private val driver: SqlDriver = AndroidSqliteDriver(Database.Schema, context, "test.db")
+    private val database = Database(
         driver = driver,
         SavedWorkAdapter = SavedWork.Adapter(
             authorsAdapter = Storage.listOfStringsAdapter,

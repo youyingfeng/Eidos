@@ -12,8 +12,9 @@ class WorkListFilterViewModelFactory
 {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(WorkListFilterViewModel::class.java)) {
+            @Suppress("UNCHECKED_CAST")
             return WorkListFilterViewModel(repository) as T
         }
-        throw IllegalArgumentException("Unknown ViewModel class")
+        throw IllegalArgumentException("Factory cannot make ViewModel of type ${modelClass.simpleName}")
     }
 }
