@@ -16,8 +16,8 @@
     <color name="secondaryColor">#ffffff</color>
     <color name="secondaryLightColor">#ffffff</color>
     <color name="secondaryDarkColor">#f0f0f0</color>
-    <color name="primaryTextColor">#ffffff</color>
-    <color name="secondaryTextColor">#ffffff</color>
+    <color name="primaryTextColor">#454545</color>
+    <color name="secondaryTextColor">#454545</color>
     <color name="uiHighlightColor">#900</color>
     <color name="chip_unselected_color">#E0E0E0</color>
 

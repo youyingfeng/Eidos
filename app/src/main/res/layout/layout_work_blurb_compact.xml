@@ -14,29 +14,23 @@
         android:clipChildren="true"
         app:cardBackgroundColor="#B2220F"
         app:cardCornerRadius="2dp"
-        app:cardElevation="4dp"
+        app:cardElevation="0dp"
+        app:cardMaxElevation="0dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <RelativeLayout
+        <TextView
+            android:id="@+id/workRatingIcon"
+            style="@style/body_text"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:clipChildren="true"
-            android:gravity="center">
-
-            <TextView
-                android:id="@+id/workRatingIcon"
-                style="@style/body_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/libertinus_serif_semibold"
-                android:gravity="center"
-                android:includeFontPadding="false"
-                android:lineSpacingExtra="0dp"
-                android:text="F"
-                android:textColor="#F0F0F0"
-                android:textSize="40sp" />
-        </RelativeLayout>
+            android:fontFamily="@font/libertinus_serif_semibold"
+            android:gravity="center"
+            android:includeFontPadding="false"
+            android:lineSpacingExtra="0dp"
+            android:text="F"
+            android:textColor="#F0F0F0"
+            android:textSize="40sp" />
 
     </com.google.android.material.card.MaterialCardView>
 
@@ -236,8 +230,6 @@
         android:id="@+id/divider"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
         android:background="?android:attr/listDivider"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
