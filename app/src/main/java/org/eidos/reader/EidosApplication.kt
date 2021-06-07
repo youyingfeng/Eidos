@@ -5,7 +5,8 @@ import org.eidos.reader.container.AppContainer
 import timber.log.Timber
 
 class EidosApplication : Application() {
-    val appContainer = AppContainer(this)
+    // if lazy still crashes then use lateinit var
+    val appContainer by lazy { AppContainer(applicationContext) }
 
     override fun onCreate() {
         super.onCreate()

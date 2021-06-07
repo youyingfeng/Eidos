@@ -18,7 +18,10 @@ Adapter to translate WorkBlurb data to compact work blurb views.
  */
 
 class WorkBlurbCompactAdapter
-    constructor(private val onClickAction: (View, WorkBlurb) -> Unit)
+    constructor(
+        private val onClickAction: (View, WorkBlurb) -> Unit,
+        private val autoScrollAction: (Int) -> Unit
+    )
     : RecyclerView.Adapter<WorkBlurbCompactViewHolder>()
 {
     var data = listOf<WorkBlurb>()
@@ -40,6 +43,13 @@ class WorkBlurbCompactAdapter
         holder.itemView.setOnClickListener { view ->
             onClickAction(view, workBlurb)
         }
+
+        holder.itemView.setOnLongClickListener {
+            if (holder.toggleOptionsVisibility()) {
+                autoScrollAction(position)
+            }
+            return@setOnLongClickListener true
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WorkBlurbCompactViewHolder {
@@ -49,6 +59,21 @@ class WorkBlurbCompactAdapter
 
 class WorkBlurbCompactViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private val binding = LayoutWorkBlurbCompactBinding.bind(itemView)
+
+    // bind universal behaviour here
+
+    fun toggleOptionsVisibility() : Boolean {
+        /*
+        * Toggles the visibility of the options bar and returns the final visibility of the bar
+        **/
+        binding.optionsLinearLayout.visibility =
+            when(binding.optionsLinearLayout.visibility) {
+                View.VISIBLE -> View.GONE
+                View.GONE -> View.VISIBLE
+                else -> View.VISIBLE
+            }
+        return binding.optionsLinearLayout.visibility == View.VISIBLE
+    }
 
     fun bind(item: WorkBlurb) {
         binding.workTitle.text = item.title

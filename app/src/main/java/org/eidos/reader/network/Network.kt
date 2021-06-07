@@ -4,9 +4,9 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import kotlin.Exception
 
-class Network {
+class Network(val httpClient: OkHttpClient) {
     // TODO: In the future, this class will also need to handle cookies. But that is in the distant future.
-    private val httpClient: OkHttpClient = OkHttpClient()
+
 
     /*
     Input: URL

@@ -14,8 +14,8 @@ import org.eidos.reader.remote.requests.WorkRequest
 
 class AO3
     constructor(
-        private val network: Network = Network(),
-        private val parser: HTMLParser = HTMLParser()
+        private val network: Network,
+        private val parser: HTMLParser
     )
 {
 

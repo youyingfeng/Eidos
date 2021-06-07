@@ -14,6 +14,7 @@ import org.eidos.reader.R
 import org.eidos.reader.WorkReaderArgs
 import org.eidos.reader.container.AppContainer
 import org.eidos.reader.databinding.FragmentWorkReaderBinding
+import org.eidos.reader.ui.misc.utilities.URLImageGetter
 import org.eidos.reader.ui.misc.utilities.Utilities.Companion.setActivityTitle
 import timber.log.Timber
 
@@ -53,7 +54,13 @@ class WorkReaderFragment : Fragment() {
 
         // Set up the ViewModel
         val args = WorkReaderArgs.fromBundle(requireArguments())
-        viewModelFactory = WorkReaderViewModelFactory(args.workURL, args.fetchFromDatabase, appContainer.repository)
+        val urlImageGetter = URLImageGetter(binding.workBody, appContainer.imageLoader)
+        viewModelFactory = WorkReaderViewModelFactory(
+            args.workURL,
+            args.fetchFromDatabase,
+            appContainer.repository,
+            urlImageGetter
+        )
         viewModel = ViewModelProvider(this, viewModelFactory)
             .get(WorkReaderViewModel::class.java)
 

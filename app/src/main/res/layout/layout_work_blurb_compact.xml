@@ -3,7 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:clickable="true"
+    android:foreground="?attr/selectableItemBackground"
+    android:longClickable="true">
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/workRatingIconBackground"
@@ -226,6 +229,41 @@
             app:chipMinTouchTargetSize="0dp" />
     </com.google.android.material.chip.ChipGroup>
 
+    <LinearLayout
+        android:id="@+id/optionsLinearLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="#F0F0F0"
+        android:layoutDirection="rtl"
+        android:orientation="horizontal"
+        android:paddingLeft="24dp"
+        android:paddingRight="24dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/workStatisticsChipGroup">
+
+        <Button
+            android:id="@+id/readingListButton"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:elevation="0dp"
+            android:layoutDirection="ltr"
+            android:text="Read Later"
+            app:icon="@drawable/ic_blurb_options_reading_list_24" />
+
+        <Button
+            android:id="@+id/downloadButton"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:elevation="0dp"
+            android:layoutDirection="ltr"
+            android:text="Download"
+            app:icon="@drawable/ic_blurb_options_download_24" />
+
+    </LinearLayout>
+
     <View
         android:id="@+id/divider"
         android:layout_width="match_parent"
@@ -234,5 +272,5 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/workStatisticsChipGroup" />
+        app:layout_constraintTop_toBottomOf="@+id/optionsLinearLayout" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,24 +1,25 @@
 package org.eidos.reader.ui.read.reader
 
+import android.text.Html
 import android.text.Spanned
 import androidx.core.text.HtmlCompat
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import kotlinx.coroutines.*
+import org.eidos.reader.EidosApplication
 import org.eidos.reader.model.Comment
 import org.eidos.reader.model.Work
 import org.eidos.reader.remote.requests.CommentsRequest
 import org.eidos.reader.remote.requests.WorkRequest
 import org.eidos.reader.repository.EidosRepository
+import org.eidos.reader.ui.misc.utilities.URLImageGetter
 import timber.log.Timber
 
 class WorkReaderViewModel
     constructor(
         private val workURL: String,
         private val fetchFromDatabase: Boolean,
-        private val repository: EidosRepository
+        private val repository: EidosRepository,
+        private val htmlImageGetter: Html.ImageGetter
     )
     : ViewModel()
 {
@@ -129,7 +130,12 @@ class WorkReaderViewModel
 
     /* Utility methods */
     private fun convertHtmlToSpanned(html: String) : Spanned {
-        return HtmlCompat.fromHtml(html, HtmlCompat.FROM_HTML_MODE_LEGACY)
+        return HtmlCompat.fromHtml(
+            html,
+            HtmlCompat.FROM_HTML_MODE_LEGACY,
+            htmlImageGetter,
+            null
+        )
     }
 
     private fun updateLiveDataFields() {
