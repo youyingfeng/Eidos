@@ -6,6 +6,7 @@ data class Work(
     // old fields taken from workblurb
         val title: String,
         val authors: List<String>,
+        val giftees: List<String>,
         val publishedDate: String,
         val lastUpdatedDate: String,
         val fandoms: List<String>,

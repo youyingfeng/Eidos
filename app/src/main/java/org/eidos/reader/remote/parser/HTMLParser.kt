@@ -240,40 +240,55 @@ class HTMLParser {
             }
         }
 
-        val preWorkNotes = getPreWorkNotes(workDoc)
-        val postWorkNotes = getPostWorkNotes(workDoc)
+        val preWorkNotes : String = workDoc
+            .select("#workskin > div.preface.group > div.notes.module > blockquote.userstuff")
+            .first()
+            ?.html()
+            ?: ""
+
+        val postWorkNotes : String = workDoc
+            .select("div#work_endnotes > blockquote.userstuff")
+            .first()
+            ?.html()
+            ?: ""
+
         val workskin = workDoc.select("div#main > style[type='text/css']")
             .first()
             ?.html()
             ?: ""
 
+        val giftees = workDoc
+            .select("#workskin > div.preface.group > div.notes.module > ul.associations > li > a")
+            .map { it.text() }  // pseuds can be parsed based on names alone
+
         val work: Work = Work(
-                title = title,
-                authors = authors,
-                publishedDate = publishDate,
-                lastUpdatedDate = lastUpdatedDate,
-                fandoms = fandoms,
-                rating = rating,
-                warnings = warnings,
-                categories = categories,
-                completionStatus = completionStatus,
-                characters = characters,
-                relationships = relationships,
-                freeforms = freeforms,
-                summary = summary,
-                language = language,
-                wordCount = wordCount,
-                chapterCount = currentChapterCount,
-                maxChapters = maxChapterCount,
-                commentsCount = comments,
-                kudosCount = kudos,
-                bookmarksCount = bookmarks,
-                hitCount = hits,
-                workURL = workURL,
-                preWorkNotes = preWorkNotes,
-                chapters = chapters,
-                postWorkNotes = postWorkNotes,
-                workskin = workskin
+            title = title,
+            authors = authors,
+            giftees = giftees,
+            publishedDate = publishDate,
+            lastUpdatedDate = lastUpdatedDate,
+            fandoms = fandoms,
+            rating = rating,
+            warnings = warnings,
+            categories = categories,
+            completionStatus = completionStatus,
+            characters = characters,
+            relationships = relationships,
+            freeforms = freeforms,
+            summary = summary,
+            language = language,
+            wordCount = wordCount,
+            chapterCount = currentChapterCount,
+            maxChapters = maxChapterCount,
+            commentsCount = comments,
+            kudosCount = kudos,
+            bookmarksCount = bookmarks,
+            hitCount = hits,
+            workURL = workURL,
+            preWorkNotes = preWorkNotes,
+            chapters = chapters,
+            postWorkNotes = postWorkNotes,
+            workskin = workskin
         )
 
         return work
@@ -327,7 +342,7 @@ class HTMLParser {
             // else this refers to a non-anonymous user
 
             // if no a href then this is an anon user.
-            println(commentObject)
+//            println(commentObject)
 
             val registeredUserHeaderElement = commentObject.selectFirst("h4.heading > a[href]")
 
@@ -409,25 +424,6 @@ class HTMLParser {
     }
 
     /* Auxiliary small functions that should not be called from anywhere other than this class */
-    private fun getPreWorkNotes(doc: Document) : String {
-        val preWorkNotes : String = doc
-            .select("#workskin > div.preface.group > div.notes.module > blockquote.userstuff")
-            .first()
-            ?.html()
-            ?: ""
-
-        return preWorkNotes
-    }
-
-    private fun getPostWorkNotes(doc: Document) : String {
-        val postWorkNotes : String = doc
-            .select("div#work_endnotes > blockquote.userstuff")
-            .first()
-            ?.html()
-            ?: ""
-
-        return postWorkNotes
-    }
 
     private fun getCommentDepth(topLevelCommentHTML: Element) : Int {
         var currentDepth = 0

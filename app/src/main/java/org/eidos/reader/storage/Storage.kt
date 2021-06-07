@@ -33,7 +33,7 @@ class Storage(private val database: Database) {
             workURL = work.workURL,
             title = work.title,
             authors = work.authors,
-            giftees = emptyList(),
+            giftees = work.giftees,
             publishedDate = work.publishedDate,
             lastUpdatedDate = work.lastUpdatedDate,
             fandoms = work.fandoms,
@@ -121,6 +121,7 @@ class Storage(private val database: Database) {
             Work(
                 title = title,
                 authors = authors,
+                giftees = giftees ?: emptyList(),
                 publishedDate = publishedDate,
                 lastUpdatedDate = lastUpdatedDate,
                 fandoms = fandoms,
