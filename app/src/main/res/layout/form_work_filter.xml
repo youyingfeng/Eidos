@@ -66,7 +66,7 @@
                 app:layout_constraintTop_toBottomOf="@id/ratingsHeader">
 
                 <com.google.android.material.chip.Chip
-                    android:id="@+id/genChip"
+                    android:id="@+id/ratingGeneralChip"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:checkable="true"
@@ -74,7 +74,7 @@
                     android:text="General Audiences" />
 
                 <com.google.android.material.chip.Chip
-                    android:id="@+id/teenChip"
+                    android:id="@+id/ratingTeenChip"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:checkable="true"
@@ -82,7 +82,7 @@
                     android:text="Teen And Up Audiences" />
 
                 <com.google.android.material.chip.Chip
-                    android:id="@+id/matureChip"
+                    android:id="@+id/ratingMatureChip"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:checkable="true"
@@ -90,7 +90,7 @@
                     android:text="Mature" />
 
                 <com.google.android.material.chip.Chip
-                    android:id="@+id/explicitChip"
+                    android:id="@+id/ratingExplicitChip"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:checkable="true"
@@ -98,7 +98,7 @@
                     android:text="Explicit" />
 
                 <com.google.android.material.chip.Chip
-                    android:id="@+id/notRatedChip"
+                    android:id="@+id/ratingNotRatedChip"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:checkable="true"
@@ -122,7 +122,7 @@
                 app:layout_constraintTop_toBottomOf="@id/warningsHeader">
 
                 <com.google.android.material.chip.Chip
-                    android:id="@+id/noWarningsChip"
+                    android:id="@+id/warningNoWarningsChip"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:checkable="true"
@@ -130,7 +130,7 @@
                     android:text="No Warnings" />
 
                 <com.google.android.material.chip.Chip
-                    android:id="@+id/violenceChip"
+                    android:id="@+id/warningViolenceChip"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:checkable="true"
@@ -138,7 +138,7 @@
                     android:text="Graphic Violence" />
 
                 <com.google.android.material.chip.Chip
-                    android:id="@+id/majorCharacterDeathChip"
+                    android:id="@+id/warningMajorCharacterDeathChip"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:checkable="true"
@@ -146,7 +146,7 @@
                     android:text="Major Character Death" />
 
                 <com.google.android.material.chip.Chip
-                    android:id="@+id/rapeChip"
+                    android:id="@+id/warningRapeChip"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:checkable="true"
@@ -154,7 +154,7 @@
                     android:text="Rape/Non-Con" />
 
                 <com.google.android.material.chip.Chip
-                    android:id="@+id/underageChip"
+                    android:id="@+id/warningUnderageChip"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:checkable="true"
@@ -162,7 +162,7 @@
                     android:text="Underage" />
 
                 <com.google.android.material.chip.Chip
-                    android:id="@+id/creatorChoseNoWarningsChip"
+                    android:id="@+id/warningCreatorChoseNoWarningsChip"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:checkable="true"
@@ -171,12 +171,22 @@
 
             </com.google.android.material.chip.ChipGroup>
 
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/warningsIncludeAllSwitch"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Works must contain all warnings above"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/warningsChipGroup" />
+
             <TextView
                 android:id="@+id/categoriesHeader"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="RELATIONSHIP CATEGORIES"
-                app:layout_constraintTop_toBottomOf="@id/warningsChipGroup" />
+                app:layout_constraintTop_toBottomOf="@id/warningsIncludeAllSwitch"
+                app:layout_constraintStart_toStartOf="parent" />
 
             <com.google.android.material.chip.ChipGroup
                 android:id="@+id/categoriesChipGroup"
@@ -289,10 +299,12 @@
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/includedTagsAutocompleteRecyclerView"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:visibility="gone"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constrainedWidth="true"
+                app:layout_constraintEnd_toEndOf="@+id/includedTags"
                 app:layout_constraintStart_toEndOf="@id/verticalDivider"
                 app:layout_constraintTop_toBottomOf="@id/includedTags" />
 
@@ -340,10 +352,12 @@
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/excludedTagsAutocompleteRecyclerView"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:visibility="gone"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constrainedWidth="true"
+                app:layout_constraintEnd_toEndOf="@+id/excludedTags"
                 app:layout_constraintStart_toEndOf="@id/verticalDivider"
                 app:layout_constraintTop_toBottomOf="@id/excludedTags" />
 
@@ -577,11 +591,62 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
+                android:id="@+id/commentsHeader"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="COMMENTS"
+                app:layout_constraintTop_toBottomOf="@id/bookmarksTo"
+                tools:layout_editor_absoluteX="16dp" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/commentsFrom"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:hint="From"
+                app:boxStrokeColor="@color/uiHighlightColor"
+                app:hintTextColor="@color/uiHighlightColor"
+                app:layout_constraintEnd_toStartOf="@+id/commentsTo"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/commentsHeader">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/commentsFromEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:inputType="none|number" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/commentsTo"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:hint="To"
+                app:boxStrokeColor="@color/uiHighlightColor"
+                app:hintTextColor="@color/uiHighlightColor"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/commentsFrom"
+                app:layout_constraintTop_toTopOf="@id/commentsFrom">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/commentsToEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:inputType="none|number" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
                 android:id="@+id/wordCountHeader"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="WORD COUNT"
-                app:layout_constraintTop_toBottomOf="@id/bookmarksTo" />
+                app:layout_constraintTop_toBottomOf="@id/commentsTo" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/wordCountFrom"

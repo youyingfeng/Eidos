@@ -41,8 +41,8 @@ data class WorkFilterChoices(
     var dateUpdatedMin: String = "",
     var dateUpdatedMax: String = "",
 
-    var includedTags: List<String> = emptyList(),
-    var excludedTags: List<String> = emptyList(),
+    var includedTags: MutableList<String> = mutableListOf<String>(),
+    var excludedTags: MutableList<String> = mutableListOf<String>(),
 
     var searchTerm: String = "",
     var language: String = "",
