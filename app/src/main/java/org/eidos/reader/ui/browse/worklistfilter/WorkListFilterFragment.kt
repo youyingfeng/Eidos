@@ -433,16 +433,16 @@ class WorkListFilterFragment : Fragment() {
             binding.showCrossoversChip.isChecked = showCrossovers
             binding.showNonCrossoversChip.isChecked = showNonCrossovers
 
-            binding.hitsFromEditText.setText(hitsMin)
-            binding.hitsToEditText.setText(hitsMax)
-            binding.kudosFromEditText.setText(kudosMin)
-            binding.kudosToEditText.setText(kudosMax)
-            binding.bookmarksFromEditText.setText(bookmarksMin)
-            binding.bookmarksToEditText.setText(bookmarksMax)
-            binding.commentsFromEditText.setText(commentsMin)
-            binding.commentsToEditText.setText(commentsMax)
-            binding.wordCountFromEditText.setText(wordCountMin)
-            binding.wordCountToEditText.setText(wordCountMax)
+            binding.hitsFromEditText.setText(if (hitsMin > 0) hitsMin.toString() else "")
+            binding.hitsToEditText.setText(if (hitsMax > 0) hitsMax.toString() else "")
+            binding.kudosFromEditText.setText(if (kudosMin > 0) kudosMin.toString() else "")
+            binding.kudosToEditText.setText(if (kudosMax > 0) kudosMax.toString() else "")
+            binding.bookmarksFromEditText.setText(if (bookmarksMin > 0) bookmarksMin.toString() else "")
+            binding.bookmarksToEditText.setText(if (bookmarksMax > 0) bookmarksMax.toString() else "")
+            binding.commentsFromEditText.setText(if (commentsMin > 0) commentsMin.toString() else "")
+            binding.commentsToEditText.setText(if (commentsMax > 0) commentsMax.toString() else "")
+            binding.wordCountFromEditText.setText(if (wordCountMin > 0) wordCountMin.toString() else "")
+            binding.wordCountToEditText.setText(if (wordCountMax > 0) wordCountMax.toString() else "")
             binding.dateUpdatedFromEditText.setText(dateUpdatedMin)
             binding.dateUpdatedToEditText.setText(dateUpdatedMax)
 
