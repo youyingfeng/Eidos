@@ -167,7 +167,7 @@
                     android:layout_height="wrap_content"
                     android:checkable="true"
                     android:checked="true"
-                    android:text="Not Specified" />
+                    android:text="Creator Chose No Warnings" />
 
             </com.google.android.material.chip.ChipGroup>
 
@@ -242,14 +242,6 @@
                     android:checkable="true"
                     android:checked="true"
                     android:text="Others" />
-
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/relationshipNotSpecifiedChip"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:checkable="true"
-                    android:checked="true"
-                    android:text="Not Specified" />
 
             </com.google.android.material.chip.ChipGroup>
 
@@ -545,7 +537,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="BOOKMARKS"
-                app:layout_constraintTop_toBottomOf="@id/kudosTo" />
+                app:layout_constraintTop_toBottomOf="@id/commentsTo" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/bookmarksFrom"
@@ -595,7 +587,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="COMMENTS"
-                app:layout_constraintTop_toBottomOf="@id/bookmarksTo"
+                app:layout_constraintTop_toBottomOf="@id/kudosTo"
                 tools:layout_editor_absoluteX="16dp" />
 
             <com.google.android.material.textfield.TextInputLayout
@@ -646,7 +638,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="WORD COUNT"
-                app:layout_constraintTop_toBottomOf="@id/commentsTo" />
+                app:layout_constraintTop_toBottomOf="@id/bookmarksTo" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/wordCountFrom"

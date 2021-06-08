@@ -7,6 +7,7 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -32,8 +33,6 @@ and also stop additional typing of dashes from fucking up the date format
 
 class WorkListFilterFragment : Fragment() {
 
-    // by viewModels kotlin delegate is basically a lazy initialiser
-    // FIXME: cannot create instance of VM
     private val workListViewModel : WorkListViewModel by activityViewModels()
     private val viewModel : WorkListFilterViewModel by viewModels {
         WorkListFilterViewModelFactory(
@@ -41,7 +40,6 @@ class WorkListFilterFragment : Fragment() {
             workListViewModel.workFilterRequest.workFilterChoices.copy()
         )
     }
-    /* The AutocompleteViewModel is meant to provide autocomplete livedata only */
 
     private var _binding: FormWorkFilterBinding? = null
     val binding : FormWorkFilterBinding
@@ -281,6 +279,77 @@ class WorkListFilterFragment : Fragment() {
         }
 
 
+        // holy shit edittext cancer
+        // this entire code is listener hell
+        binding.hitsFromEditText.setOnFocusChangeListener { view, hasFocus ->
+            if (!hasFocus) {
+                viewModel.workFilterChoices.hitsMin = (view as EditText).text.toString().toInt()
+            }
+        }
+        binding.hitsToEditText.setOnFocusChangeListener { view, hasFocus ->
+            if (!hasFocus) {
+                viewModel.workFilterChoices.hitsMax = (view as EditText).text.toString().toInt()
+            }
+        }
+        binding.kudosFromEditText.setOnFocusChangeListener { view, hasFocus ->
+            if (!hasFocus) {
+                viewModel.workFilterChoices.kudosMin = (view as EditText).text.toString().toInt()
+            }
+        }
+        binding.kudosToEditText.setOnFocusChangeListener { view, hasFocus ->
+            if (!hasFocus) {
+                viewModel.workFilterChoices.kudosMax = (view as EditText).text.toString().toInt()
+            }
+        }
+        binding.bookmarksFromEditText.setOnFocusChangeListener { view, hasFocus ->
+            if (!hasFocus) {
+                viewModel.workFilterChoices.bookmarksMin = (view as EditText).text.toString().toInt()
+            }
+        }
+        binding.bookmarksToEditText.setOnFocusChangeListener { view, hasFocus ->
+            if (!hasFocus) {
+                viewModel.workFilterChoices.bookmarksMax = (view as EditText).text.toString().toInt()
+            }
+        }
+        binding.commentsFromEditText.setOnFocusChangeListener { view, hasFocus ->
+            if (!hasFocus) {
+                viewModel.workFilterChoices.commentsMin = (view as EditText).text.toString().toInt()
+            }
+        }
+        binding.commentsToEditText.setOnFocusChangeListener { view, hasFocus ->
+            if (!hasFocus) {
+                viewModel.workFilterChoices.commentsMax = (view as EditText).text.toString().toInt()
+            }
+        }
+        binding.wordCountFromEditText.setOnFocusChangeListener { view, hasFocus ->
+            if (!hasFocus) {
+                viewModel.workFilterChoices.wordCountMin = (view as EditText).text.toString().toInt()
+            }
+        }
+        binding.wordCountToEditText.setOnFocusChangeListener { view, hasFocus ->
+            if (!hasFocus) {
+                viewModel.workFilterChoices.wordCountMax = (view as EditText).text.toString().toInt()
+            }
+        }
+        binding.dateUpdatedFromEditText.setOnFocusChangeListener { view, hasFocus ->
+            if (!hasFocus) {
+                viewModel.workFilterChoices.dateUpdatedMin = (view as EditText).text.toString()
+            }
+        }
+        binding.dateUpdatedToEditText.setOnFocusChangeListener { view, hasFocus ->
+            if (!hasFocus) {
+                viewModel.workFilterChoices.dateUpdatedMax = (view as EditText).text.toString()
+            }
+        }
+
+        binding.searchInputEditText.setOnFocusChangeListener { view, hasFocus ->
+            if (!hasFocus) {
+                viewModel.workFilterChoices.searchTerm = (view as EditText).text.toString()
+            }
+        }
+
+        // TODO: missing observers for sort order and language
+
         return binding.root
     }
 
@@ -294,59 +363,111 @@ class WorkListFilterFragment : Fragment() {
         // create a new Choices object with the given parameters
         val choices = WorkFilterChoices()
 
-//        choices.showCategoryGen = binding.relationshipGenChip.isChecked
-//        choices.showCategoryFM = binding.relationshipFMChip.isChecked
-//        choices.showCategoryMM = binding.relationshipMMChip.isChecked
-//        choices.showCategoryFF = binding.relationshipFFChip.isChecked
-//        choices.showCategoryMulti = binding.relationshipMultiChip.isChecked
-//        choices.showCategoryOther = binding.relationshipOtherChip.isChecked
-//        choices.showCrossovers = binding.showCrossoversChip.isChecked
-//        choices.showNonCrossovers = binding.showNonCrossoversChip.isChecked
-//        choices.showCompletedWorks = binding.showCompletedChip.isChecked
-//        choices.showIncompleteWorks = binding.showIncompleteChip.isChecked
-//        choices.hitsMin = binding.hitsFromEditText.text?.let { it ->
-//            // TODO: should handle parseInt exception
-//            if (it.isBlank()) 0 else Integer.parseInt(it.toString())
-//        } ?: 0
-//        choices.hitsMax = 0
-//        choices.kudosMin = 0
-//        choices.kudosMax = 0
-//        choices.bookmarksMin = 0
-//        choices.bookmarksMax = 0
-//        choices.wordCountMin = 0
-//        choices.wordCountMax = 0
-//        choices.dateUpdatedMin = ""
-//        choices.dateUpdatedMax = ""
-//        choices.searchTerm = ""
-//        choices.showSingleChapterWorksOnly = binding.oneshotsOnlyToggle.isActivated
-//        choices.includedTags = emptyList()
-//        choices.excludedTags = emptyList()
-//        choices.language = ""
-
-        // then pass this object to the request outside?
-        // outside of the function, we resend the request
         return choices
     }
 
     private fun loadFormParameters() {
-        // obtain the choices object from the request (need to update request contract too)
-    }
+        with (viewModel.workFilterChoices) {
+            // FIXME: missing fields - sorting order, language
+            binding.ratingGeneralChip.isChecked = showRatingGeneral
+            binding.ratingTeenChip.isChecked = showRatingTeen
+            binding.ratingMatureChip.isChecked = showRatingMature
+            binding.ratingExplicitChip.isChecked = showRatingExplicit
+            binding.ratingNotRatedChip.isChecked = showRatingNotRated
 
-    private fun ChipGroup.addChipWithText(text: String) {
-        val newChip = Chip(this.context)
-        newChip.text = text
-        newChip.isCloseIconVisible = true
-        newChip.isClickable = true
-        this.addView(newChip, this.childCount)
-        viewModel.workFilterChoices.includedTags.add(text)
-        newChip.setOnCloseIconClickListener {
-            this.removeView(newChip)
-            viewModel.workFilterChoices.includedTags.remove(text)
+            binding.warningNoWarningsChip.isChecked = showWarningNone
+            binding.warningViolenceChip.isChecked = showWarningViolence
+            binding.warningRapeChip.isChecked = showWarningRape
+            binding.warningUnderageChip.isChecked = showWarningUnderage
+            binding.warningMajorCharacterDeathChip.isChecked = showWarningCharacterDeath
+            binding.warningCreatorChoseNoWarningsChip.isChecked = showWarningChoseNoWarnings
+            binding.warningsIncludeAllSwitch.isChecked = mustContainAllWarnings
+
+            binding.relationshipGenChip.isChecked = showCategoryGen
+            binding.relationshipFFChip.isChecked = showCategoryFF
+            binding.relationshipFMChip.isChecked = showCategoryFM
+            binding.relationshipMMChip.isChecked = showCategoryMM
+            binding.relationshipMultiChip.isChecked = showCategoryMulti
+            binding.relationshipOtherChip.isChecked = showCategoryOther
+
+            includedTags.forEach { tag ->
+                if (!viewModel.workFilterChoices.includedTags.contains(tag)) {
+                    // adds a new chip to the chipgroup if it does not already exist
+                    val newChip = Chip(context)
+                    newChip.text = tag
+                    newChip.isCloseIconVisible = true
+                    newChip.isClickable = true
+                    binding.includedTagsChipGroup.addView(newChip, binding.includedTagsChipGroup.childCount)
+                    viewModel.workFilterChoices.includedTags.add(tag)
+                    newChip.setOnCloseIconClickListener {
+                        binding.includedTagsChipGroup.removeView(newChip)
+                        viewModel
+                            .workFilterChoices
+                            .includedTags
+                            .remove(tag)
+                    }
+                }
+            }
+            
+            excludedTags.forEach { tag ->
+                if (!viewModel.workFilterChoices.excludedTags.contains(tag)) {
+                    // adds a new chip to the chipgroup if it does not already exist
+                    val newChip = Chip(context)
+                    newChip.text = tag
+                    newChip.isCloseIconVisible = true
+                    newChip.isClickable = true
+                    binding.excludedTagsChipGroup.addView(newChip, binding.excludedTagsChipGroup.childCount)
+                    viewModel.workFilterChoices.excludedTags.add(tag)
+                    newChip.setOnCloseIconClickListener {
+                        binding.excludedTagsChipGroup.removeView(newChip)
+                        viewModel
+                            .workFilterChoices
+                            .excludedTags
+                            .remove(tag)
+                    }
+                }
+            }
+
+            binding.showCompletedChip.isChecked = showCompletedWorks
+            binding.showIncompleteChip.isChecked = showIncompleteWorks
+            binding.showCrossoversChip.isChecked = showCrossovers
+            binding.showNonCrossoversChip.isChecked = showNonCrossovers
+
+            binding.hitsFromEditText.setText(hitsMin)
+            binding.hitsToEditText.setText(hitsMax)
+            binding.kudosFromEditText.setText(kudosMin)
+            binding.kudosToEditText.setText(kudosMax)
+            binding.bookmarksFromEditText.setText(bookmarksMin)
+            binding.bookmarksToEditText.setText(bookmarksMax)
+            binding.commentsFromEditText.setText(commentsMin)
+            binding.commentsToEditText.setText(commentsMax)
+            binding.wordCountFromEditText.setText(wordCountMin)
+            binding.wordCountToEditText.setText(wordCountMax)
+            binding.dateUpdatedFromEditText.setText(dateUpdatedMin)
+            binding.dateUpdatedToEditText.setText(dateUpdatedMax)
+
+            binding.oneshotsOnlyToggle.isChecked = showSingleChapterWorksOnly
+
+            binding.searchInputEditText.setText(searchTerm)
         }
     }
 
-    companion object {
 
+
+    companion object {
+        // commented for archival purposes
+//        private fun ChipGroup.addChipWithText(text: String) {
+//            val newChip = Chip(this.context)
+//            newChip.text = text
+//            newChip.isCloseIconVisible = true
+//            newChip.isClickable = true
+//            this.addView(newChip, this.childCount)
+//
+//            newChip.setOnCloseIconClickListener {
+//                this.removeView(newChip)
+//
+//            }
+//        }
 
         fun TextView.afterTextChangedDelayed(delayInMilliseconds: Long, afterTextChanged: (String) -> Unit) {
             this.addTextChangedListener(object : TextWatcher {
@@ -372,5 +493,3 @@ class WorkListFilterFragment : Fragment() {
         }
     }
 }
-
-
