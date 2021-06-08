@@ -7,7 +7,6 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.EditorInfo
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -35,11 +34,11 @@ class WorkListFilterFragment : Fragment() {
 
     // by viewModels kotlin delegate is basically a lazy initialiser
     // FIXME: cannot create instance of VM
-    private val viewModel : WorkListViewModel by activityViewModels()
-    private val workListFilterViewModel : WorkListFilterViewModel by viewModels {
+    private val workListViewModel : WorkListViewModel by activityViewModels()
+    private val viewModel : WorkListFilterViewModel by viewModels {
         WorkListFilterViewModelFactory(
             appContainer.repository,
-            viewModel.workFilterRequest.workFilterChoices.copy()
+            workListViewModel.workFilterRequest.workFilterChoices.copy()
         )
     }
     /* The AutocompleteViewModel is meant to provide autocomplete livedata only */
@@ -73,17 +72,17 @@ class WorkListFilterFragment : Fragment() {
         // Set autocomplete recyclerviews
         val includeTagsAutocompleteAdapter =
             AutocompleteStringAdapter { _, autocompleteResultString ->
-                if (!workListFilterViewModel.workFilterChoices.includedTags.contains(autocompleteResultString)) {
+                if (!viewModel.workFilterChoices.includedTags.contains(autocompleteResultString)) {
                     // adds a new chip to the chipgroup if it does not already exist
                     val newChip = Chip(this.context)
                     newChip.text = autocompleteResultString
                     newChip.isCloseIconVisible = true
                     newChip.isClickable = true
                     binding.includedTagsChipGroup.addView(newChip, binding.includedTagsChipGroup.childCount)
-                    workListFilterViewModel.workFilterChoices.includedTags.add(autocompleteResultString)
+                    viewModel.workFilterChoices.includedTags.add(autocompleteResultString)
                     newChip.setOnCloseIconClickListener {
                         binding.includedTagsChipGroup.removeView(newChip)
-                        workListFilterViewModel
+                        viewModel
                             .workFilterChoices
                             .includedTags
                             .remove(autocompleteResultString)
@@ -96,17 +95,17 @@ class WorkListFilterFragment : Fragment() {
 
         val excludeTagsAutocompleteAdapter =
             AutocompleteStringAdapter { _, autocompleteResultString ->
-                if (!workListFilterViewModel.workFilterChoices.excludedTags.contains(autocompleteResultString)) {
+                if (!viewModel.workFilterChoices.excludedTags.contains(autocompleteResultString)) {
                     // adds a new chip to the chipgroup if it does not already exist
                     val newChip = Chip(this.context)
                     newChip.text = autocompleteResultString
                     newChip.isCloseIconVisible = true
                     newChip.isClickable = true
                     binding.excludedTagsChipGroup.addView(newChip, binding.excludedTagsChipGroup.childCount)
-                    workListFilterViewModel.workFilterChoices.excludedTags.add(autocompleteResultString)
+                    viewModel.workFilterChoices.excludedTags.add(autocompleteResultString)
                     newChip.setOnCloseIconClickListener {
                         binding.excludedTagsChipGroup.removeView(newChip)
-                        workListFilterViewModel
+                        viewModel
                             .workFilterChoices
                             .excludedTags
                             .remove(autocompleteResultString)
@@ -150,7 +149,7 @@ class WorkListFilterFragment : Fragment() {
                 binding.includedTagsAutocompleteRecyclerView.visibility = View.VISIBLE
             } else {
                 binding.includedTagsAutocompleteRecyclerView.visibility = View.GONE
-                workListFilterViewModel.clearAutocompleteResults()
+                viewModel.clearAutocompleteResults()
             }
         }
 
@@ -160,29 +159,29 @@ class WorkListFilterFragment : Fragment() {
                 binding.excludedTagsAutocompleteRecyclerView.visibility = View.VISIBLE
             } else {
                 binding.excludedTagsAutocompleteRecyclerView.visibility = View.GONE
-                workListFilterViewModel.clearAutocompleteResults()
+                viewModel.clearAutocompleteResults()
             }
         }
 
         // fetch results when user stops typing
         binding.includedTagsEditText.afterTextChangedDelayed(100L) { inputString ->
             if (inputString.isNotBlank()) {
-                workListFilterViewModel.fetchAutocompleteResults(inputString)
+                viewModel.fetchAutocompleteResults(inputString)
             } else {
-                workListFilterViewModel.clearAutocompleteResults()
+                viewModel.clearAutocompleteResults()
             }
         }
 
         binding.excludedTagsEditText.afterTextChangedDelayed(100L) { inputString ->
             if (inputString.isNotBlank()) {
-                workListFilterViewModel.fetchAutocompleteResults(inputString)
+                viewModel.fetchAutocompleteResults(inputString)
             } else {
-                workListFilterViewModel.clearAutocompleteResults()
+                viewModel.clearAutocompleteResults()
             }
         }
 
         // pump the results to the respective adapters
-        workListFilterViewModel.autocompleteResults.observe(viewLifecycleOwner, {
+        viewModel.autocompleteResults.observe(viewLifecycleOwner, {
             it?.let {
                 includeTagsAutocompleteAdapter.data = it
                 excludeTagsAutocompleteAdapter.data = it
@@ -200,42 +199,42 @@ class WorkListFilterFragment : Fragment() {
         // holy shit so this is what they mean by unreadable xml code
         // Ratings
         binding.ratingGeneralChip.setOnCheckedChangeListener { _, isChecked ->
-            workListFilterViewModel.workFilterChoices.showRatingGeneral = isChecked
+            viewModel.workFilterChoices.showRatingGeneral = isChecked
         }
         binding.ratingTeenChip.setOnCheckedChangeListener { _, isChecked ->
-            workListFilterViewModel.workFilterChoices.showRatingTeen = isChecked
+            viewModel.workFilterChoices.showRatingTeen = isChecked
         }
         binding.ratingMatureChip.setOnCheckedChangeListener { _, isChecked ->
-            workListFilterViewModel.workFilterChoices.showRatingMature = isChecked
+            viewModel.workFilterChoices.showRatingMature = isChecked
         }
         binding.ratingExplicitChip.setOnCheckedChangeListener { _, isChecked ->
-            workListFilterViewModel.workFilterChoices.showRatingExplicit = isChecked
+            viewModel.workFilterChoices.showRatingExplicit = isChecked
         }
         binding.ratingNotRatedChip.setOnCheckedChangeListener { _, isChecked ->
-            workListFilterViewModel.workFilterChoices.showRatingNotRated = isChecked
+            viewModel.workFilterChoices.showRatingNotRated = isChecked
         }
 
         // Warnings
         binding.warningCreatorChoseNoWarningsChip.setOnCheckedChangeListener { _, isChecked ->
-            workListFilterViewModel.workFilterChoices.showWarningChoseNoWarnings = isChecked
+            viewModel.workFilterChoices.showWarningChoseNoWarnings = isChecked
         }
         binding.warningNoWarningsChip.setOnCheckedChangeListener { _, isChecked ->
-            workListFilterViewModel.workFilterChoices.showWarningNone = isChecked
+            viewModel.workFilterChoices.showWarningNone = isChecked
         }
         binding.warningMajorCharacterDeathChip.setOnCheckedChangeListener { _, isChecked ->
-            workListFilterViewModel.workFilterChoices.showWarningCharacterDeath = isChecked
+            viewModel.workFilterChoices.showWarningCharacterDeath = isChecked
         }
         binding.warningRapeChip.setOnCheckedChangeListener { _, isChecked ->
-            workListFilterViewModel.workFilterChoices.showWarningRape = isChecked
+            viewModel.workFilterChoices.showWarningRape = isChecked
         }
         binding.warningUnderageChip.setOnCheckedChangeListener { _, isChecked ->
-            workListFilterViewModel.workFilterChoices.showWarningUnderage = isChecked
+            viewModel.workFilterChoices.showWarningUnderage = isChecked
         }
         binding.warningViolenceChip.setOnCheckedChangeListener { _, isChecked ->
-            workListFilterViewModel.workFilterChoices.showWarningViolence = isChecked
+            viewModel.workFilterChoices.showWarningViolence = isChecked
         }
         binding.warningsIncludeAllSwitch.setOnCheckedChangeListener { buttonView, isChecked ->
-            workListFilterViewModel.workFilterChoices.mustContainAllWarnings = isChecked
+            viewModel.workFilterChoices.mustContainAllWarnings = isChecked
         }
 
 
@@ -245,40 +244,40 @@ class WorkListFilterFragment : Fragment() {
 //            workListFilterViewModel.workFilterChoices
 //        }
         binding.relationshipGenChip.setOnCheckedChangeListener { _, isChecked ->
-            workListFilterViewModel.workFilterChoices.showCategoryGen = isChecked
+            viewModel.workFilterChoices.showCategoryGen = isChecked
         }
         binding.relationshipFFChip.setOnCheckedChangeListener { _, isChecked ->
-            workListFilterViewModel.workFilterChoices.showCategoryFF = isChecked
+            viewModel.workFilterChoices.showCategoryFF = isChecked
         }
         binding.relationshipFMChip.setOnCheckedChangeListener { _, isChecked ->
-            workListFilterViewModel.workFilterChoices.showCategoryFM = isChecked
+            viewModel.workFilterChoices.showCategoryFM = isChecked
         }
         binding.relationshipMMChip.setOnCheckedChangeListener { _, isChecked ->
-            workListFilterViewModel.workFilterChoices.showCategoryMM = isChecked
+            viewModel.workFilterChoices.showCategoryMM = isChecked
         }
         binding.relationshipMultiChip.setOnCheckedChangeListener { _, isChecked ->
-            workListFilterViewModel.workFilterChoices.showCategoryMulti = isChecked
+            viewModel.workFilterChoices.showCategoryMulti = isChecked
         }
         binding.relationshipOtherChip.setOnCheckedChangeListener { _, isChecked ->
-            workListFilterViewModel.workFilterChoices.showCategoryOther = isChecked
+            viewModel.workFilterChoices.showCategoryOther = isChecked
         }
 
         binding.showCrossoversChip.setOnCheckedChangeListener { _, isChecked ->
-            workListFilterViewModel.workFilterChoices.showCrossovers = isChecked
+            viewModel.workFilterChoices.showCrossovers = isChecked
         }
         binding.showNonCrossoversChip.setOnCheckedChangeListener { _, isChecked ->
-            workListFilterViewModel.workFilterChoices.showNonCrossovers = isChecked
+            viewModel.workFilterChoices.showNonCrossovers = isChecked
         }
 
         binding.showCompletedChip.setOnCheckedChangeListener { _, isChecked ->
-            workListFilterViewModel.workFilterChoices.showCompletedWorks = isChecked
+            viewModel.workFilterChoices.showCompletedWorks = isChecked
         }
         binding.showIncompleteChip.setOnCheckedChangeListener { _, isChecked ->
-            workListFilterViewModel.workFilterChoices.showIncompleteWorks = isChecked
+            viewModel.workFilterChoices.showIncompleteWorks = isChecked
         }
 
         binding.oneshotsOnlyToggle.setOnCheckedChangeListener { buttonView, isChecked ->
-            workListFilterViewModel.workFilterChoices.showSingleChapterWorksOnly = isChecked
+            viewModel.workFilterChoices.showSingleChapterWorksOnly = isChecked
         }
 
 
@@ -339,10 +338,10 @@ class WorkListFilterFragment : Fragment() {
         newChip.isCloseIconVisible = true
         newChip.isClickable = true
         this.addView(newChip, this.childCount)
-        workListFilterViewModel.workFilterChoices.includedTags.add(text)
+        viewModel.workFilterChoices.includedTags.add(text)
         newChip.setOnCloseIconClickListener {
             this.removeView(newChip)
-            workListFilterViewModel.workFilterChoices.includedTags.remove(text)
+            viewModel.workFilterChoices.includedTags.remove(text)
         }
     }
 
