@@ -58,15 +58,6 @@ class WorkListFilterFragment : Fragment() {
 
         loadFormParameters()
 
-        binding.confirmButton.setOnClickListener {
-            val choices = processFormInput()
-            // TODO: update parent VM fields
-        }
-
-        binding.clearButton.setOnClickListener {
-            loadFormParameters()
-        }
-
         // Set autocomplete recyclerviews
         val includeTagsAutocompleteAdapter =
             AutocompleteStringAdapter { _, autocompleteResultString ->
@@ -349,6 +340,23 @@ class WorkListFilterFragment : Fragment() {
         }
 
         // TODO: missing observers for sort order and language
+
+        // TODO: link submit and cancel buttons, add reset button for both types of reset
+        binding.confirmButton.setOnClickListener {
+            // submit choices to parent viewmodel
+            workListViewModel.updateFilterChoices(viewModel.workFilterChoices)
+            // navigate back
+            val navController = findNavController()
+//            navController.navigateUp()
+            navController.popBackStack()
+        }
+
+        binding.clearButton.setOnClickListener {
+            // reset choices to defaults
+            viewModel.resetChoicesToDefault()
+            loadFormParameters()
+        }
+
 
         return binding.root
     }

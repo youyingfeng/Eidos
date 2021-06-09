@@ -36,4 +36,8 @@ class WorkListFilterViewModel
     fun clearAutocompleteResults() {
         _autocompleteResults.value = emptyList()
     }
+
+    fun resetChoicesToDefault() {
+        workFilterChoices = WorkFilterChoices()
+    }
 }

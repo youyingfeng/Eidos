@@ -9,6 +9,7 @@ import kotlinx.coroutines.launch
 import org.eidos.reader.model.Comment
 
 import org.eidos.reader.model.WorkBlurb
+import org.eidos.reader.remote.choices.WorkFilterChoices
 import org.eidos.reader.remote.requests.WorkFilterRequest
 import org.eidos.reader.repository.EidosRepository
 import timber.log.Timber
@@ -81,5 +82,12 @@ class WorkListViewModel
 
     fun resetPages() {
         _workBlurbs.value = emptyList()
+        largestPageNumber = 1
+    }
+
+    fun updateFilterChoices(choices: WorkFilterChoices) {
+        workFilterRequest.updateChoices(choices)
+        resetPages()
+        initialiseWorkBlurbs()
     }
 }
