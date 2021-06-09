@@ -57,7 +57,7 @@ class WorkBlurbAdapter(private val onClickAction: (View, WorkBlurb) -> Unit) : R
 
             binding.workRatingIcon.text = when(item.rating) {
                 "Not Rated" -> ""
-                "General" -> "G"
+                "General Audiences" -> "G"
                 "Teen And Up Audiences" -> "T"
                 "Mature" -> "M"
                 "Explicit" -> "E"
@@ -67,7 +67,7 @@ class WorkBlurbAdapter(private val onClickAction: (View, WorkBlurb) -> Unit) : R
             binding.workRatingIconBackground.setCardBackgroundColor(when(item.rating) {
                 "Not Rated" -> ContextCompat.getColor(
                     binding.workRatingIconBackground.context, R.color.white)
-                "General" -> ContextCompat.getColor(
+                "General Audiences" -> ContextCompat.getColor(
                     binding.workRatingIconBackground.context, R.color.rating_gen)
                 "Teen And Up Audiences" -> ContextCompat.getColor(
                     binding.workRatingIconBackground.context, R.color.rating_teen)
