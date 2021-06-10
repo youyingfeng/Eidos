@@ -19,7 +19,7 @@ import org.eidos.reader.EidosApplication
 import org.eidos.reader.R
 import org.eidos.reader.container.AppContainer
 import org.eidos.reader.databinding.FragmentLibraryBinding
-import org.eidos.reader.ui.misc.adapters.WorkBlurbCompactAdapter
+import org.eidos.reader.ui.misc.adapters.WorkBlurbLocalAdapter
 import org.eidos.reader.ui.misc.utilities.Utilities.Companion.hideKeyboard
 
 class LibraryFragment : Fragment() {
@@ -48,7 +48,7 @@ class LibraryFragment : Fragment() {
         (activity as AppCompatActivity).setSupportActionBar(binding.toolbar)
         (activity as AppCompatActivity).setupActionBarWithNavController(findNavController())
 
-        val adapter = WorkBlurbCompactAdapter(
+        val adapter = WorkBlurbLocalAdapter(
             { holderView, workBlurb ->
                 holderView.findNavController()
                     .navigate(
@@ -75,15 +75,19 @@ class LibraryFragment : Fragment() {
 //                    }
 //                }
 
-                // FIXME: I suspect the collapsing appbar is screwing up scrolling
-                val childHeight = binding.workListDisplay.getChildAt(position).height
-                val rvHeight = binding.workListDisplay.height
-
-                (binding.workListDisplay.layoutManager as LinearLayoutManager)
-                    .scrollToPositionWithOffset(
-                        position,
-                        if (childHeight > rvHeight) rvHeight - childHeight else 0
-                    )
+                // FIXME: below code is crashing in worklist
+//                // FIXME: I suspect the collapsing appbar is screwing up scrolling
+//                val childHeight = binding.workListDisplay.getChildAt(position).height
+//                val rvHeight = binding.workListDisplay.height
+//
+//                (binding.workListDisplay.layoutManager as LinearLayoutManager)
+//                    .scrollToPositionWithOffset(
+//                        position,
+//                        if (childHeight > rvHeight) rvHeight - childHeight else 0
+//                    )
+            },
+            onClickDeleteButtonAction = {
+                // empty for now
             }
         )
 

@@ -1,4 +1,4 @@
-package org.eidos.reader.ui.browse.worklist
+package org.eidos.reader.ui.misc.adapters
 
 import android.view.LayoutInflater
 import android.view.View
@@ -6,16 +6,25 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.core.text.HtmlCompat
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.chip.Chip
-import okhttp3.internal.format
 import org.eidos.reader.R
-import org.eidos.reader.databinding.CardWorkBlurbBinding
+import org.eidos.reader.databinding.LayoutWorkBlurbBinding
 import org.eidos.reader.model.WorkBlurb
 import timber.log.Timber
 import kotlin.math.log
 import kotlin.math.pow
 
-class WorkBlurbAdapter(private val onClickAction: (View, WorkBlurb) -> Unit) : RecyclerView.Adapter<WorkBlurbAdapter.WorkBlurbViewHolder>() {
+/*
+Adapter to translate WorkBlurb data to compact work blurb views.
+ */
+
+class WorkBlurbAdapter
+    constructor(
+        private val onClickAction: (View, WorkBlurb) -> Unit,
+        private val autoScrollAction: (Int) -> Unit,
+        private val onClickDownloadAction: () -> Unit,
+    )
+    : RecyclerView.Adapter<WorkBlurbAdapter.WorkBlurbViewHolder>()
+{
     var data = listOf<WorkBlurb>()
         set(value) {
             field = value
@@ -35,6 +44,13 @@ class WorkBlurbAdapter(private val onClickAction: (View, WorkBlurb) -> Unit) : R
         holder.itemView.setOnClickListener { view ->
             onClickAction(view, workBlurb)
         }
+
+        holder.itemView.setOnLongClickListener {
+            if (holder.toggleOptionsVisibility()) {
+                autoScrollAction(position)
+            }
+            return@setOnLongClickListener true
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WorkBlurbViewHolder {
@@ -42,18 +58,33 @@ class WorkBlurbAdapter(private val onClickAction: (View, WorkBlurb) -> Unit) : R
     }
 
     class WorkBlurbViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        // binding solution obtained from stackoverflow: https://stackoverflow.com/questions/60491966/how-to-do-latest-jetpack-view-binding-in-adapter-bind-the-views
-        private val binding = CardWorkBlurbBinding.bind(itemView)
+        private val binding = LayoutWorkBlurbBinding.bind(itemView)
 
+        init {
+            binding.deleteButton.visibility = View.GONE
+        }
 
+        // bind universal behaviour here
+
+        fun toggleOptionsVisibility() : Boolean {
+            /*
+            * Toggles the visibility of the options bar and returns the final visibility of the bar
+            **/
+            binding.optionsLinearLayout.visibility =
+                when(binding.optionsLinearLayout.visibility) {
+                    View.VISIBLE -> View.GONE
+                    View.GONE -> View.VISIBLE
+                    else -> View.VISIBLE
+                }
+            return binding.optionsLinearLayout.visibility == View.VISIBLE
+        }
 
         fun bind(item: WorkBlurb) {
-            Timber.i("WorkBlurb bound!")
             binding.workTitle.text = item.title
             binding.workAuthors.text = item.authors
-                    .fold(StringBuilder()) { acc, next -> acc.append(next).append(" · ") }
-                    .removeSuffix(" · ")
-                    .toString()
+                .fold(StringBuilder()) { acc, next -> acc.append(next).append(" · ") }
+                .removeSuffix(" · ")
+                .toString()
 
             binding.workRatingIcon.text = when(item.rating) {
                 "Not Rated" -> ""
@@ -79,27 +110,30 @@ class WorkBlurbAdapter(private val onClickAction: (View, WorkBlurb) -> Unit) : R
                     binding.workRatingIconBackground.context, R.color.white)
             })
 
-
+            binding.workFandoms.text = item.fandoms
+                .fold(StringBuilder()) { acc, next -> acc.append(next).append(", ") }
+                .removeSuffix(", ")
+                .toString()
             binding.workWarnings.text = item.warnings
-                    .fold(StringBuilder()) { acc, next -> acc.append(next).append(", ") }
-                    .removeSuffix(", ")
-                    .toString()
+                .fold(StringBuilder()) { acc, next -> acc.append(next).append(", ") }
+                .removeSuffix(", ")
+                .toString()
             binding.workCategories.text = item.categories
-                    .fold(StringBuilder()) { acc, next -> acc.append(next).append(", ")}
-                    .removeSuffix(", ")
-                    .toString()
+                .fold(StringBuilder()) { acc, next -> acc.append(next).append(", ") }
+                .removeSuffix(", ")
+                .toString()
             binding.workRelationships.text = item.relationships
-                    .fold(StringBuilder()) { acc, next -> acc.append(next).append(", ") }
-                    .removeSuffix(", ")
-                    .toString()
+                .fold(StringBuilder()) { acc, next -> acc.append(next).append(", ") }
+                .removeSuffix(", ")
+                .toString()
             binding.workCharacters.text = item.characters
-                    .fold(StringBuilder()) { acc, next -> acc.append(next).append(", ") }
-                    .removeSuffix(", ")
-                    .toString()
+                .fold(StringBuilder()) { acc, next -> acc.append(next).append(", ") }
+                .removeSuffix(", ")
+                .toString()
             binding.workFreeforms.text = item.freeforms
-                    .fold(StringBuilder()) { acc, next -> acc.append(next).append(", ") }
-                    .removeSuffix(", ")
-                    .toString()
+                .fold(StringBuilder()) { acc, next -> acc.append(next).append(", ") }
+                .removeSuffix(", ")
+                .toString()
 
             binding.workSummary.text = HtmlCompat.fromHtml(item.summary, HtmlCompat.FROM_HTML_MODE_LEGACY)
 
@@ -111,8 +145,6 @@ class WorkBlurbAdapter(private val onClickAction: (View, WorkBlurb) -> Unit) : R
             binding.workComments.text = formatNumber(item.commentsCount)
             binding.workBookmarks.text = formatNumber(item.bookmarksCount)
             binding.workHits.text = formatNumber(item.hitCount)
-
-
         }
 
         companion object {
@@ -120,7 +152,7 @@ class WorkBlurbAdapter(private val onClickAction: (View, WorkBlurb) -> Unit) : R
                 // FIXME: consider doing viewbinding here and passing the binding object to the viewHolder instead
                 // See: https://stackoverflow.com/questions/60491966/how-to-do-latest-jetpack-view-binding-in-adapter-bind-the-views
                 val layoutInflater = LayoutInflater.from(parent.context)
-                val view = layoutInflater.inflate(R.layout.card_work_blurb, parent, false)
+                val view = layoutInflater.inflate(R.layout.layout_work_blurb, parent, false)
                 return WorkBlurbViewHolder(view)
             }
 
@@ -132,3 +164,4 @@ class WorkBlurbAdapter(private val onClickAction: (View, WorkBlurb) -> Unit) : R
         }
     }
 }
+

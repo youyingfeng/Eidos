@@ -43,14 +43,26 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginEnd="24dp"
-        android:ellipsize="end"
-        android:maxLines="1"
         android:text="Error retrieving work"
         app:layout_constrainedWidth="true"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/workDateUpdated"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@id/workRatingIconBackground"
         app:layout_constraintTop_toTopOf="@+id/workRatingIconBackground" />
+
+    <com.google.android.material.chip.Chip
+        android:id="@+id/workDateUpdated"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="24dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        app:chipBackgroundColor="@android:color/transparent"
+        app:chipIcon="@drawable/ic_card_date_updated_16"
+        app:chipIconSize="16dp"
+        app:chipMinTouchTargetSize="0dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/workTitle" />
 
     <TextView
         android:id="@+id/workAuthors"
@@ -69,12 +81,13 @@
         style="@style/body_text"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="24dp"
         android:ellipsize="end"
-        android:maxLines="1"
+        android:maxLines="2"
         android:text="There was an error retrieving this work from AO3."
         android:textColor="#555555"
         app:layout_constrainedWidth="true"
-        app:layout_constraintEnd_toEndOf="@+id/workAuthors"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@id/workAuthors"
         app:layout_constraintTop_toBottomOf="@id/workAuthors" />
 
@@ -94,15 +107,71 @@
         app:layout_constraintTop_toBottomOf="@id/workFandoms" />
 
     <TextView
+        android:id="@+id/workCategories"
+        style="@style/body_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/space_small_8dp"
+        android:drawableStart="@drawable/ic_categories_18dp"
+        android:drawablePadding="@dimen/space_small_8dp"
+        android:ellipsize="end"
+        android:maxLines="3"
+        app:layout_constraintEnd_toEndOf="@+id/workWarnings"
+        app:layout_constraintStart_toStartOf="@+id/workWarnings"
+        app:layout_constraintTop_toBottomOf="@+id/workWarnings" />
+
+    <TextView
+        android:id="@+id/workRelationships"
+        style="@style/body_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/space_small_8dp"
+        android:drawableLeft="@drawable/ic_card_relationships_14"
+        android:drawablePadding="@dimen/space_small_8dp"
+        android:ellipsize="end"
+        android:maxLines="3"
+        app:layout_constraintEnd_toEndOf="@+id/workCategories"
+        app:layout_constraintStart_toStartOf="@+id/workCategories"
+        app:layout_constraintTop_toBottomOf="@+id/workCategories" />
+
+    <TextView
+        android:id="@+id/workCharacters"
+        style="@style/body_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/space_small_8dp"
+        android:drawableLeft="@drawable/ic_card_characters_24"
+        android:drawablePadding="@dimen/space_small_8dp"
+        android:ellipsize="end"
+        android:maxLines="3"
+        app:layout_constraintEnd_toEndOf="@+id/workRelationships"
+        app:layout_constraintStart_toStartOf="@+id/workRelationships"
+        app:layout_constraintTop_toBottomOf="@+id/workRelationships" />
+
+    <TextView
+        android:id="@+id/workFreeforms"
+        style="@style/body_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/space_small_8dp"
+        android:drawableLeft="@drawable/ic_card_freeforms_14"
+        android:drawablePadding="@dimen/space_small_8dp"
+        android:ellipsize="end"
+        android:maxLines="3"
+        app:layout_constraintEnd_toEndOf="@+id/workCharacters"
+        app:layout_constraintStart_toStartOf="@+id/workCharacters"
+        app:layout_constraintTop_toBottomOf="@+id/workCharacters" />
+
+    <TextView
         android:id="@+id/workSummary"
         style="@style/body_text"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="24dp"
         android:text="A possible cause of this error is a bad internet connection. Please check your connection and try again."
-        app:layout_constraintEnd_toEndOf="@+id/workWarnings"
-        app:layout_constraintStart_toStartOf="@+id/workWarnings"
-        app:layout_constraintTop_toBottomOf="@+id/workWarnings" />
+        app:layout_constraintEnd_toEndOf="@+id/workFreeforms"
+        app:layout_constraintStart_toStartOf="@+id/workFreeforms"
+        app:layout_constraintTop_toBottomOf="@+id/workFreeforms" />
 
     <com.google.android.material.chip.ChipGroup
         android:id="@+id/workStatisticsChipGroup"
@@ -139,6 +208,41 @@
             app:chipIconSize="16dp"
             app:chipMinTouchTargetSize="0dp" />
 
+        <com.google.android.material.chip.Chip
+            android:id="@+id/workKudos"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:chipBackgroundColor="@android:color/transparent"
+            app:chipIcon="@drawable/ic_card_kudos_16"
+            app:chipIconSize="16dp"
+            app:chipMinTouchTargetSize="0dp" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/workComments"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:chipBackgroundColor="@android:color/transparent"
+            app:chipIcon="@drawable/ic_card_comments_16"
+            app:chipIconSize="16dp"
+            app:chipMinTouchTargetSize="0dp" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/workBookmarks"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:chipBackgroundColor="@android:color/transparent"
+            app:chipIcon="@drawable/ic_card_bookmarks_16"
+            app:chipIconSize="16dp"
+            app:chipMinTouchTargetSize="0dp" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/workHits"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:chipBackgroundColor="@android:color/transparent"
+            app:chipIcon="@drawable/ic_card_hits_16"
+            app:chipIconSize="16dp"
+            app:chipMinTouchTargetSize="0dp" />
     </com.google.android.material.chip.ChipGroup>
 
     <LinearLayout
@@ -163,6 +267,7 @@
             android:elevation="0dp"
             android:layoutDirection="ltr"
             android:text="Read Later"
+            android:visibility="gone"
             app:icon="@drawable/ic_blurb_options_reading_list_24" />
 
         <Button
@@ -174,6 +279,16 @@
             android:layoutDirection="ltr"
             android:text="Download"
             app:icon="@drawable/ic_blurb_options_download_24" />
+
+        <Button
+            android:id="@+id/deleteButton"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:elevation="0dp"
+            android:layoutDirection="ltr"
+            android:text="Delete"
+            app:icon="@drawable/ic_blurb_options_delete_24" />
 
     </LinearLayout>
 

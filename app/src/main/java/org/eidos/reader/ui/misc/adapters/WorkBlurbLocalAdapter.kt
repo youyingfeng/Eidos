@@ -7,7 +7,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.text.HtmlCompat
 import androidx.recyclerview.widget.RecyclerView
 import org.eidos.reader.R
-import org.eidos.reader.databinding.LayoutWorkBlurbCompactBinding
+import org.eidos.reader.databinding.LayoutWorkBlurbBinding
 import org.eidos.reader.model.WorkBlurb
 import timber.log.Timber
 import kotlin.math.log
@@ -17,12 +17,13 @@ import kotlin.math.pow
 Adapter to translate WorkBlurb data to compact work blurb views.
  */
 
-class WorkBlurbCompactAdapter
+class WorkBlurbLocalAdapter
     constructor(
         private val onClickAction: (View, WorkBlurb) -> Unit,
-        private val autoScrollAction: (Int) -> Unit
+        private val autoScrollAction: (Int) -> Unit,
+        private val onClickDeleteButtonAction: () -> Unit,
     )
-    : RecyclerView.Adapter<WorkBlurbCompactAdapter.WorkBlurbCompactViewHolder>()
+    : RecyclerView.Adapter<WorkBlurbLocalAdapter.WorkBlurbLocalViewHolder>()
 {
     var data = listOf<WorkBlurb>()
         set(value) {
@@ -36,7 +37,7 @@ class WorkBlurbCompactAdapter
         return data.size
     }
 
-    override fun onBindViewHolder(holder: WorkBlurbCompactViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: WorkBlurbLocalViewHolder, position: Int) {
         Timber.i("onBindViewHolder called")
         val workBlurb = data[position]
         holder.bind(workBlurb)
@@ -52,12 +53,16 @@ class WorkBlurbCompactAdapter
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WorkBlurbCompactViewHolder {
-        return WorkBlurbCompactViewHolder.from(parent)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WorkBlurbLocalViewHolder {
+        return WorkBlurbLocalViewHolder.from(parent)
     }
 
-    class WorkBlurbCompactViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val binding = LayoutWorkBlurbCompactBinding.bind(itemView)
+    class WorkBlurbLocalViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        private val binding = LayoutWorkBlurbBinding.bind(itemView)
+
+        init {
+            binding.downloadButton.visibility = View.GONE
+        }
 
         // bind universal behaviour here
 
@@ -113,22 +118,42 @@ class WorkBlurbCompactAdapter
                 .fold(StringBuilder()) { acc, next -> acc.append(next).append(", ") }
                 .removeSuffix(", ")
                 .toString()
+            binding.workCategories.text = item.categories
+                .fold(StringBuilder()) { acc, next -> acc.append(next).append(", ") }
+                .removeSuffix(", ")
+                .toString()
+            binding.workRelationships.text = item.relationships
+                .fold(StringBuilder()) { acc, next -> acc.append(next).append(", ") }
+                .removeSuffix(", ")
+                .toString()
+            binding.workCharacters.text = item.characters
+                .fold(StringBuilder()) { acc, next -> acc.append(next).append(", ") }
+                .removeSuffix(", ")
+                .toString()
+            binding.workFreeforms.text = item.freeforms
+                .fold(StringBuilder()) { acc, next -> acc.append(next).append(", ") }
+                .removeSuffix(", ")
+                .toString()
 
             binding.workSummary.text = HtmlCompat.fromHtml(item.summary, HtmlCompat.FROM_HTML_MODE_LEGACY)
 
             binding.workLanguage.text = item.language
             binding.workWordCount.text = formatNumber(item.wordCount)
             binding.workChapters.text = "${item.chapterCount}/${if (item.maxChapters == 0) "?" else item.maxChapters.toString()}"
-
+            binding.workDateUpdated.text = item.lastUpdatedDate
+            binding.workKudos.text = formatNumber(item.kudosCount)
+            binding.workComments.text = formatNumber(item.commentsCount)
+            binding.workBookmarks.text = formatNumber(item.bookmarksCount)
+            binding.workHits.text = formatNumber(item.hitCount)
         }
 
         companion object {
-            fun from(parent: ViewGroup): WorkBlurbCompactViewHolder {
+            fun from(parent: ViewGroup): WorkBlurbLocalViewHolder {
                 // FIXME: consider doing viewbinding here and passing the binding object to the viewHolder instead
                 // See: https://stackoverflow.com/questions/60491966/how-to-do-latest-jetpack-view-binding-in-adapter-bind-the-views
                 val layoutInflater = LayoutInflater.from(parent.context)
-                val view = layoutInflater.inflate(R.layout.layout_work_blurb_compact, parent, false)
-                return WorkBlurbCompactViewHolder(view)
+                val view = layoutInflater.inflate(R.layout.layout_work_blurb, parent, false)
+                return WorkBlurbLocalViewHolder(view)
             }
 
             fun formatNumber(count: Int) : String {

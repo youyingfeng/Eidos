@@ -12,12 +12,14 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.eidos.reader.EidosApplication
 import org.eidos.reader.R
 import org.eidos.reader.container.AppContainer
 import org.eidos.reader.databinding.FragmentWorkListBinding
 import org.eidos.reader.remote.requests.WorkFilterRequest
+import org.eidos.reader.ui.misc.adapters.WorkBlurbAdapter
 import org.eidos.reader.ui.misc.utilities.Utilities.Companion.hideKeyboard
 import org.eidos.reader.ui.misc.utilities.Utilities.Companion.setActivityTitle
 import timber.log.Timber
@@ -65,12 +67,31 @@ class WorkListFragment : Fragment() {
         setActivityTitle(tagName)
         setHasOptionsMenu(true)
 
-        // create the adapter
-        val adapter = WorkBlurbAdapter { holderView, workBlurb ->
-            holderView.findNavController()
-                    .navigate(WorkListFragmentDirections
+        val adapter = WorkBlurbAdapter(
+            {
+                holderView, workBlurb ->
+                    holderView.findNavController()
+                        .navigate(WorkListFragmentDirections
                             .actionWorkListFragmentToWorkReader(workBlurb.workURL, false))
-        }
+            },
+            {
+                position -> // do nothing because below code is crashing
+
+                // FIXME: binding.workListDisplay.getChildAt(position) must not be null
+                    // all issues inherited from library
+//                    val childHeight = binding.workListDisplay.getChildAt(position).height
+//                    val rvHeight = binding.workListDisplay.height
+//
+//                    (binding.workListDisplay.layoutManager as LinearLayoutManager)
+//                        .scrollToPositionWithOffset(
+//                            position,
+//                            if (childHeight > rvHeight) rvHeight - childHeight else 0
+//                    )
+            },
+            onClickDownloadAction = {
+                // empty for now
+            }
+        )
         binding.workListDisplay.adapter = adapter
 
         //get data into the adapter
