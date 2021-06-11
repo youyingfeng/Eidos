@@ -1,0 +1,52 @@
+import kotlin.collections.List;
+
+CREATE TABLE ReadingListWorkBlurb (
+    workURL TEXT PRIMARY KEY,
+    title TEXT NOT NULL,
+    authors TEXT AS List<String> NOT NULL,
+    giftees TEXT AS List<String>,
+    lastUpdatedDate TEXT NOT NULL,
+    fandoms TEXT AS List<String> NOT NULL,
+    rating TEXT NOT NULL,
+    warnings TEXT AS List<String> NOT NULL,
+    categories TEXT AS List<String> NOT NULL,
+    completionStatus INTEGER AS Boolean NOT NULL ,
+    characters TEXT AS List<String>,
+    relationships TEXT AS List<String>,
+    freeforms TEXT AS List<String>,
+    summary TEXT NOT NULL,
+    language TEXT NOT NULL,
+    wordCount INTEGER AS Int NOT NULL,
+    chapterCount INTEGER AS Int NOT NULL,
+    maxChapters INTEGER AS Int NOT NULL
+);
+
+getAllWorkBlurbs:
+SELECT
+workURL,
+title,
+authors,
+giftees,
+lastUpdatedDate,
+fandoms,
+rating,
+warnings,
+categories,
+completionStatus,
+characters,
+relationships,
+freeforms,
+summary,
+language,
+wordCount,
+chapterCount,
+maxChapters
+FROM ReadingListWorkBlurb;
+
+insert:
+INSERT INTO ReadingListWorkBlurb
+VALUES ?;
+
+delete:
+DELETE FROM ReadingListWorkBlurb
+WHERE workURL = ?;

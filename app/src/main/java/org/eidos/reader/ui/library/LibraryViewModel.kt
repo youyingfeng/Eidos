@@ -36,4 +36,12 @@ class LibraryViewModel(val repository: EidosRepository) : ViewModel() {
             Timber.i("WorkBlurbs successfully fetched from DB")
         }
     }
+
+    fun deleteWorkFromLibrary(workBlurb: WorkBlurb) {
+        repository.deleteWorkFromDatabase(workBlurb.workURL)
+    }
+
+    fun addWorkToReadingList(workBlurb: WorkBlurb) {
+        repository.addWorkBlurbToReadingList(workBlurb)
+    }
 }

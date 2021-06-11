@@ -14,11 +14,13 @@ import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.eidos.reader.EidosApplication
 import org.eidos.reader.R
 import org.eidos.reader.container.AppContainer
 import org.eidos.reader.databinding.FragmentWorkListBinding
 import org.eidos.reader.remote.requests.WorkFilterRequest
+import org.eidos.reader.ui.library.LibraryFragment
 import org.eidos.reader.ui.misc.adapters.WorkBlurbAdapter
 import org.eidos.reader.ui.misc.utilities.Utilities.Companion.hideKeyboard
 import org.eidos.reader.ui.misc.utilities.Utilities.Companion.setActivityTitle
@@ -28,6 +30,8 @@ class WorkListFragment : Fragment() {
 
     companion object {
         fun newInstance() = WorkListFragment()
+
+        private val options = arrayOf("Download work to Library", "Add work to Reading List")
     }
 
     private lateinit var viewModel: WorkListViewModel
@@ -74,22 +78,16 @@ class WorkListFragment : Fragment() {
                         .navigate(WorkListFragmentDirections
                             .actionWorkListFragmentToWorkReader(workBlurb.workURL, false))
             },
-            {
-                position -> // do nothing because below code is crashing
-
-                // FIXME: binding.workListDisplay.getChildAt(position) must not be null
-                    // all issues inherited from library
-//                    val childHeight = binding.workListDisplay.getChildAt(position).height
-//                    val rvHeight = binding.workListDisplay.height
-//
-//                    (binding.workListDisplay.layoutManager as LinearLayoutManager)
-//                        .scrollToPositionWithOffset(
-//                            position,
-//                            if (childHeight > rvHeight) rvHeight - childHeight else 0
-//                    )
-            },
-            onClickDownloadAction = {
-                // empty for now
+            { holderView, workBlurb ->
+                MaterialAlertDialogBuilder(holderView.context)
+                    .setTitle(workBlurb.title)
+                    .setItems(options) { dialog, which ->
+                        when(which) {
+                            0 -> viewModel.addWorkToLibrary(workBlurb)
+                            1 -> viewModel.addWorkToReadingList(workBlurb)
+                        }
+                    }
+                    .show()
             }
         )
         binding.workListDisplay.adapter = adapter

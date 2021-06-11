@@ -11,6 +11,7 @@ import org.eidos.reader.model.Comment
 import org.eidos.reader.model.WorkBlurb
 import org.eidos.reader.remote.choices.WorkFilterChoices
 import org.eidos.reader.remote.requests.WorkFilterRequest
+import org.eidos.reader.remote.requests.WorkRequest
 import org.eidos.reader.repository.EidosRepository
 import timber.log.Timber
 
@@ -89,5 +90,14 @@ class WorkListViewModel
         workFilterRequest.updateChoices(choices)
         resetPages()
         initialiseWorkBlurbs()
+    }
+
+    fun addWorkToLibrary(workBlurb: WorkBlurb) {
+        val work = repository.getWorkFromAO3(WorkRequest(workBlurb.workURL))
+        repository.insertWorkIntoDatabase(work)
+    }
+
+    fun addWorkToReadingList(workBlurb: WorkBlurb) {
+        repository.addWorkBlurbToReadingList(workBlurb)
     }
 }

@@ -20,8 +20,7 @@ Adapter to translate WorkBlurb data to compact work blurb views.
 class WorkBlurbLocalAdapter
     constructor(
         private val onClickAction: (View, WorkBlurb) -> Unit,
-        private val autoScrollAction: (Int) -> Unit,
-        private val onClickDeleteButtonAction: () -> Unit,
+        private val onLongClickAction: (View, WorkBlurb) -> Unit,
     )
     : RecyclerView.Adapter<WorkBlurbLocalAdapter.WorkBlurbLocalViewHolder>()
 {
@@ -45,10 +44,8 @@ class WorkBlurbLocalAdapter
             onClickAction(view, workBlurb)
         }
 
-        holder.itemView.setOnLongClickListener {
-            if (holder.toggleOptionsVisibility()) {
-                autoScrollAction(position)
-            }
+        holder.itemView.setOnLongClickListener { view ->
+            onLongClickAction(view, workBlurb)
             return@setOnLongClickListener true
         }
     }
@@ -61,22 +58,10 @@ class WorkBlurbLocalAdapter
         private val binding = LayoutWorkBlurbBinding.bind(itemView)
 
         init {
-            binding.downloadButton.visibility = View.GONE
-        }
-
-        // bind universal behaviour here
-
-        fun toggleOptionsVisibility() : Boolean {
-            /*
-            * Toggles the visibility of the options bar and returns the final visibility of the bar
-            **/
-            binding.optionsLinearLayout.visibility =
-                when(binding.optionsLinearLayout.visibility) {
-                    View.VISIBLE -> View.GONE
-                    View.GONE -> View.VISIBLE
-                    else -> View.VISIBLE
-                }
-            return binding.optionsLinearLayout.visibility == View.VISIBLE
+            binding.workHits.visibility = View.GONE
+            binding.workKudos.visibility = View.GONE
+            binding.workComments.visibility = View.GONE
+            binding.workBookmarks.visibility = View.GONE
         }
 
         fun bind(item: WorkBlurb) {

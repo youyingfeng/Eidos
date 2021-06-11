@@ -15,6 +15,7 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSmoothScroller
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.eidos.reader.EidosApplication
 import org.eidos.reader.R
 import org.eidos.reader.container.AppContainer
@@ -26,6 +27,8 @@ class LibraryFragment : Fragment() {
 
     companion object {
         fun newInstance() = LibraryFragment()
+
+        private val options = arrayOf("Remove Work from Library", "Add to Reading List")
     }
 
     private val viewModel: LibraryViewModel by viewModels {
@@ -56,38 +59,16 @@ class LibraryFragment : Fragment() {
                             .actionLibraryFragmentToWorkReader(workBlurb.workURL, true)
                     )
             },
-            { position ->
-                // FIXME: This code does not scroll fully to the bottom
-                // FIXME: Should not scroll when bottom of view is partially visible
-//                val smoothScroller = object: LinearSmoothScroller(this.context) {
-//                    override fun getVerticalSnapPreference(): Int = LinearSmoothScroller.SNAP_TO_END
-//
-//                }
-//                smoothScroller.targetPosition = position
-//                binding.workListDisplay.layoutManager?.startSmoothScroll(smoothScroller)
-
-//                with (binding.workListDisplay.layoutManager as LinearLayoutManager) {
-//                    if (this.findLastVisibleItemPosition() <= position) {
-//                        // TODO: scroll to position+1 if exists, else scroll to bottom
-//                        if (position != viewModel.workBlurbs.value?.size) {
-//
-//                        }
-//                    }
-//                }
-
-                // FIXME: below code is crashing in worklist
-//                // FIXME: I suspect the collapsing appbar is screwing up scrolling
-//                val childHeight = binding.workListDisplay.getChildAt(position).height
-//                val rvHeight = binding.workListDisplay.height
-//
-//                (binding.workListDisplay.layoutManager as LinearLayoutManager)
-//                    .scrollToPositionWithOffset(
-//                        position,
-//                        if (childHeight > rvHeight) rvHeight - childHeight else 0
-//                    )
-            },
-            onClickDeleteButtonAction = {
-                // empty for now
+            { holderView, workBlurb ->
+                MaterialAlertDialogBuilder(holderView.context)
+                    .setTitle(workBlurb.title)
+                    .setItems(options) { dialog, which ->
+                        when(which) {
+                            0 -> viewModel.deleteWorkFromLibrary(workBlurb)
+                            1 -> viewModel.addWorkToReadingList(workBlurb)
+                        }
+                    }
+                    .show()
             }
         )
 

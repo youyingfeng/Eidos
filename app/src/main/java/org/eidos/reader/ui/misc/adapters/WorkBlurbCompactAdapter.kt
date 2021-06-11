@@ -20,7 +20,7 @@ Adapter to translate WorkBlurb data to compact work blurb views.
 class WorkBlurbCompactAdapter
     constructor(
         private val onClickAction: (View, WorkBlurb) -> Unit,
-        private val autoScrollAction: (Int) -> Unit
+        private val onLongClickAction: (View, WorkBlurb) -> Unit
     )
     : RecyclerView.Adapter<WorkBlurbCompactAdapter.WorkBlurbCompactViewHolder>()
 {
@@ -44,10 +44,8 @@ class WorkBlurbCompactAdapter
             onClickAction(view, workBlurb)
         }
 
-        holder.itemView.setOnLongClickListener {
-            if (holder.toggleOptionsVisibility()) {
-                autoScrollAction(position)
-            }
+        holder.itemView.setOnLongClickListener { view ->
+            onLongClickAction(view, workBlurb)
             return@setOnLongClickListener true
         }
     }

@@ -29,17 +29,9 @@ class AppContainer(context: Context) {
     private val driver: SqlDriver = AndroidSqliteDriver(Database.Schema, context, "test.db")
     private val database = Database(
         driver = driver,
-        SavedWorkAdapter = SavedWork.Adapter(
-            authorsAdapter = Storage.listOfStringsAdapter,
-            gifteesAdapter = Storage.listOfStringsAdapter,
-            fandomsAdapter = Storage.listOfStringsAdapter,
-            warningsAdapter = Storage.listOfStringsAdapter,
-            categoriesAdapter = Storage.listOfStringsAdapter,
-            charactersAdapter = Storage.listOfStringsAdapter,
-            relationshipsAdapter = Storage.listOfStringsAdapter,
-            freeformsAdapter = Storage.listOfStringsAdapter,
-            chaptersAdapter = Storage.chaptersAdapter
-        )
+        SavedWorkAdapter = Storage.savedWorkAdapter,
+        ReadingHistoryWorkBlurbAdapter = Storage.readingHistoryWorkBlurbAdapter,
+        ReadingListWorkBlurbAdapter = Storage.readingListWorkBlurbAdapter
     )
     private val localDataSource = Storage(database)
 

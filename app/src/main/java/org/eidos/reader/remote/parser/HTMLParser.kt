@@ -43,7 +43,10 @@ class HTMLParser {
             val freeforms = userTags.select("li.freeforms").map { it.text() }
             val summary = workIndex.select("blockquote.userstuff.summary").text()
             val language = stats.select("dd.language").text()
-            val words = stats.select("dd.words").text().replace(",","").toInt()
+            val words = stats.select("dd.words")
+                .text()
+                .replace(",","")
+                .let { if (it.isBlank()) 0 else it.toInt() }
             val currentChapterCount = chapterInfo[0].replace(",","").toInt()
             val maxChapterCount = chapterInfo[1].toIntOrNull() ?: 0
             val comments = stats.select("dd.comments").text().toIntOrNull() ?: 0

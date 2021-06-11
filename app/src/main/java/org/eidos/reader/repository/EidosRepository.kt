@@ -62,4 +62,12 @@ class EidosRepository(private val remoteDataSource: AO3, private val localDataSo
         TODO("Do not implement until MVP complete")
         // unprivate this function once implemented
     }
+
+    fun addWorkBlurbToReadingList(workBlurb: WorkBlurb) {
+        return localDataSource.addWorkBlurbToReadingList(workBlurb)
+    }
+
+    fun removeWorkFromReadingList(workURL: String) {
+        return localDataSource.deleteWorkBlurbFromReadingList(workURL)
+    }
 }
