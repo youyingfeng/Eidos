@@ -6,6 +6,7 @@ import android.os.Bundle
 import androidx.lifecycle.LiveData
 import androidx.navigation.NavController
 import org.eidos.reader.databinding.ActivityMainBinding
+import org.eidos.reader.ui.misc.utilities.setupWithNavController
 import timber.log.Timber
 
 class MainActivity : AppCompatActivity() {

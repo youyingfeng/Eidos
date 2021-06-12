@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.eidos.reader
+package org.eidos.reader.ui.misc.utilities
 
 import android.content.Intent
 import android.util.SparseArray
@@ -26,6 +26,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import org.eidos.reader.R
 import timber.log.Timber
 
 /**
@@ -111,7 +112,8 @@ fun BottomNavigationView.setupWithNavController(
                             R.anim.nav_default_enter_anim,
                             R.anim.nav_default_exit_anim,
                             R.anim.nav_default_pop_enter_anim,
-                            R.anim.nav_default_pop_exit_anim)
+                            R.anim.nav_default_pop_exit_anim
+                        )
                         .attach(selectedFragment)
                         .setPrimaryNavigationFragment(selectedFragment)
                         .apply {
