@@ -64,6 +64,9 @@ dependencies {
     // Testing Navigation
     androidTestImplementation "androidx.navigation:navigation-testing:$nav_version"
 
+    implementation "androidx.work:work-runtime-ktx:2.5.0"
+
+
     // Logging
     implementation 'com.jakewharton.timber:timber:4.7.1'
 

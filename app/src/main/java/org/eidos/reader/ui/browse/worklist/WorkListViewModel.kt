@@ -4,10 +4,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.work.WorkManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import org.eidos.reader.EidosApplication
 import org.eidos.reader.model.Comment
 
 import org.eidos.reader.model.WorkBlurb
@@ -15,31 +17,24 @@ import org.eidos.reader.remote.choices.WorkFilterChoices
 import org.eidos.reader.remote.requests.WorkFilterRequest
 import org.eidos.reader.remote.requests.WorkRequest
 import org.eidos.reader.repository.EidosRepository
+import org.eidos.reader.workers.DownloadWorker
 import timber.log.Timber
 
 class WorkListViewModel
     constructor(
         val workFilterRequest: WorkFilterRequest,
-        val repository: EidosRepository
+        private val repository: EidosRepository,
+        private val workManager: WorkManager
     )
     : ViewModel()
 {
 
-    /* BEGIN Variables for WorkListFragment */
     private var _workBlurbs = MutableLiveData<List<WorkBlurb>>(emptyList())
     val workBlurbs: LiveData<List<WorkBlurb>>
         get() = _workBlurbs
 
     private var largestPageNumber = 1
-
-    // possibly hacky fix, see if it is possible to improve.
     private var isFetchingWorks = false
-    /* END Variables for WorkListFragment */
-
-    /* BEGIN Variables for FilterDialogFragment */
-    // TODO: add arrays to store shit
-    // Note: autocomplete stuff should be shoved in another ViewModel
-    /* END Variables for FilterDialogFragment */
 
     init {
         initialiseWorkBlurbs()
@@ -97,10 +92,11 @@ class WorkListViewModel
     fun addWorkToLibrary(workBlurb: WorkBlurb) {
         // use globalscope/coroutinescope first as we want this work to continue
         // when there is time, update to workmanager
-        CoroutineScope(Dispatchers.IO).launch {
-            val work = repository.getWorkFromAO3(WorkRequest(workBlurb.workURL))
-            repository.insertWorkIntoDatabase(work)
-        }
+        workManager.enqueue(DownloadWorker.createDownloadRequest(workBlurb.workURL))
+//        CoroutineScope(Dispatchers.IO).launch {
+//            val work = repository.getWorkFromAO3(WorkRequest(workBlurb.workURL))
+//            repository.insertWorkIntoDatabase(work)
+//        }
     }
 
     fun addWorkToReadingList(workBlurb: WorkBlurb) {

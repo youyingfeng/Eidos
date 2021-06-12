@@ -14,6 +14,7 @@ import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.work.WorkManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.eidos.reader.EidosApplication
 import org.eidos.reader.R
@@ -61,7 +62,11 @@ class WorkListFragment : Fragment() {
         val tagName = args.tagName
         val workFilterRequest = WorkFilterRequest(tagName)
 
-        viewModelFactory = WorkListViewModelFactory(workFilterRequest, appContainer.repository)
+        viewModelFactory = WorkListViewModelFactory(
+            workFilterRequest,
+            appContainer.repository,
+            WorkManager.getInstance(requireActivity().application as EidosApplication)
+        )
         // scopes this to the activity to enable sharing of data
         viewModel = ViewModelProvider(activity as AppCompatActivity, viewModelFactory).get(WorkListViewModel::class.java)
 
