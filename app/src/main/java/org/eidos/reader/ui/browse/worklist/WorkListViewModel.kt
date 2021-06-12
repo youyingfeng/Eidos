@@ -4,7 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.eidos.reader.model.Comment
 
@@ -93,11 +95,17 @@ class WorkListViewModel
     }
 
     fun addWorkToLibrary(workBlurb: WorkBlurb) {
-        val work = repository.getWorkFromAO3(WorkRequest(workBlurb.workURL))
-        repository.insertWorkIntoDatabase(work)
+        // use globalscope/coroutinescope first as we want this work to continue
+        // when there is time, update to workmanager
+        CoroutineScope(Dispatchers.IO).launch {
+            val work = repository.getWorkFromAO3(WorkRequest(workBlurb.workURL))
+            repository.insertWorkIntoDatabase(work)
+        }
     }
 
     fun addWorkToReadingList(workBlurb: WorkBlurb) {
-        repository.addWorkBlurbToReadingList(workBlurb)
+        CoroutineScope(Dispatchers.IO).launch {
+            repository.addWorkBlurbToReadingList(workBlurb)
+        }
     }
 }

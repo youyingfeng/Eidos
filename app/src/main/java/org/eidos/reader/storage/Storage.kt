@@ -100,8 +100,8 @@ class Storage(private val database: Database) {
         )
 
         readingHistoryQueries.transaction {
-            readingHistoryQueries.delete(workURL = readingHistoryWorkBlurb.workURL)
-            readingHistoryQueries.insert(readingHistoryWorkBlurb)
+            readingHistoryQueries.deleteIfExists(readingHistoryWorkBlurb.workURL)
+            readingHistoryQueries.insertIfAbsent(readingHistoryWorkBlurb)
         }
     }
 
@@ -140,8 +140,9 @@ class Storage(private val database: Database) {
         )
 
         readingListQueries.transaction {
-            readingListQueries.delete(workURL = readingListWorkBlurb.workURL)
-            readingListQueries.insert(readingListWorkBlurb)
+            // FIXME: this shit does not work! delete throws an error!
+            readingListQueries.deleteIfExists(readingListWorkBlurb.workURL)
+            readingListQueries.insertIfAbsent(readingListWorkBlurb)
         }
     }
 

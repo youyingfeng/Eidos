@@ -80,7 +80,9 @@ class LibraryFragment : Fragment() {
                 adapter.data = it
             }
         })
-        // TODO: write code to listen to viewModel
+
+        // manually force the viewmodel to update again
+        viewModel.fetchWorkBlurbsFromDatabase()
 
         return binding.root
     }

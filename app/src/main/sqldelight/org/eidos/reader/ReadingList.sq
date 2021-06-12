@@ -50,3 +50,15 @@ VALUES ?;
 delete:
 DELETE FROM ReadingListWorkBlurb
 WHERE workURL = ?;
+
+deleteIfExists:
+    DELETE FROM ReadingListWorkBlurb
+            WHERE workURL = :workURL
+            AND EXISTS(SELECT * FROM ReadingListWorkBlurb WHERE workURL = :workURL);
+
+
+insertIfAbsent:
+    -- this is to avoid data race causing crash
+    INSERT OR IGNORE INTO ReadingListWorkBlurb
+    VALUES ?;
+

@@ -63,6 +63,12 @@ class EidosRepository(private val remoteDataSource: AO3, private val localDataSo
         // unprivate this function once implemented
     }
 
+
+    /* Reading List */
+    fun getWorkBlurbsFromReadingList(): List<WorkBlurb> {
+        return localDataSource.getReadingList()
+    }
+
     fun addWorkBlurbToReadingList(workBlurb: WorkBlurb) {
         return localDataSource.addWorkBlurbToReadingList(workBlurb)
     }

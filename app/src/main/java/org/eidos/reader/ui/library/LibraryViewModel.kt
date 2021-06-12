@@ -9,6 +9,7 @@ import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import com.squareup.sqldelight.ColumnAdapter
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.eidos.reader.model.Chapter
@@ -25,10 +26,10 @@ class LibraryViewModel(val repository: EidosRepository) : ViewModel() {
     val workBlurbs: LiveData<List<WorkBlurb>>
         get() = _workBlurbs
 
-    init {
-        fetchWorkBlurbsFromDatabase()
-        Timber.i("init complete")
-    }
+//    init {
+//        fetchWorkBlurbsFromDatabase()
+//        Timber.i("init complete")
+//    }
 
     fun fetchWorkBlurbsFromDatabase() {
         viewModelScope.launch(Dispatchers.IO) {
@@ -38,10 +39,19 @@ class LibraryViewModel(val repository: EidosRepository) : ViewModel() {
     }
 
     fun deleteWorkFromLibrary(workBlurb: WorkBlurb) {
-        repository.deleteWorkFromDatabase(workBlurb.workURL)
+        val updatedWorkBlurbs = workBlurbs.value!!.toMutableList()
+        updatedWorkBlurbs.remove(workBlurb)
+        _workBlurbs.value = updatedWorkBlurbs
+        // TODO: update to WorkManager
+        CoroutineScope(Dispatchers.IO).launch {
+            repository.deleteWorkFromDatabase(workBlurb.workURL)
+        }
+
     }
 
     fun addWorkToReadingList(workBlurb: WorkBlurb) {
-        repository.addWorkBlurbToReadingList(workBlurb)
+        CoroutineScope(Dispatchers.IO).launch {
+            repository.addWorkBlurbToReadingList(workBlurb)
+        }
     }
 }

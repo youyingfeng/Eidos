@@ -50,3 +50,14 @@ VALUES ?;
 delete:
 DELETE FROM ReadingHistoryWorkBlurb
 WHERE workURL = ?;
+
+deleteIfExists:
+    DELETE FROM ReadingHistoryWorkBlurb
+            WHERE workURL = :workURL
+            AND EXISTS(SELECT * FROM ReadingHistoryWorkBlurb WHERE workURL = :workURL);
+
+
+insertIfAbsent:
+    -- this is to avoid data race causing crash
+    INSERT OR IGNORE INTO ReadingHistoryWorkBlurb
+    VALUES ?;

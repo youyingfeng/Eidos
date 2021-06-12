@@ -57,21 +57,6 @@ class WorkBlurbCompactAdapter
     class WorkBlurbCompactViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val binding = LayoutWorkBlurbCompactBinding.bind(itemView)
 
-        // bind universal behaviour here
-
-        fun toggleOptionsVisibility() : Boolean {
-            /*
-            * Toggles the visibility of the options bar and returns the final visibility of the bar
-            **/
-            binding.optionsLinearLayout.visibility =
-                when(binding.optionsLinearLayout.visibility) {
-                    View.VISIBLE -> View.GONE
-                    View.GONE -> View.VISIBLE
-                    else -> View.VISIBLE
-                }
-            return binding.optionsLinearLayout.visibility == View.VISIBLE
-        }
-
         fun bind(item: WorkBlurb) {
             binding.workTitle.text = item.title
             binding.workAuthors.text = item.authors
