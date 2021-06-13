@@ -61,6 +61,79 @@ class Storage(private val database: Database) {
         return workEntityQueries.insert(savedWork)
     }
 
+//    fun insertWorksIntoDatabase(works: List<Work>) {
+//        val savedWorks = works.map { work ->
+//            return@map SavedWork(
+//                workURL = work.workURL,
+//                title = work.title,
+//                authors = work.authors,
+//                giftees = work.giftees,
+//                publishedDate = work.publishedDate,
+//                lastUpdatedDate = work.lastUpdatedDate,
+//                fandoms = work.fandoms,
+//                rating = work.rating,
+//                warnings = work.warnings,
+//                categories = work.categories,
+//                completionStatus = work.completionStatus,
+//                characters = work.characters,
+//                relationships = work.relationships,
+//                freeforms = work.freeforms,
+//                summary = work.summary,
+//                language = work.language,
+//                wordCount = work.wordCount,
+//                chapterCount = work.chapterCount,
+//                maxChapters = work.maxChapters,
+//                preWorkNotes = work.preWorkNotes,
+//                chapters = work.chapters,
+//                postWorkNotes = work.postWorkNotes,
+//                workskin = work.workskin
+//            )
+//        }
+//
+//        workEntityQueries.transaction {
+//            savedWorks.forEach { savedWork ->
+//                workEntityQueries.insert(savedWork)
+//            }
+//        }
+//    }
+
+    fun updateWorks(updatedWorks: List<Work>) {
+        val savedWorks = updatedWorks.map { work ->
+            return@map SavedWork(
+                workURL = work.workURL,
+                title = work.title,
+                authors = work.authors,
+                giftees = work.giftees,
+                publishedDate = work.publishedDate,
+                lastUpdatedDate = work.lastUpdatedDate,
+                fandoms = work.fandoms,
+                rating = work.rating,
+                warnings = work.warnings,
+                categories = work.categories,
+                completionStatus = work.completionStatus,
+                characters = work.characters,
+                relationships = work.relationships,
+                freeforms = work.freeforms,
+                summary = work.summary,
+                language = work.language,
+                wordCount = work.wordCount,
+                chapterCount = work.chapterCount,
+                maxChapters = work.maxChapters,
+                preWorkNotes = work.preWorkNotes,
+                chapters = work.chapters,
+                postWorkNotes = work.postWorkNotes,
+                workskin = work.workskin
+            )
+        }
+
+        workEntityQueries.transaction {
+            savedWorks.forEach { savedWork ->
+                workEntityQueries.delete(savedWork.workURL)
+                workEntityQueries.insert(savedWork)
+            }
+        }
+    }
+
     fun deleteWork(workURL: String) {
         return workEntityQueries.delete(workURL)
     }
@@ -141,7 +214,7 @@ class Storage(private val database: Database) {
 
         readingListQueries.transaction {
             // FIXME: this shit does not work! delete throws an error!
-            readingListQueries.deleteIfExists(readingListWorkBlurb.workURL)
+            readingListQueries.delete(readingListWorkBlurb.workURL)
             readingListQueries.insertIfAbsent(readingListWorkBlurb)
         }
     }
@@ -149,6 +222,8 @@ class Storage(private val database: Database) {
     fun deleteWorkBlurbFromReadingList(workURL: String) {
         readingListQueries.delete(workURL)
     }
+
+
 
 
     companion object {

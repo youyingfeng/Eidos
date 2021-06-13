@@ -33,7 +33,30 @@ data class Work(
         val postWorkNotes: String,
         val workskin: String
 ) {
-    // FIXME: MISSING FIELDS
-    // published date
-    // inspirations
+    fun getWorkBlurb(): WorkBlurb {
+        return WorkBlurb(
+            title = title,
+            authors = authors,
+            giftees = giftees,
+            lastUpdatedDate = lastUpdatedDate,
+            fandoms = fandoms,
+            rating = rating,
+            warnings = warnings,
+            categories = categories,
+            completionStatus = completionStatus,
+            characters = characters,
+            relationships = relationships,
+            freeforms = freeforms,
+            summary = summary,
+            language = language,
+            wordCount = wordCount,
+            chapterCount = chapterCount,
+            maxChapters = maxChapters,
+            commentsCount = commentsCount,
+            kudosCount = kudosCount,
+            bookmarksCount = bookmarksCount,
+            hitCount = hitCount,
+            workURL = workURL
+        )
+    }
 }

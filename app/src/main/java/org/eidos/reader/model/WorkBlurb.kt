@@ -24,5 +24,20 @@ data class WorkBlurb(
     val hitCount: Int,
     val workURL: String
 ) {
-
+    fun isSimilarTo(other: WorkBlurb): Boolean {
+        return title == other.title
+                && authors == other.authors
+                && giftees == other.giftees
+                && lastUpdatedDate == other.lastUpdatedDate
+                && fandoms == other.fandoms
+                && rating == other.rating
+                && warnings == other.warnings
+                && categories == other.categories
+                && completionStatus == other.completionStatus
+                && characters == other.characters
+                && relationships == other.relationships
+                && freeforms == other.freeforms
+                && chapterCount == other.chapterCount
+                && wordCount == other.wordCount
+    }
 }

@@ -54,6 +54,10 @@ class EidosRepository(private val remoteDataSource: AO3, private val localDataSo
         return localDataSource.deleteWork(workURL)
     }
 
+    fun updateWorksInDatabase(updatedWorks: List<Work>) {
+        return localDataSource.updateWorks(updatedWorks)
+    }
+
     fun deleteAllWorksFromDatabase(workURL: String) {
         return localDataSource.deleteAllWorks()
     }
@@ -76,4 +80,6 @@ class EidosRepository(private val remoteDataSource: AO3, private val localDataSo
     fun removeWorkFromReadingList(workURL: String) {
         return localDataSource.deleteWorkBlurbFromReadingList(workURL)
     }
+
+
 }
