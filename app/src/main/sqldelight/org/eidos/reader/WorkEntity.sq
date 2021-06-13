@@ -107,6 +107,118 @@ FROM SavedWork
 WHERE workURL = ?
 LIMIT 1;
 
+upsert {
+    -- Update the row if it exists
+    UPDATE SavedWork
+    SET workURL = :workURL,
+        title = :title,
+        authors = :authors,
+        giftees = :giftees,
+        publishedDate = :publishedDate,
+        lastUpdatedDate = :lastUpdatedDate,
+        fandoms = :fandoms,
+        rating = :rating,
+        warnings = :warnings,
+        categories = :categories,
+        completionStatus = :completionStatus,
+        characters = :characters,
+        relationships = :relationships,
+        freeforms = :freeforms,
+        summary = :summary,
+        language = :language,
+        wordCount = :wordCount,
+        chapterCount = :chapterCount,
+        maxChapters = :maxChapters,
+        preWorkNotes = :preWorkNotes,
+        chapters = :chapters,
+        postWorkNotes = :postWorkNotes,
+        workskin = :workskin
+    WHERE workURL = :workURL;
+
+    -- Insert a record if it doesnt exist
+    -- Uses IGNORE as we only need primary key constraint
+    -- IGNORE does not downgrade errors in SQLite, unlike in MySQL
+    INSERT OR IGNORE INTO SavedWork(
+        workURL,
+        title,
+        authors,
+        giftees,
+        publishedDate,
+        lastUpdatedDate,
+        fandoms,
+        rating,
+        warnings,
+        categories,
+        completionStatus,
+        characters,
+        relationships,
+        freeforms,
+        summary,
+        language,
+        wordCount,
+        chapterCount,
+        maxChapters,
+        preWorkNotes,
+        chapters,
+        postWorkNotes,
+        workskin
+    )
+    VALUES (
+        :workURL,
+        :title,
+        :authors,
+        :giftees,
+        :publishedDate,
+        :lastUpdatedDate,
+        :fandoms,
+        :rating,
+        :warnings,
+        :categories,
+        :completionStatus,
+        :characters,
+        :relationships,
+        :freeforms,
+        :summary,
+        :language,
+        :wordCount,
+        :chapterCount,
+        :maxChapters,
+        :preWorkNotes,
+        :chapters,
+        :postWorkNotes,
+        :workskin
+    );
+}
+
+update:
+-- Update the row if it exists
+    UPDATE SavedWork
+    SET workURL = :workURL,
+        title = :title,
+        authors = :authors,
+        giftees = :giftees,
+        publishedDate = :publishedDate,
+        lastUpdatedDate = :lastUpdatedDate,
+        fandoms = :fandoms,
+        rating = :rating,
+        warnings = :warnings,
+        categories = :categories,
+        completionStatus = :completionStatus,
+        characters = :characters,
+        relationships = :relationships,
+        freeforms = :freeforms,
+        summary = :summary,
+        language = :language,
+        wordCount = :wordCount,
+        chapterCount = :chapterCount,
+        maxChapters = :maxChapters,
+        preWorkNotes = :preWorkNotes,
+        chapters = :chapters,
+        postWorkNotes = :postWorkNotes,
+        workskin = :workskin
+    WHERE workURL = :workURL;
+
+
 -- Full params for future use
 -- (
 --     workURL,

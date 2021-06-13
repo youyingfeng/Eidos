@@ -31,8 +31,7 @@ class Storage(private val database: Database) {
     }
 
     fun insertWork(work: Work) {
-        // TODO: make this an upsert? not important. probably needs an sql change.
-        val savedWork = SavedWork(
+        workEntityQueries.upsert(
             workURL = work.workURL,
             title = work.title,
             authors = work.authors,
@@ -57,79 +56,39 @@ class Storage(private val database: Database) {
             postWorkNotes = work.postWorkNotes,
             workskin = work.workskin
         )
-//        Timber.i("Storage: savedwork created")
-        return workEntityQueries.insert(savedWork)
     }
 
-//    fun insertWorksIntoDatabase(works: List<Work>) {
-//        val savedWorks = works.map { work ->
-//            return@map SavedWork(
-//                workURL = work.workURL,
-//                title = work.title,
-//                authors = work.authors,
-//                giftees = work.giftees,
-//                publishedDate = work.publishedDate,
-//                lastUpdatedDate = work.lastUpdatedDate,
-//                fandoms = work.fandoms,
-//                rating = work.rating,
-//                warnings = work.warnings,
-//                categories = work.categories,
-//                completionStatus = work.completionStatus,
-//                characters = work.characters,
-//                relationships = work.relationships,
-//                freeforms = work.freeforms,
-//                summary = work.summary,
-//                language = work.language,
-//                wordCount = work.wordCount,
-//                chapterCount = work.chapterCount,
-//                maxChapters = work.maxChapters,
-//                preWorkNotes = work.preWorkNotes,
-//                chapters = work.chapters,
-//                postWorkNotes = work.postWorkNotes,
-//                workskin = work.workskin
-//            )
-//        }
-//
-//        workEntityQueries.transaction {
-//            savedWorks.forEach { savedWork ->
-//                workEntityQueries.insert(savedWork)
-//            }
-//        }
-//    }
-
+    // updates works without forcefully reinserting missing works
+    // the only reason why works are missing is because people delete them
+    // this does not happen willy nilly
     fun updateWorks(updatedWorks: List<Work>) {
-        val savedWorks = updatedWorks.map { work ->
-            return@map SavedWork(
-                workURL = work.workURL,
-                title = work.title,
-                authors = work.authors,
-                giftees = work.giftees,
-                publishedDate = work.publishedDate,
-                lastUpdatedDate = work.lastUpdatedDate,
-                fandoms = work.fandoms,
-                rating = work.rating,
-                warnings = work.warnings,
-                categories = work.categories,
-                completionStatus = work.completionStatus,
-                characters = work.characters,
-                relationships = work.relationships,
-                freeforms = work.freeforms,
-                summary = work.summary,
-                language = work.language,
-                wordCount = work.wordCount,
-                chapterCount = work.chapterCount,
-                maxChapters = work.maxChapters,
-                preWorkNotes = work.preWorkNotes,
-                chapters = work.chapters,
-                postWorkNotes = work.postWorkNotes,
-                workskin = work.workskin
-            )
-        }
-
         workEntityQueries.transaction {
-            savedWorks.forEach { savedWork ->
-                workEntityQueries.delete(savedWork.workURL)
-                workEntityQueries.insert(savedWork)
+            updatedWorks.forEach { work ->
+                workEntityQueries.update(
+                    workURL = work.workURL,
+                    title = work.title,
+                    authors = work.authors,
+                    giftees = work.giftees,
+                    publishedDate = work.publishedDate,
+                    lastUpdatedDate = work.lastUpdatedDate,
+                    fandoms = work.fandoms,
+                    rating = work.rating,
+                    warnings = work.warnings,
+                    categories = work.categories,
+                    completionStatus = work.completionStatus,
+                    characters = work.characters,
+                    relationships = work.relationships,
+                    freeforms = work.freeforms,
+                    summary = work.summary,
+                    language = work.language,
+                    wordCount = work.wordCount,
+                    chapterCount = work.chapterCount,
+                    maxChapters = work.maxChapters,
+                    preWorkNotes = work.preWorkNotes,
+                    chapters = work.chapters,
+                    postWorkNotes = work.postWorkNotes,
+                    workskin = work.workskin
+                )
             }
         }
     }
@@ -151,7 +110,7 @@ class Storage(private val database: Database) {
     }
 
     fun addWorkBlurbToReadingHistory(work: WorkBlurb) {
-        val readingHistoryWorkBlurb = ReadingHistoryWorkBlurb(
+        readingHistoryQueries.upsertToEnd(
             workURL = work.workURL,
             title = work.title,
             authors = work.authors,
@@ -171,11 +130,6 @@ class Storage(private val database: Database) {
             chapterCount = work.chapterCount,
             maxChapters = work.maxChapters
         )
-
-        readingHistoryQueries.transaction {
-            readingHistoryQueries.deleteIfExists(readingHistoryWorkBlurb.workURL)
-            readingHistoryQueries.insertIfAbsent(readingHistoryWorkBlurb)
-        }
     }
 
     fun deleteWorkBlurbFromReadingHistory(workURL: String) {
@@ -191,7 +145,7 @@ class Storage(private val database: Database) {
     }
 
     fun addWorkBlurbToReadingList(work: WorkBlurb) {
-        val readingListWorkBlurb = ReadingListWorkBlurb(
+        readingListQueries.upsertToEnd(
             workURL = work.workURL,
             title = work.title,
             authors = work.authors,
@@ -211,12 +165,6 @@ class Storage(private val database: Database) {
             chapterCount = work.chapterCount,
             maxChapters = work.maxChapters
         )
-
-        readingListQueries.transaction {
-            // FIXME: this shit does not work! delete throws an error!
-            readingListQueries.delete(readingListWorkBlurb.workURL)
-            readingListQueries.insertIfAbsent(readingListWorkBlurb)
-        }
     }
 
     fun deleteWorkBlurbFromReadingList(workURL: String) {

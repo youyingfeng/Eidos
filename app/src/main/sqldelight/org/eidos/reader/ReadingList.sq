@@ -51,8 +51,31 @@ delete:
 DELETE FROM ReadingListWorkBlurb
 WHERE workURL = ?;
 
-insertIfAbsent:
-    -- this is to avoid data race causing crash
-    INSERT OR IGNORE INTO ReadingListWorkBlurb
-    VALUES ?;
+-- This upsert "updates" the entry by deleting and reinserting it. It is not an actual update.
+upsertToEnd {
+    DELETE FROM ReadingListWorkBlurb
+    WHERE workURL = :workURL;
+
+    INSERT INTO ReadingListWorkBlurb
+    VALUES(
+        workURL = :workURL,
+        title = :title,
+        authors = :authors,
+        giftees = :giftees,
+        lastUpdatedDate = :lastUpdatedDate,
+        fandoms = :fandoms,
+        rating = :rating,
+        warnings = :warnings,
+        categories = :categories,
+        completionStatus = :completionStatus,
+        characters = :characters,
+        relationships = :relationships,
+        freeforms = :freeforms,
+        summary = :summary,
+        language = :language,
+        wordCount = :wordCount,
+        chapterCount = :chapterCount,
+        maxChapters = :maxChapters
+    );
+}
 
