@@ -8,4 +8,5 @@ class WorkRequest(path: String) {
 
     fun getNavigationIndexPageURL() = url + "/navigate"
     fun getEntireWorkURL() = url + "?view_adult=true&view_full_work=true"
+    fun getWorkURL() = url + "?view_adult=true"
 }

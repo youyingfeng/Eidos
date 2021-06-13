@@ -22,9 +22,9 @@ class UpdateStoriesWorker
             val workBlurbs = repository.getWorkBlurbsFromDatabase()
             val updatedWorks = workBlurbs.mapNotNull { blurb ->
                 // TODO: add proper error handling
-                val work = repository.getWorkFromAO3(WorkRequest(blurb.workURL))
-                if (blurb.isSimilarTo(work.getWorkBlurb())) {
-                    return@mapNotNull work
+                val mostRecentWorkBlurb = repository.getWorkBlurbFromWorkAO3(WorkRequest(blurb.workURL))
+                if (blurb.isSimilarTo(mostRecentWorkBlurb)) {
+                    return@mapNotNull repository.getWorkFromAO3(WorkRequest(blurb.workURL))
                 } else {
                     return@mapNotNull null
                 }

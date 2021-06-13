@@ -86,6 +86,120 @@ class HTMLParser {
         return workBlurbList
     }
 
+    fun parseWorkBlurbFromWork(workHtml: String, workURL: String): WorkBlurb {
+        // essentially copypasta from parseWork()
+        val workDoc = Jsoup.parse(workHtml)
+        // Statistics
+        val metadataTree = workDoc.select("dl.work.meta.group")
+        val statisticsTree = metadataTree.select("dl.stats")
+        val chapterCountArray = statisticsTree.select("dd.chapters")
+            .first()
+            .text()
+            .split("/")
+
+        val rating = metadataTree.select("dd.rating.tags")
+            .select("a.tag")
+            .first()
+            .text()
+        val warnings = metadataTree.select("dd.warning.tags")
+            .select("a.tag")
+            .map { it.text() }
+        val categories = metadataTree.select("dd.category.tags")
+            .select("a.tag")
+            .map { it.text() }
+        val fandoms = metadataTree.select("dd.fandom.tags")
+            .select("a.tag")
+            .map { it.text() }
+        val relationships = metadataTree.select("dd.relationship.tags")
+            .select("a.tag")
+            .map { it.text() }
+        val characters = metadataTree.select("dd.character.tags")
+            .select("a.tag")
+            .map { it.text() }
+        val freeforms = metadataTree.select("dd.freeform.tags")
+            .select("a.tag")
+            .map { it.text() }
+        val language = metadataTree.select("dd.language")
+            .first()
+            .text()
+
+        val publishDate = statisticsTree.select("dd.published")
+            .first()
+            .text()
+        val lastUpdatedDate = statisticsTree.select("dd.status")
+            .first()
+            ?.text()
+            ?: publishDate
+        val wordCount = statisticsTree.select("dd.words")
+            .first()
+            .text()
+            .toInt()
+        val currentChapterCount = chapterCountArray[0].toInt()
+        val maxChapterCount = chapterCountArray[1].toIntOrNull() ?: 0
+        val completionStatus = currentChapterCount == maxChapterCount
+        val comments = statisticsTree.select("dd.comments")
+            .first()
+            ?.text()
+            ?.toInt()
+            ?: 0
+        val kudos = statisticsTree.select("dd.kudos")
+            .first()
+            ?.text()
+            ?.toInt()
+            ?: 0
+        val bookmarks = statisticsTree.select("dd.bookmarks")
+            .first()
+            ?.text()
+            ?.toInt()
+            ?: 0
+        val hits = statisticsTree.select("dd.hits")
+            .first()
+            .text()
+            .toInt()
+
+        val title = workDoc
+            .select("div#workskin > div.preface.group > h2.title.heading")
+            .first()
+            .text()
+
+        val summary = workDoc
+            .select("div#workskin > div.preface.group > div.summary.module > blockquote.userstuff")
+            .html()
+
+        val authors = workDoc
+            .select("div#workskin > div.preface.group > h3.byline.heading > a[href]")
+            .map { it.text() }
+
+        val giftees = workDoc
+            .select("#workskin > div.preface.group > div.notes.module > ul.associations > li > a")
+            .map { it.text() }  // pseuds can be parsed based on names alone
+
+        return WorkBlurb(
+            title = title,
+            authors = authors,
+            giftees = giftees,
+            lastUpdatedDate = lastUpdatedDate,
+            fandoms = fandoms,
+            rating = rating,
+            warnings = warnings,
+            categories = categories,
+            completionStatus = completionStatus,
+            characters = characters,
+            relationships = relationships,
+            freeforms = freeforms,
+            summary = summary,
+            language = language,
+            wordCount = wordCount,
+            chapterCount = currentChapterCount,
+            maxChapters = maxChapterCount,
+            commentsCount = comments,
+            kudosCount = kudos,
+            bookmarksCount = bookmarks,
+            hitCount = hits,
+            workURL = workURL
+        )
+    }
+
     fun parseWork(workHtml: String, navigationHtml: String, workURL: String) : Work {
         val workDoc = Jsoup.parse(workHtml)
         val navigationDoc = Jsoup.parse(navigationHtml)
@@ -175,6 +289,10 @@ class HTMLParser {
                 .select("div#workskin > div.preface.group > h3.byline.heading > a[href]")
                 .map { it.text() }
 
+        val giftees = workDoc
+            .select("#workskin > div.preface.group > div.notes.module > ul.associations > li > a")
+            .map { it.text() }  // pseuds can be parsed based on names alone
+
         // TODO: Because Entire Work doesn't actually work on completed oneshots, we need to change chapterTrees
 
         val chapters : List<Chapter>
@@ -259,10 +377,6 @@ class HTMLParser {
             .first()
             ?.html()
             ?: ""
-
-        val giftees = workDoc
-            .select("#workskin > div.preface.group > div.notes.module > ul.associations > li > a")
-            .map { it.text() }  // pseuds can be parsed based on names alone
 
         val work: Work = Work(
             title = title,

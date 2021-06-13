@@ -26,6 +26,10 @@ class EidosRepository(private val remoteDataSource: AO3, private val localDataSo
         return remoteDataSource.getWork(workRequest)
     }
 
+    fun getWorkBlurbFromWorkAO3(workRequest: WorkRequest): WorkBlurb {
+        return remoteDataSource.getWorkBlurbFromWork(workRequest)
+    }
+
     fun getWorkBlurbsFromAO3(workFilterRequest: WorkFilterRequest): List<WorkBlurb> {
         return remoteDataSource.getWorkBlurbs(workFilterRequest)
     }

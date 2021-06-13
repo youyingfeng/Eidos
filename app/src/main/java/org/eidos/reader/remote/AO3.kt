@@ -23,7 +23,7 @@ class AO3
         .addLast(KotlinJsonAdapterFactory())
         .build()
 
-    fun getWorkBlurbs(workListRequest: WorkFilterRequest) : List<WorkBlurb> {
+    fun getWorkBlurbs(workListRequest: WorkFilterRequest): List<WorkBlurb> {
         val urlString = "https://archiveofourown.org" + workListRequest.queryString
         println(urlString)
 
@@ -36,7 +36,7 @@ class AO3
         }
     }
 
-    fun getWork(workRequest: WorkRequest) : Work {
+    fun getWork(workRequest: WorkRequest): Work {
         // Input: the navigation page of the work
         // Output: the work itself
 //            val urlString = "https://archiveofourown.org" + workRequest.queryString
@@ -59,7 +59,13 @@ class AO3
         }
     }
 
-    fun getAutocompleteResults(autocompleteRequest: AutocompleteRequest) : List<String> {
+    fun getWorkBlurbFromWork(workRequest: WorkRequest): WorkBlurb {
+        val workUrlString = "https://archiveofourown.org" + workRequest.getWorkURL()
+        val workResponseBody = network.get(workUrlString)
+        return parser.parseWorkBlurbFromWork(workResponseBody, workRequest.url)
+    }
+
+    fun getAutocompleteResults(autocompleteRequest: AutocompleteRequest): List<String> {
         val urlString = "https://archiveofourown.org/autocomplete" + autocompleteRequest.queryString
         println(urlString)
 
@@ -88,7 +94,7 @@ class AO3
         return results
     }
 
-    fun getComments(commentsRequest: CommentsRequest) : List<Comment> {
+    fun getComments(commentsRequest: CommentsRequest): List<Comment> {
         val urlString = "https://archiveofourown.org${commentsRequest.queryString}"
 
         val responseBody: String = try {
