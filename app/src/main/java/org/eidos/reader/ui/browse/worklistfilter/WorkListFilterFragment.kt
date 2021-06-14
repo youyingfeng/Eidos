@@ -42,7 +42,7 @@ class WorkListFilterFragment : Fragment() {
     private val viewModel : WorkListFilterViewModel by viewModels {
         WorkListFilterViewModelFactory(
             appContainer.repository,
-            workListViewModel.workFilterRequest.workFilterChoices.copy()
+            workListViewModel.getWorkFilterChoices()
         )
     }
 

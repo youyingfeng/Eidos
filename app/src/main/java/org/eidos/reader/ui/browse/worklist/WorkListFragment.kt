@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
 import androidx.navigation.findNavController
@@ -35,8 +36,13 @@ class WorkListFragment : Fragment() {
         private val options = arrayOf("Download work to Library", "Add work to Reading List")
     }
 
-    private lateinit var viewModel: WorkListViewModel
-    private lateinit var viewModelFactory: WorkListViewModelFactory
+    private val viewModel: WorkListViewModel by activityViewModels {
+        WorkListViewModelFactory(
+            appContainer.repository,
+            WorkManager.getInstance(requireActivity().application as EidosApplication)
+        )
+    }
+//    private lateinit var viewModelFactory: WorkListViewModelFactory
 
     private var _binding: FragmentWorkListBinding? = null
     // This property is only valid between onCreateView and
@@ -61,14 +67,15 @@ class WorkListFragment : Fragment() {
         val args = WorkListFragmentArgs.fromBundle(requireArguments())
         val tagName = args.tagName
         val workFilterRequest = WorkFilterRequest(tagName)
+        viewModel.initialiseWithRequest(workFilterRequest)
 
-        viewModelFactory = WorkListViewModelFactory(
-            workFilterRequest,
-            appContainer.repository,
-            WorkManager.getInstance(requireActivity().application as EidosApplication)
-        )
+//        viewModelFactory = WorkListViewModelFactory(
+//            appContainer.repository,
+//            WorkManager.getInstance(requireActivity().application as EidosApplication)
+//        )
         // scopes this to the activity to enable sharing of data
-        viewModel = ViewModelProvider(activity as AppCompatActivity, viewModelFactory).get(WorkListViewModel::class.java)
+//        viewModel = ViewModelProvider(activity as AppCompatActivity, viewModelFactory).get(WorkListViewModel::class.java)
+//        viewModel.initialiseWorkBlurbs()    // hack to force a refresh of data
 
         // Set up back button, title and filter button in the toolbar
         (activity as AppCompatActivity).setSupportActionBar(binding.toolbar)

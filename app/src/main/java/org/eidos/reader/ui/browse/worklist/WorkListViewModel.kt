@@ -22,7 +22,6 @@ import timber.log.Timber
 
 class WorkListViewModel
     constructor(
-        val workFilterRequest: WorkFilterRequest,
         private val repository: EidosRepository,
         private val workManager: WorkManager
     )
@@ -33,42 +32,34 @@ class WorkListViewModel
     val workBlurbs: LiveData<List<WorkBlurb>>
         get() = _workBlurbs
 
-    private var largestPageNumber = 1
+    private lateinit var workFilterRequest: WorkFilterRequest
+
+    private var largestPageNumber = 0
     private var isFetchingWorks = false
 
-    init {
-        initialiseWorkBlurbs()
+    fun initialiseWithRequest(workFilterRequest: WorkFilterRequest) {
+        this.workFilterRequest = workFilterRequest
+        resetPages()
+        getNextPage()
     }
 
-    private fun initialiseWorkBlurbs() {
-        // clear the data
-        _workBlurbs.value = emptyList()
-
-        Timber.i("Fetching Work Blurbs")
-        viewModelScope.launch(Dispatchers.IO) {
-            _workBlurbs.postValue(getWorkBlurbs(workFilterRequest))
-            Timber.i("WorkBlurbs successfully fetched")
-        }
-    }
-
-    private suspend fun getWorkBlurbs(request: WorkFilterRequest) : List<WorkBlurb> {
-        return repository.getWorkBlurbsFromAO3(request)
+    fun updateFilterChoices(choices: WorkFilterChoices) {
+        workFilterRequest.updateChoices(choices)
+        resetPages()
+        getNextPage()
     }
 
     fun getNextPage() {
         if (!isFetchingWorks) {
+            Timber.i("getNextPage() called")
             // set the bool to stop repeated fetching
             isFetchingWorks = true
             largestPageNumber++
-            Timber.i("getNextPage() called")
-
-            workFilterRequest.pageNumber = largestPageNumber
-//            workFilterRequest.updateQueryString()
-
+            workFilterRequest.pageNumber = largestPageNumber    // guaranteed to be >= 1
             val currentList : MutableList<WorkBlurb> = workBlurbs.value!!.toMutableList()
 
             viewModelScope.launch(Dispatchers.IO) {
-                currentList.addAll(getWorkBlurbs(workFilterRequest))
+                currentList.addAll(repository.getWorkBlurbsFromAO3(workFilterRequest))
                 _workBlurbs.postValue(currentList)
                 isFetchingWorks = false
                 Timber.i("More WorkBlurbs successfully fetched")
@@ -78,30 +69,22 @@ class WorkListViewModel
         }
     }
 
-    fun resetPages() {
+    private fun resetPages() {
         _workBlurbs.value = emptyList()
-        largestPageNumber = 1
-    }
-
-    fun updateFilterChoices(choices: WorkFilterChoices) {
-        workFilterRequest.updateChoices(choices)
-        resetPages()
-        initialiseWorkBlurbs()
+        largestPageNumber = 0
     }
 
     fun addWorkToLibrary(workBlurb: WorkBlurb) {
-        // use globalscope/coroutinescope first as we want this work to continue
-        // when there is time, update to workmanager
         workManager.enqueue(DownloadWorker.createDownloadRequest(workBlurb.workURL))
-//        CoroutineScope(Dispatchers.IO).launch {
-//            val work = repository.getWorkFromAO3(WorkRequest(workBlurb.workURL))
-//            repository.insertWorkIntoDatabase(work)
-//        }
     }
 
     fun addWorkToReadingList(workBlurb: WorkBlurb) {
         CoroutineScope(Dispatchers.IO).launch {
             repository.addWorkBlurbToReadingList(workBlurb)
         }
+    }
+
+    fun getWorkFilterChoices(): WorkFilterChoices {
+        return workFilterRequest.workFilterChoices.copy()
     }
 }
