@@ -7,6 +7,8 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
 import android.widget.EditText
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -18,12 +20,15 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import org.eidos.reader.EidosApplication
+import org.eidos.reader.R
 import org.eidos.reader.container.AppContainer
 import org.eidos.reader.databinding.FormWorkFilterBinding
 import org.eidos.reader.remote.choices.WorkFilterChoices
 import org.eidos.reader.ui.misc.utilities.Utilities.Companion.hideKeyboard
 import org.eidos.reader.ui.browse.worklist.WorkListViewModel
 import org.eidos.reader.ui.misc.adapters.AutocompleteStringAdapter
+import org.eidos.reader.ui.misc.values.LANGUAGES_ARRAY
+import org.eidos.reader.ui.misc.values.SORT_OPTIONS_ARRAY
 import timber.log.Timber
 
 /*
@@ -179,6 +184,14 @@ class WorkListFilterFragment : Fragment() {
             }
         })
 
+        // get data into the dropdown menus
+        val languageAdapter = ArrayAdapter(requireContext(), R.layout.list_item, LANGUAGES_ARRAY)
+        binding.languageSelection.setAdapter(languageAdapter)
+
+        val sortOrderAdapter = ArrayAdapter(requireContext(), R.layout.list_item, SORT_OPTIONS_ARRAY)
+        binding.sortingSelection.setAdapter(sortOrderAdapter)
+
+
 
         // TODO: should also add a "Reset to Defaults" button? Maybe when in the original state?
         // TODO: or make the clear button throw a dialog - can choose which type of reset they want
@@ -234,39 +247,50 @@ class WorkListFilterFragment : Fragment() {
 //        }
         binding.relationshipGenChip.setOnCheckedChangeListener { _, isChecked ->
             viewModel.workFilterChoices.showCategoryGen = isChecked
+            Timber.i("Choices Updated!")
         }
         binding.relationshipFFChip.setOnCheckedChangeListener { _, isChecked ->
             viewModel.workFilterChoices.showCategoryFF = isChecked
+            Timber.i("Choices Updated!")
         }
         binding.relationshipFMChip.setOnCheckedChangeListener { _, isChecked ->
             viewModel.workFilterChoices.showCategoryFM = isChecked
+            Timber.i("Choices Updated!")
         }
         binding.relationshipMMChip.setOnCheckedChangeListener { _, isChecked ->
             viewModel.workFilterChoices.showCategoryMM = isChecked
+            Timber.i("Choices Updated!")
         }
         binding.relationshipMultiChip.setOnCheckedChangeListener { _, isChecked ->
             viewModel.workFilterChoices.showCategoryMulti = isChecked
+            Timber.i("Choices Updated!")
         }
         binding.relationshipOtherChip.setOnCheckedChangeListener { _, isChecked ->
             viewModel.workFilterChoices.showCategoryOther = isChecked
+            Timber.i("Choices Updated!")
         }
 
         binding.showCrossoversChip.setOnCheckedChangeListener { _, isChecked ->
             viewModel.workFilterChoices.showCrossovers = isChecked
+            Timber.i("Choices Updated!")
         }
         binding.showNonCrossoversChip.setOnCheckedChangeListener { _, isChecked ->
             viewModel.workFilterChoices.showNonCrossovers = isChecked
+            Timber.i("Choices Updated!")
         }
 
         binding.showCompletedChip.setOnCheckedChangeListener { _, isChecked ->
             viewModel.workFilterChoices.showCompletedWorks = isChecked
+            Timber.i("Choices Updated!")
         }
         binding.showIncompleteChip.setOnCheckedChangeListener { _, isChecked ->
             viewModel.workFilterChoices.showIncompleteWorks = isChecked
+            Timber.i("Choices Updated!")
         }
 
         binding.oneshotsOnlyToggle.setOnCheckedChangeListener { buttonView, isChecked ->
             viewModel.workFilterChoices.showSingleChapterWorksOnly = isChecked
+            Timber.i("Choices Updated!")
         }
 
 
@@ -275,68 +299,91 @@ class WorkListFilterFragment : Fragment() {
         binding.hitsFromEditText.setOnFocusChangeListener { view, hasFocus ->
             if (!hasFocus) {
                 viewModel.workFilterChoices.hitsMin = (view as EditText).text.toString().toInt()
+                Timber.i("Choices Updated!")
             }
         }
         binding.hitsToEditText.setOnFocusChangeListener { view, hasFocus ->
             if (!hasFocus) {
                 viewModel.workFilterChoices.hitsMax = (view as EditText).text.toString().toInt()
+                Timber.i("Choices Updated!")
             }
         }
         binding.kudosFromEditText.setOnFocusChangeListener { view, hasFocus ->
             if (!hasFocus) {
                 viewModel.workFilterChoices.kudosMin = (view as EditText).text.toString().toInt()
+                Timber.i("Choices Updated!")
             }
         }
         binding.kudosToEditText.setOnFocusChangeListener { view, hasFocus ->
             if (!hasFocus) {
                 viewModel.workFilterChoices.kudosMax = (view as EditText).text.toString().toInt()
+                Timber.i("Choices Updated!")
             }
         }
         binding.bookmarksFromEditText.setOnFocusChangeListener { view, hasFocus ->
             if (!hasFocus) {
                 viewModel.workFilterChoices.bookmarksMin = (view as EditText).text.toString().toInt()
+                Timber.i("Choices Updated!")
             }
         }
         binding.bookmarksToEditText.setOnFocusChangeListener { view, hasFocus ->
             if (!hasFocus) {
                 viewModel.workFilterChoices.bookmarksMax = (view as EditText).text.toString().toInt()
+                Timber.i("Choices Updated!")
             }
         }
         binding.commentsFromEditText.setOnFocusChangeListener { view, hasFocus ->
             if (!hasFocus) {
                 viewModel.workFilterChoices.commentsMin = (view as EditText).text.toString().toInt()
+                Timber.i("Choices Updated!")
             }
         }
         binding.commentsToEditText.setOnFocusChangeListener { view, hasFocus ->
             if (!hasFocus) {
                 viewModel.workFilterChoices.commentsMax = (view as EditText).text.toString().toInt()
+                Timber.i("Choices Updated!")
             }
         }
         binding.wordCountFromEditText.setOnFocusChangeListener { view, hasFocus ->
             if (!hasFocus) {
                 viewModel.workFilterChoices.wordCountMin = (view as EditText).text.toString().toInt()
+                Timber.i("Choices Updated!")
             }
         }
         binding.wordCountToEditText.setOnFocusChangeListener { view, hasFocus ->
             if (!hasFocus) {
                 viewModel.workFilterChoices.wordCountMax = (view as EditText).text.toString().toInt()
+                Timber.i("Choices Updated!")
             }
         }
         binding.dateUpdatedFromEditText.setOnFocusChangeListener { view, hasFocus ->
             if (!hasFocus) {
                 viewModel.workFilterChoices.dateUpdatedMin = (view as EditText).text.toString()
+                Timber.i("Choices Updated!")
             }
         }
         binding.dateUpdatedToEditText.setOnFocusChangeListener { view, hasFocus ->
             if (!hasFocus) {
                 viewModel.workFilterChoices.dateUpdatedMax = (view as EditText).text.toString()
+                Timber.i("Choices Updated!")
             }
         }
 
         binding.searchInputEditText.setOnFocusChangeListener { view, hasFocus ->
             if (!hasFocus) {
                 viewModel.workFilterChoices.searchTerm = (view as EditText).text.toString()
+                Timber.i("Choices Updated!")
             }
+        }
+
+        binding.sortingSelection.setOnItemClickListener { parent, view, position, id ->
+            viewModel.workFilterChoices.sortOrder = (view as TextView).text.toString()
+            Timber.i("Choices Updated!")
+        }
+
+        binding.languageSelection.setOnItemClickListener { parent, view, position, id ->
+            viewModel.workFilterChoices.language = (view as TextView).text.toString()
+            Timber.i("Choices Updated!")
         }
 
         // TODO: missing observers for sort order and language

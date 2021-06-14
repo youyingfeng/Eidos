@@ -100,3 +100,5 @@ val LANGUAGES = mapOf(
         "中文-广东话 粵語" to "yue",
         "中文-普通话 國語" to  "zh"
 )
+
+val LANGUAGES_ARRAY = LANGUAGES.keys.toTypedArray()

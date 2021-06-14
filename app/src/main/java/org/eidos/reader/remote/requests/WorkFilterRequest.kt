@@ -1,6 +1,8 @@
 package org.eidos.reader.remote.requests
 
 import org.eidos.reader.remote.choices.WorkFilterChoices
+import org.eidos.reader.ui.misc.values.LANGUAGES
+import org.eidos.reader.ui.misc.values.SORT_OPTIONS
 import java.net.URLEncoder
 
 /* ATTENTION: NOTES ON WORK FILTER CAN BE FOUND AT THE BOTTOM */
@@ -328,12 +330,16 @@ class WorkFilterRequest(
 
     private val languageQueryString : String
         get() {
-            return "&work_search[language_id]="
+            return "&work_search[language_id]=${LANGUAGES[workFilterChoices.language]}"
         }
 
     private val sortOrderQueryString : String
         get() {
-            return "&work_search[sort_column]=revised_at"
+            return if (workFilterChoices.sortOrder.isBlank()) {
+                "&work_search[sort_column]=revised_at"
+            } else {
+                "&work_search[sort_column]=${SORT_OPTIONS[workFilterChoices.sortOrder]}"
+            }
         }
 
     private val pageNumberQueryString : String
