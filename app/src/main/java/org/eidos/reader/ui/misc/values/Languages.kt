@@ -1,7 +1,7 @@
 package org.eidos.reader.ui.misc.values
 
 val LANGUAGES = mapOf(
-        "" to "",
+        "All Languages" to "",
         "af Soomaali" to "so",
         "Afrikaans" to "afr",
         "العربية" to "ar",

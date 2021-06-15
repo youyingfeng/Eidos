@@ -386,6 +386,10 @@ class WorkListFilterFragment : Fragment() {
             Timber.i("Choices Updated!")
         }
 
+        // pre-select options for language and sort order
+        binding.sortingSelection.setText(SORT_OPTIONS_ARRAY[3], false)  // hardcode to date updated
+        binding.languageSelection.setText(LANGUAGES_ARRAY[0], false)
+
         // TODO: missing observers for sort order and language
 
         // TODO: link submit and cancel buttons, add reset button for both types of reset
