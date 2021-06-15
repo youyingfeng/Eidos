@@ -18,7 +18,7 @@ import java.net.URLEncoder
 
 // TODO: Refactor the methods to use variables so that any accidental extra calls will not screw up the queryString.
 
-class WorkFilterRequest(
+data class WorkFilterRequest(
     val tagName: String,
     var workFilterChoices: WorkFilterChoices = WorkFilterChoices()
 ) {
@@ -330,7 +330,11 @@ class WorkFilterRequest(
 
     private val languageQueryString : String
         get() {
-            return "&work_search[language_id]=${LANGUAGES[workFilterChoices.language]}"
+            return if (workFilterChoices.language.isBlank()) {
+                "&work_search[language_id]="
+            } else {
+                "&work_search[language_id]=${LANGUAGES[workFilterChoices.language]}"
+            }
         }
 
     private val sortOrderQueryString : String
@@ -346,111 +350,6 @@ class WorkFilterRequest(
         get() {
             return "&page=$pageNumber"
         }
-
-    /**
-     * Enumerations
-     */
-
-    enum class SortOrder(val code: String) {
-        DATE_UPDATED("revised_at")
-    }
-
-    enum class Language(val code: String, val displayText: String) {
-        ENGLISH("en", "English")
-//        AFRIKAANS("afr", "Afrikaans"),
-//        ARABIC("ar", "العربية"),
-//        ("arc", "ܐܪܡܝܐ | ארמיא"),
-//        ("hy", "հայերեն"),
-//        BELARUSSIAN("be", "беларуская"),
-//        ("bg", "Български"),
-//        ("bn", "বাংলা"),
-//        ("bos", "Bosanski"),
-//        ("br", "brezhoneg"),
-//        CATALAN("ca", "Català"),
-//        CHINUK_WAWA("chn", "Chinuk Wawa"),
-//        ("cs", "Čeština"),
-//        ("cy", "Cymraeg"),
-//        DANISH("da", "Dansk"),
-//        GERMAN("de", "Deutsch"),
-//        ("el", "Ελληνικά"),
-//        ENGLISH("en", "English"),
-//        ESPERANTO("eo", "Esperanto"),
-//        SPANISH("es", "Español"),
-//        ESTONIAN("et", "eesti keel"),
-//        ("eu", "Euskara"),
-//        FARSI("fa", "فارسی"),
-//        FINNISH("fi", "Suomi"),
-//        TAGALOG("fil", "Filipino"),
-//        FRENCH("fr", "Français"),
-//        FURLAN("fur", "Furlan"),
-//        IRISH("ga", "Gaeilge"),
-//        GAELIC_SCOTTISH("gd", "Gàidhlig"),
-//        ("gem", "Sprēkō Þiudiskō"),
-//        ("gl", "Galego"),
-//        ("got", "𐌲𐌿𐍄𐌹𐍃𐌺𐌰"),
-//        CHINESE_HAKKA("hak", "中文-客家话"),
-//        ("hau", "Hausa | هَرْشَن هَوْسَ"),
-//        HEBREW("he", "עברית"),
-//        HINDI("hi", "हिन्दी"),
-//        CROATIAN("hr", "Hrvatski"),
-//        HUNGARIAN("hu", "Magyar"),
-//        INTERLINGUA("ia", "Interlingua"),
-//        BAHASA_INDONESIA("id", "Bahasa Indonesia"),
-//        ICELANDIC("is", "Íslenska"),
-//        ZULU("zu", "isiZulu"),
-//        ITALIAN("it", "Italiano"),
-//        JAPANESE("ja", "日本語"),
-//        BASA_JAWA("jv", "Basa Jawa"),
-//        ("kat", "ქართული"),
-//        KOREAN("ko", "한국어"),
-//        LATIN("la", "Lingua latina"),
-//        QUEBECOIS("fcs", "Langue des signes québécoise"),
-//        ("lb", "Lëtzebuergesch"),
-//        ("lt", "Lietuvių kalba"),
-//        ("lv", "Latviešu valoda"),
-//        ("ml", "മലയാളം"),
-//        ("mnc", "ᠮᠠᠨᠵᡠ ᡤᡳᠰᡠᠨ"),
-//        ("mk", "македонски"),
-//        ("mon", "ᠮᠣᠩᠭᠣᠯ ᠪᠢᠴᠢᠭ᠌ | Монгол Кирилл үсэг"),
-//        ("mr", "मराठी"),
-//        BAHASA_MALAYSIA("ms", "Bahasa Malaysia"),
-//        ("nan", "中文-闽南话 臺語"),
-//        ("nds", "Plattdüütsch"),
-//        DUTCH("nl", "Nederlands"),
-//        NORWEGIAN("no", "Norsk"),
-//        ("pa", "ਪੰਜਾਬੀ"),
-//        POLISH("pl", "Polski"),
-//        PORTUGUESE_BRAZILIAN("ptBR", "Português brasileiro"),
-//        PORTUGUESE("ptPT", "Português europeu"),
-//        ("qkz", "Khuzdul"),
-//        ("qya", "Quenya"),
-//        ROMANIAN("ro", "Română"),
-//        RUSSIAN("ru", "Русский"),
-//        SCOTTISH("sco", "Scots"),
-//        ("si", "සිංහල"),
-//        SINDARIN("sjn", "Sindarin"),
-//        ("sk", "Slovenčina"),
-//        SLOVENIAN("slv", "Slovenščina"),
-//        SOMALIAN("so", "af Soomaali"),
-//        ("sq", "Shqip"),
-//        ("sr", "српски"),
-//        ("sv", "Svenska"),
-//        ("sw", "Kiswahili"),
-//        ("ta", "தமிழ்"),
-//        ("th", "ไทย"),
-//        ("bod", "བོད་སྐད་"),
-//        KLINGON("tlh", "tlhIngan-Hol"),
-//        TOKI_PONA("qtp", "Toki Pona"),
-//        THERMIAN("tqx", "Thermian"),
-//        TURKISH("tr", "Türkçe"),
-//        UKRAINIAN("uk", "Українська"),
-//        UIGHUR("uig", "ئۇيغۇر تىلى"),
-//        VIETNAMESE("vi", "Tiếng Việt"),
-//        CHINESE_WU("wuu", "中文-吴语"),
-//        CHINESE_CANTONESE("yue", "中文-广东话 粵語"),
-//        CHINESE_STANDARD("zh", "中文-普通话 國語")
-        
-    }
 }
 
 /*

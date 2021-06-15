@@ -3,6 +3,7 @@ package org.eidos.reader.repository
 import org.eidos.reader.model.Comment
 import org.eidos.reader.model.Work
 import org.eidos.reader.model.WorkBlurb
+import org.eidos.reader.model.WorkSearchMetadata
 import org.eidos.reader.remote.AO3
 import org.eidos.reader.remote.requests.AutocompleteRequest
 import org.eidos.reader.remote.requests.CommentsRequest
@@ -32,6 +33,10 @@ class EidosRepository(private val remoteDataSource: AO3, private val localDataSo
 
     fun getWorkBlurbsFromAO3(workFilterRequest: WorkFilterRequest): List<WorkBlurb> {
         return remoteDataSource.getWorkBlurbs(workFilterRequest)
+    }
+
+    fun getWorkSearchMetadataFromAO3(workFilterRequest: WorkFilterRequest): WorkSearchMetadata {
+        return remoteDataSource.getWorkSearchMetadata(workFilterRequest)
     }
 
     fun getAutocompleteResultsFromAO3(autocompleteRequest: AutocompleteRequest): List<String> {

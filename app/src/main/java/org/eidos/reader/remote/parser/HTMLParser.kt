@@ -9,6 +9,21 @@ import org.jsoup.parser.Parser
 import org.jsoup.select.Elements
 
 class HTMLParser {
+    fun parseMetadata(workListHtml: String): WorkSearchMetadata {
+        val doc = Jsoup.parse(workListHtml)
+        val heading = doc.selectFirst("div#main > h2.heading")
+        val tagName = heading.selectFirst("h2.heading > a")
+            .ownText()
+        val workCount = heading.ownText()
+            .split(" of ")
+            .last()     // this should give the half of the string containing the number
+            .split(" ")
+            .first()    // this should give a number
+            .let {
+                if (it.isBlank()) 0 else it.toInt()
+            }
+        return WorkSearchMetadata(tagName, workCount)
+    }
     /**
      * Extracts the list of works from the html file.
      * Selector syntax can be found at https://jsoup.org/cookbook/extracting-data/selector-syntax

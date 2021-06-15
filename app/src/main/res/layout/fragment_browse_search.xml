@@ -41,6 +41,7 @@
             android:checkable="true"
             android:text="All Tags"
             app:chipBackgroundColor="@color/chip_state_colors"
+            app:chipCornerRadius="4dp"
             app:chipIcon="@drawable/ic_chip_all_tags_16"
             app:chipIconTint="@color/chip_state_icon_colors"
             app:chipIconVisible="true" />
@@ -53,6 +54,7 @@
             android:checkable="true"
             android:text="Fandoms"
             app:chipBackgroundColor="@color/chip_state_colors"
+            app:chipCornerRadius="4dp"
             app:chipIcon="@drawable/ic_drawer_fandoms_24"
             app:chipIconTint="@color/chip_state_icon_colors"
             app:chipIconVisible="true" />
@@ -65,6 +67,7 @@
             android:checkable="true"
             android:text="Characters"
             app:chipBackgroundColor="@color/chip_state_colors"
+            app:chipCornerRadius="4dp"
             app:chipIcon="@drawable/ic_card_characters_24"
             app:chipIconTint="@color/chip_state_icon_colors"
             app:chipIconVisible="true" />
@@ -77,6 +80,7 @@
             android:checkable="true"
             android:text="Relationships"
             app:chipBackgroundColor="@color/chip_state_colors"
+            app:chipCornerRadius="4dp"
             app:chipIcon="@drawable/ic_card_relationships_14"
             app:chipIconTint="@color/chip_state_icon_colors"
             app:chipIconVisible="true" />
@@ -89,6 +93,7 @@
             android:checkable="true"
             android:text="Freeforms"
             app:chipBackgroundColor="@color/chip_state_colors"
+            app:chipCornerRadius="4dp"
             app:chipIcon="@drawable/ic_card_freeforms_14"
             app:chipIconTint="@color/chip_state_icon_colors"
             app:chipIconVisible="true" />
@@ -100,7 +105,9 @@
             android:layout_height="wrap_content"
             android:checkable="true"
             android:text="Users"
+            android:visibility="gone"
             app:chipBackgroundColor="@color/chip_state_colors"
+            app:chipCornerRadius="4dp"
             app:chipIcon="@drawable/ic_chip_users_16"
             app:chipIconTint="@color/chip_state_icon_colors"
             app:chipIconVisible="true" />

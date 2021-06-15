@@ -7,15 +7,11 @@ import androidx.lifecycle.viewModelScope
 import androidx.work.WorkManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import org.eidos.reader.EidosApplication
-import org.eidos.reader.model.Comment
 
 import org.eidos.reader.model.WorkBlurb
 import org.eidos.reader.remote.choices.WorkFilterChoices
 import org.eidos.reader.remote.requests.WorkFilterRequest
-import org.eidos.reader.remote.requests.WorkRequest
 import org.eidos.reader.repository.EidosRepository
 import org.eidos.reader.workers.DownloadWorker
 import timber.log.Timber
@@ -28,19 +24,40 @@ class WorkListViewModel
     : ViewModel()
 {
 
-    private var _workBlurbs = MutableLiveData<List<WorkBlurb>>(emptyList())
+    private lateinit var workFilterRequest: WorkFilterRequest
+
+    private val _workBlurbs = MutableLiveData<List<WorkBlurb>>(emptyList())
     val workBlurbs: LiveData<List<WorkBlurb>>
         get() = _workBlurbs
 
-    private lateinit var workFilterRequest: WorkFilterRequest
+    private val _tagName = MutableLiveData<String>("")
+    val tagName: LiveData<String>
+        get() = _tagName
+
+    private val _workCount = MutableLiveData<Int>(0)
+    val workCount: LiveData<Int>
+        get() = _workCount
+
 
     private var largestPageNumber = 0
     private var isFetchingWorks = false
 
     fun initialiseWithRequest(workFilterRequest: WorkFilterRequest) {
-        this.workFilterRequest = workFilterRequest
-        resetPages()
-        getNextPage()
+        viewModelScope.launch(Dispatchers.IO) {
+            val workSearchMetadata = repository.getWorkSearchMetadataFromAO3(workFilterRequest)
+
+            if (workSearchMetadata.tagName != workFilterRequest.tagName) {
+                this@WorkListViewModel.workFilterRequest = workFilterRequest.copy(tagName = workSearchMetadata.tagName)
+            } else {
+                this@WorkListViewModel.workFilterRequest = workFilterRequest
+            }
+
+            _tagName.postValue(workSearchMetadata.tagName)
+            _workCount.postValue(workSearchMetadata.workCount)
+
+            resetPages()
+            getNextPage()
+        }
     }
 
     fun updateFilterChoices(choices: WorkFilterChoices) {
@@ -70,7 +87,7 @@ class WorkListViewModel
     }
 
     private fun resetPages() {
-        _workBlurbs.value = emptyList()
+        _workBlurbs.postValue(emptyList())
         largestPageNumber = 0
     }
 

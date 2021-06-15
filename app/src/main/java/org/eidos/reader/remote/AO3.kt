@@ -6,6 +6,7 @@ import org.eidos.reader.model.Work
 import org.eidos.reader.model.WorkBlurb
 import org.eidos.reader.network.Network
 import org.eidos.reader.model.Comment
+import org.eidos.reader.model.WorkSearchMetadata
 import org.eidos.reader.remote.parser.HTMLParser
 import org.eidos.reader.remote.requests.AutocompleteRequest
 import org.eidos.reader.remote.requests.CommentsRequest
@@ -23,8 +24,14 @@ class AO3
         .addLast(KotlinJsonAdapterFactory())
         .build()
 
-    fun getWorkBlurbs(workListRequest: WorkFilterRequest): List<WorkBlurb> {
-        val urlString = "https://archiveofourown.org" + workListRequest.queryString
+    fun getWorkSearchMetadata(workFilterRequest: WorkFilterRequest): WorkSearchMetadata {
+        val urlString = "https://archiveofourown.org" + workFilterRequest.queryString
+        val responseBody = network.get(urlString)
+        return parser.parseMetadata(responseBody)
+    }
+
+    fun getWorkBlurbs(workFilterRequest: WorkFilterRequest): List<WorkBlurb> {
+        val urlString = "https://archiveofourown.org" + workFilterRequest.queryString
         println(urlString)
 
         try {
@@ -39,8 +46,6 @@ class AO3
     fun getWork(workRequest: WorkRequest): Work {
         // Input: the navigation page of the work
         // Output: the work itself
-//            val urlString = "https://archiveofourown.org" + workRequest.queryString
-//            println(urlString)
 
         val workUrlString = "https://archiveofourown.org" + workRequest.getEntireWorkURL()
         val navigationIndexUrlString = "https://archiveofourown.org" +

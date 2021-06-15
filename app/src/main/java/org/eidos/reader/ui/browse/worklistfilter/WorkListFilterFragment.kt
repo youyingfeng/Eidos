@@ -298,61 +298,81 @@ class WorkListFilterFragment : Fragment() {
         // this entire code is listener hell
         binding.hitsFromEditText.setOnFocusChangeListener { view, hasFocus ->
             if (!hasFocus) {
-                viewModel.workFilterChoices.hitsMin = (view as EditText).text.toString().toInt()
+                viewModel.workFilterChoices.hitsMin = (view as EditText).text.toString().let {
+                    if (it.isBlank()) 0 else it.toInt()
+                }
                 Timber.i("Choices Updated!")
             }
         }
         binding.hitsToEditText.setOnFocusChangeListener { view, hasFocus ->
             if (!hasFocus) {
-                viewModel.workFilterChoices.hitsMax = (view as EditText).text.toString().toInt()
+                viewModel.workFilterChoices.hitsMax = (view as EditText).text.toString().let {
+                    if (it.isBlank()) 0 else it.toInt()
+                }
                 Timber.i("Choices Updated!")
             }
         }
         binding.kudosFromEditText.setOnFocusChangeListener { view, hasFocus ->
             if (!hasFocus) {
-                viewModel.workFilterChoices.kudosMin = (view as EditText).text.toString().toInt()
+                viewModel.workFilterChoices.kudosMin = (view as EditText).text.toString().let {
+                    if (it.isBlank()) 0 else it.toInt()
+                }
                 Timber.i("Choices Updated!")
             }
         }
         binding.kudosToEditText.setOnFocusChangeListener { view, hasFocus ->
             if (!hasFocus) {
-                viewModel.workFilterChoices.kudosMax = (view as EditText).text.toString().toInt()
+                viewModel.workFilterChoices.kudosMax = (view as EditText).text.toString().let {
+                    if (it.isBlank()) 0 else it.toInt()
+                }
                 Timber.i("Choices Updated!")
             }
         }
         binding.bookmarksFromEditText.setOnFocusChangeListener { view, hasFocus ->
             if (!hasFocus) {
-                viewModel.workFilterChoices.bookmarksMin = (view as EditText).text.toString().toInt()
+                viewModel.workFilterChoices.bookmarksMin = (view as EditText).text.toString().let {
+                    if (it.isBlank()) 0 else it.toInt()
+                }
                 Timber.i("Choices Updated!")
             }
         }
         binding.bookmarksToEditText.setOnFocusChangeListener { view, hasFocus ->
             if (!hasFocus) {
-                viewModel.workFilterChoices.bookmarksMax = (view as EditText).text.toString().toInt()
+                viewModel.workFilterChoices.bookmarksMax = (view as EditText).text.toString().let {
+                    if (it.isBlank()) 0 else it.toInt()
+                }
                 Timber.i("Choices Updated!")
             }
         }
         binding.commentsFromEditText.setOnFocusChangeListener { view, hasFocus ->
             if (!hasFocus) {
-                viewModel.workFilterChoices.commentsMin = (view as EditText).text.toString().toInt()
+                viewModel.workFilterChoices.commentsMin = (view as EditText).text.toString().let {
+                    if (it.isBlank()) 0 else it.toInt()
+                }
                 Timber.i("Choices Updated!")
             }
         }
         binding.commentsToEditText.setOnFocusChangeListener { view, hasFocus ->
             if (!hasFocus) {
-                viewModel.workFilterChoices.commentsMax = (view as EditText).text.toString().toInt()
+                viewModel.workFilterChoices.commentsMax = (view as EditText).text.toString().let {
+                    if (it.isBlank()) 0 else it.toInt()
+                }
                 Timber.i("Choices Updated!")
             }
         }
         binding.wordCountFromEditText.setOnFocusChangeListener { view, hasFocus ->
             if (!hasFocus) {
-                viewModel.workFilterChoices.wordCountMin = (view as EditText).text.toString().toInt()
+                viewModel.workFilterChoices.wordCountMin = (view as EditText).text.toString().let {
+                    if (it.isBlank()) 0 else it.toInt()
+                }
                 Timber.i("Choices Updated!")
             }
         }
         binding.wordCountToEditText.setOnFocusChangeListener { view, hasFocus ->
             if (!hasFocus) {
-                viewModel.workFilterChoices.wordCountMax = (view as EditText).text.toString().toInt()
+                viewModel.workFilterChoices.wordCountMax = (view as EditText).text.toString().let {
+                    if (it.isBlank()) 0 else it.toInt()
+                }
                 Timber.i("Choices Updated!")
             }
         }

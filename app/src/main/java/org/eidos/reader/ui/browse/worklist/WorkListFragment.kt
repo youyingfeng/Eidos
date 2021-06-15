@@ -69,19 +69,21 @@ class WorkListFragment : Fragment() {
         val workFilterRequest = WorkFilterRequest(tagName)
         viewModel.initialiseWithRequest(workFilterRequest)
 
-//        viewModelFactory = WorkListViewModelFactory(
-//            appContainer.repository,
-//            WorkManager.getInstance(requireActivity().application as EidosApplication)
-//        )
-        // scopes this to the activity to enable sharing of data
-//        viewModel = ViewModelProvider(activity as AppCompatActivity, viewModelFactory).get(WorkListViewModel::class.java)
-//        viewModel.initialiseWorkBlurbs()    // hack to force a refresh of data
-
         // Set up back button, title and filter button in the toolbar
         (activity as AppCompatActivity).setSupportActionBar(binding.toolbar)
         (activity as AppCompatActivity).setupActionBarWithNavController(findNavController())
         setActivityTitle(tagName)
         setHasOptionsMenu(true)
+//        binding.collapsingToolbar.title
+
+        // Update tag title and work count
+        viewModel.tagName.observe(viewLifecycleOwner) {
+            binding.tagNameTextView.text = it
+        }
+
+        viewModel.workCount.observe(viewLifecycleOwner) {
+            binding.workCountTextView.text = "Listing $it works"
+        }
 
         val adapter = WorkBlurbAdapter(
             {
