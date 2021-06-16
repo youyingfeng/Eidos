@@ -2,10 +2,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/home"
-        android:icon="@drawable/ic_navigation_home_24"
-        android:title="Home" />
-    <item
         android:id="@+id/browse"
         android:icon="@drawable/ic_navigation_explore_24"
         android:title="Browse" />

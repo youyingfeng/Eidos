@@ -8,8 +8,8 @@
     <fragment
         android:id="@+id/libraryFragment"
         android:name="org.eidos.reader.ui.library.LibraryFragment"
-        android:label="fragment_library"
-        tools:layout="@layout/fragment_library" >
+        android:label="Library"
+        tools:layout="@layout/fragment_library">
         <action
             android:id="@+id/action_libraryFragment_to_work_reader"
             app:destination="@id/work_reader">
@@ -18,8 +18,8 @@
                 app:argType="string" />
             <argument
                 android:name="fetchFromDatabase"
-                app:argType="boolean"
-                android:defaultValue="false" />
+                android:defaultValue="false"
+                app:argType="boolean" />
         </action>
     </fragment>
     <include app:graph="@navigation/work_reader" />

@@ -48,7 +48,6 @@ class MainActivity : AppCompatActivity() {
 //        val navGraphIds = listOf(R.navigation.home, R.navigation.list, R.navigation.form)
         // FIXME: remember to update this line with the list of navigation graphs!!!
         val navGraphIds = listOf(
-            R.navigation.home,
             R.navigation.browse,
             R.navigation.library,
             R.navigation.read,

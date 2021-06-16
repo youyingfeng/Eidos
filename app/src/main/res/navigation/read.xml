@@ -8,6 +8,6 @@
     <fragment
         android:id="@+id/readingListFragment"
         android:name="org.eidos.reader.ui.read.readinglist.ReadingListFragment"
-        android:label="fragment_reading_list"
+        android:label="Read"
         tools:layout="@layout/fragment_reading_list" />
 </navigation>
