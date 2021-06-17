@@ -6,7 +6,6 @@ import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupActionBarWithNavController
 import org.eidos.reader.EidosApplication
@@ -16,6 +15,7 @@ import org.eidos.reader.container.AppContainer
 import org.eidos.reader.databinding.FragmentWorkReaderBinding
 import org.eidos.reader.ui.misc.utilities.URLImageGetter
 import org.eidos.reader.ui.misc.utilities.Utilities.Companion.setActivityTitle
+import org.eidos.reader.ui.read.reader.preferences.ReaderPreferencesDialogFragment
 import timber.log.Timber
 
 /*
@@ -117,6 +117,10 @@ class WorkReaderFragment : Fragment() {
             }
         })
 
+        viewModel.textSize.observe(viewLifecycleOwner) {
+            binding.workBody.textSize = it
+        }
+
         /* Set onClickListeners*/
         binding.nextChapterButton.setOnClickListener {
             // do i need to block further calls? will this block on UI thread? if it blocks should
@@ -178,6 +182,10 @@ class WorkReaderFragment : Fragment() {
                 viewModel.saveWorkToDatabase()
                 return true
             }
+            R.id.showReaderPreferences -> {
+                openReaderPreferencesDialog()
+                return true
+            }
         }
 
         return false
@@ -190,5 +198,10 @@ class WorkReaderFragment : Fragment() {
         )
         dialogFragment.show(childFragmentManager, "selectChapter")
         // dialog will auto close when any button is tapped
+    }
+
+    fun openReaderPreferencesDialog() {
+        val dialogFragment = ReaderPreferencesDialogFragment()
+        dialogFragment.show(childFragmentManager, "setReaderPreferences")
     }
 }

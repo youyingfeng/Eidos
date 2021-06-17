@@ -2,6 +2,9 @@ package org.eidos.reader.container
 
 import android.content.Context
 import android.os.Build.VERSION.SDK_INT
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.preferencesDataStore
 import coil.ImageLoader
 import coil.decode.GifDecoder
 import coil.decode.ImageDecoderDecoder
@@ -17,7 +20,12 @@ import org.eidos.reader.remote.parser.HTMLParser
 import org.eidos.reader.repository.EidosRepository
 import org.eidos.reader.storage.Storage
 
-class AppContainer(context: Context) {
+class AppContainer
+    constructor(
+        context: Context,
+        preferencesDataStore: DataStore<Preferences>
+    )
+{
     private val httpClient = OkHttpClient.Builder()
         .cache(CoilUtils.createDefaultCache(context))     // FIXME: this line crashes if appcontainer is not lazy
         .build()
@@ -37,7 +45,8 @@ class AppContainer(context: Context) {
 
     val repository = EidosRepository(
         remoteDataSource = remoteDataSource,
-        localDataSource = localDataSource
+        localDataSource = localDataSource,
+        preferencesDataStore = preferencesDataStore
     )
 
     val imageLoader = ImageLoader.Builder(context)

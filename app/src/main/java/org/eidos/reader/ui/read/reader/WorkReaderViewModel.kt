@@ -5,12 +5,14 @@ import android.text.Spanned
 import androidx.core.text.HtmlCompat
 import androidx.lifecycle.*
 import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.map
 import org.eidos.reader.EidosApplication
 import org.eidos.reader.model.Comment
 import org.eidos.reader.model.Work
 import org.eidos.reader.remote.requests.CommentsRequest
 import org.eidos.reader.remote.requests.WorkRequest
 import org.eidos.reader.repository.EidosRepository
+import org.eidos.reader.ui.misc.preferences.ReaderPreferences
 import org.eidos.reader.ui.misc.utilities.URLImageGetter
 import timber.log.Timber
 
@@ -54,6 +56,12 @@ class WorkReaderViewModel
     private val _chapterTitles = MutableLiveData<List<String>>()
     val chapterTitles: LiveData<List<String>>
         get() = _chapterTitles
+
+    val textSize = repository.readerPreferencesFlow
+        .map { readerPreferences ->
+            readerPreferences.textSize
+        }
+        .asLiveData()
 
     init {
         viewModelScope.launch {
@@ -179,6 +187,13 @@ class WorkReaderViewModel
         CoroutineScope(Dispatchers.IO).launch {
             repository.insertWorkIntoDatabase(work)
             Timber.i("Work saved!")
+        }
+    }
+
+    /* PREFERENCES */
+    fun updateTextSize(newTextSize: Float) {
+        viewModelScope.launch {
+            repository.updateTextSize(newTextSize)
         }
     }
 }

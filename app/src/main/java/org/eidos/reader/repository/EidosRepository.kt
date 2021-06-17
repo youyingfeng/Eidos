@@ -1,5 +1,13 @@
 package org.eidos.reader.repository
 
+import androidx.datastore.core.DataStore
+import androidx.datastore.dataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.emptyPreferences
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.map
 import org.eidos.reader.model.Comment
 import org.eidos.reader.model.Work
 import org.eidos.reader.model.WorkBlurb
@@ -10,6 +18,9 @@ import org.eidos.reader.remote.requests.CommentsRequest
 import org.eidos.reader.remote.requests.WorkFilterRequest
 import org.eidos.reader.remote.requests.WorkRequest
 import org.eidos.reader.storage.Storage
+import org.eidos.reader.ui.misc.preferences.ReaderPreferences
+import org.eidos.reader.ui.misc.preferences.ReaderPreferencesKeys
+import java.io.IOException
 
 /**
  * This repository/facade provides a unified API through which the ViewModel can interact with to
@@ -20,7 +31,13 @@ import org.eidos.reader.storage.Storage
  * This class is implemented as a singleton first (object keyword), but will have to be reworked to
  * adhere to proper dependency injection. Currently this class is not very testable as-is.
  */
-class EidosRepository(private val remoteDataSource: AO3, private val localDataSource: Storage) {
+class EidosRepository
+    constructor(
+        private val remoteDataSource: AO3,
+        private val localDataSource: Storage,
+        val preferencesDataStore: DataStore<Preferences>
+    )
+{
     // TODO: Implement local data source and cache (not as important)
 
     fun getWorkFromAO3(workRequest: WorkRequest): Work {
@@ -90,5 +107,23 @@ class EidosRepository(private val remoteDataSource: AO3, private val localDataSo
         return localDataSource.deleteWorkBlurbFromReadingList(workURL)
     }
 
+    /* Reader Settings */
+    val readerPreferencesFlow: Flow<ReaderPreferences> = preferencesDataStore.data
+        .catch { exception ->
+            if (exception is IOException) {
+                emit(emptyPreferences())
+            } else {
+                throw exception
+            }
+        }.map { preferences ->
+            val textSize = preferences[ReaderPreferencesKeys.TEXT_SIZE] ?: 18F
+            return@map ReaderPreferences(textSize = textSize)
+        }
+
+    suspend fun updateTextSize(textSize: Float) {
+        preferencesDataStore.edit { preferences ->
+            preferences[ReaderPreferencesKeys.TEXT_SIZE] = textSize
+        }
+    }
 
 }

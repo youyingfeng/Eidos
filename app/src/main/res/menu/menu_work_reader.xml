@@ -4,4 +4,7 @@
     <item
         android:id="@+id/saveWork"
         android:title="Save This Work" />
+    <item
+        android:id="@+id/showReaderPreferences"
+        android:title="Appearance" />
 </menu>
