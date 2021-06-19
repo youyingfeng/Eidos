@@ -33,7 +33,7 @@
             android:lineSpacingExtra="0dp"
             android:text="F"
             android:textColor="#F0F0F0"
-            android:textSize="40sp" />
+            android:textSize="40dp" />
 
     </com.google.android.material.card.MaterialCardView>
 
