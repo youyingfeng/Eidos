@@ -5,44 +5,21 @@
     android:id="@+id/browse"
     app:startDestination="@id/browseSearchFragment">
 
-    <fragment
-        android:id="@+id/workListFragment"
-        android:name="org.eidos.reader.ui.browse.worklist.WorkListFragment"
-        android:label="fragment_work_list"
-        tools:layout="@layout/fragment_work_list" >
 
-        <argument
-            android:name="tagName"
-            app:argType="string" />
-        <action
-            android:id="@+id/action_workListFragment_to_work_reader"
-            app:destination="@id/work_reader">
-            <!--Arguments need to be included in the action and nested graph as per this SO answer-->
-            <!--https://stackoverflow.com/questions/59391787/pass-arguments-safely-to-nested-graph-with-navigation-component-->
-            <!--Read the page in its entirety!-->
-            <argument
-                android:name="workURL"
-                app:argType="string" />
-            <argument
-                android:name="fetchFromDatabase"
-                app:argType="boolean"
-                android:defaultValue="false" />
-        </action>
-        <action
-            android:id="@+id/action_workListFragment_to_workListFilterFragment"
-            app:destination="@id/workListFilterFragment" />
-    </fragment>
-    <include app:graph="@navigation/work_reader" />
     <fragment
         android:id="@+id/browseSearchFragment"
         android:name="org.eidos.reader.ui.browse.search.BrowseSearchFragment"
         android:label="BrowseSearchFragment" >
         <action
-            android:id="@+id/action_browseSearchFragment_to_workListFragment"
-            app:destination="@id/workListFragment" />
+            android:id="@+id/action_browseSearchFragment_to_work_list"
+            app:destination="@id/work_list">
+
+            <argument
+                android:name="tagName"
+                app:argType="string" />
+
+        </action>
     </fragment>
-    <fragment
-        android:id="@+id/workListFilterFragment"
-        android:name="org.eidos.reader.ui.browse.worklistfilter.WorkListFilterFragment"
-        android:label="Filter Options" />
+    <include app:graph="@navigation/work_list" />
+
 </navigation>

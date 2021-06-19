@@ -12,7 +12,7 @@
         tools:layout="@layout/fragment_library">
         <action
             android:id="@+id/action_libraryFragment_to_work_reader"
-            app:destination="@id/work_reader">
+            app:destination="@id/work">
             <argument
                 android:name="workURL"
                 app:argType="string" />
@@ -22,5 +22,5 @@
                 app:argType="boolean" />
         </action>
     </fragment>
-    <include app:graph="@navigation/work_reader" />
+    <include app:graph="@navigation/work" />
 </navigation>

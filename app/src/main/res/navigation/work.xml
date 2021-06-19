@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/work"
+    app:startDestination="@id/workInfoFragment">
+
+    <!--Arguments need to be included in the action and nested graph as per this SO answer-->
+    <!--https://stackoverflow.com/questions/59391787/pass-arguments-safely-to-nested-graph-with-navigation-component-->
+    <!--Read the page in its entirety!-->
+    <argument
+        android:name="workBlurb"
+        app:argType="org.eidos.reader.model.WorkBlurb" />
+    <argument
+        android:name="isStoredInDatabase"
+        app:argType="boolean"
+        android:defaultValue="false" />
+
+    <fragment
+        android:id="@+id/workInfoFragment"
+        android:name="org.eidos.reader.ui.read.workinfo.WorkInfoFragment"
+        android:label="fragment_work_info"
+        tools:layout="@layout/fragment_work_info" >
+        <action
+            android:id="@+id/action_workInfoFragment_to_workReaderFragment"
+            app:destination="@id/workReaderFragment" />
+        <argument
+            android:name="workBlurb"
+            app:argType="org.eidos.reader.model.WorkBlurb" />
+        <argument
+            android:name="isStoredInDatabase"
+            app:argType="boolean"
+            android:defaultValue="false" />
+        <action
+            android:id="@+id/action_workInfoFragment_to_work_list"
+            app:destination="@id/work_list">
+            <argument
+                android:name="tagName"
+                app:argType="string" />
+        </action>
+    </fragment>
+
+    <fragment
+        android:id="@+id/workReaderFragment"
+        android:name="org.eidos.reader.ui.read.reader.WorkReaderFragment"
+        android:label="fragment_work_reader"
+        tools:layout="@layout/fragment_work_reader" >
+        <argument
+            android:name="workURL"
+            app:argType="string" />
+        <argument
+            android:name="fetchFromDatabase"
+            app:argType="boolean"
+            android:defaultValue="false" />
+    </fragment>
+
+    <include app:graph="@navigation/work_list" />
+
+</navigation>

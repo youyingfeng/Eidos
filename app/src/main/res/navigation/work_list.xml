@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/work_list"
+    app:startDestination="@id/workListFragment">
+
+    <argument
+        android:name="tagName"
+        app:argType="string" />
+
+    <fragment
+        android:id="@+id/workListFragment"
+        android:name="org.eidos.reader.ui.browse.worklist.WorkListFragment"
+        android:label="fragment_work_list" >
+
+        <argument
+            android:name="tagName"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_workListFragment_to_workListFilterFragment"
+            app:destination="@id/workListFilterFragment" />
+        <action
+            android:id="@+id/action_workListFragment_to_work"
+            app:destination="@id/work">
+            <argument
+                android:name="workBlurb"
+                app:argType="org.eidos.reader.model.WorkBlurb" />
+            <argument
+                android:name="isStoredInDatabase"
+                app:argType="boolean"
+                android:defaultValue="false" />
+        </action>
+    </fragment>
+
+    <fragment
+        android:id="@+id/workListFilterFragment"
+        android:name="org.eidos.reader.ui.browse.worklistfilter.WorkListFilterFragment"
+        android:label="Filter Options" />
+
+    <include app:graph="@navigation/work" />
+
+</navigation>
