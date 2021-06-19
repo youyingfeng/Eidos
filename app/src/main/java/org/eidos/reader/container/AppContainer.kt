@@ -23,7 +23,8 @@ import org.eidos.reader.storage.Storage
 class AppContainer
     constructor(
         context: Context,
-        preferencesDataStore: DataStore<Preferences>
+        preferencesDataStore: DataStore<Preferences>,
+        networkDataStore: DataStore<Preferences>
     )
 {
     private val httpClient = OkHttpClient.Builder()

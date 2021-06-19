@@ -11,6 +11,7 @@ import timber.log.Timber
 class EidosApplication : Application() {
     // if lazy still crashes then use lateinit var
     private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
+    private val Context.networkDataStore: DataStore<Preferences> by preferencesDataStore(name = "network")
 
     private lateinit var _appContainer: AppContainer
     val appContainer: AppContainer
@@ -18,7 +19,7 @@ class EidosApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        _appContainer = AppContainer(applicationContext, dataStore)
+        _appContainer = AppContainer(applicationContext, dataStore, networkDataStore)
         // Start logging
         Timber.plant(Timber.DebugTree())
     }

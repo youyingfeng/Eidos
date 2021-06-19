@@ -9,6 +9,13 @@ import org.jsoup.parser.Parser
 import org.jsoup.select.Elements
 
 class HTMLParser {
+    fun parseCsrfToken(html: String) : String {
+        val doc = Jsoup.parse(html)
+        val csrfToken = doc.selectFirst("meta[name=csrf-token]")
+            .attr("content")
+        return csrfToken
+    }
+
     fun parseMetadata(workListHtml: String): WorkSearchMetadata {
         val doc = Jsoup.parse(workListHtml)
         val heading = doc.selectFirst("div#main > h2.heading")
