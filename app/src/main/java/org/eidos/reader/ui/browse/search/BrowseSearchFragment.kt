@@ -12,6 +12,7 @@ import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
 import org.eidos.reader.EidosApplication
 import org.eidos.reader.R
+import org.eidos.reader.WorkListDirections
 import org.eidos.reader.container.AppContainer
 import org.eidos.reader.databinding.FragmentBrowseSearchBinding
 import org.eidos.reader.ui.misc.adapters.AutocompleteStringAdapter
@@ -45,9 +46,7 @@ class BrowseSearchFragment : Fragment() {
 
             if (binding.searchTypeChipGroup.checkedChipId != R.id.usersChip) {
                 holderView.findNavController()
-                    .navigate(
-                        BrowseSearchFragmentDirections
-                            .actionBrowseSearchFragmentToWorkListFragment(autocompleteResultString))
+                    .navigate(WorkListDirections.actionBrowseTag(autocompleteResultString))
             } else {
                 TODO("User page not implemented")
             }

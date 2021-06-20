@@ -9,17 +9,16 @@
     <fragment
         android:id="@+id/browseSearchFragment"
         android:name="org.eidos.reader.ui.browse.search.BrowseSearchFragment"
-        android:label="BrowseSearchFragment" >
-        <action
-            android:id="@+id/action_browseSearchFragment_to_work_list"
-            app:destination="@id/work_list">
+        android:label="BrowseSearchFragment" />
 
-            <argument
-                android:name="tagName"
-                app:argType="string" />
-
-        </action>
-    </fragment>
     <include app:graph="@navigation/work_list" />
+
+    <action
+        android:id="@+id/action_browse_tag"
+        app:destination="@id/work_list">
+        <argument
+            android:name="tagName"
+            app:argType="string" />
+    </action>
 
 </navigation>

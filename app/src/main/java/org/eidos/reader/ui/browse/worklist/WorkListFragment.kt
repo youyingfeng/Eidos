@@ -19,6 +19,7 @@ import androidx.work.WorkManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.eidos.reader.EidosApplication
 import org.eidos.reader.R
+import org.eidos.reader.WorkDirections
 import org.eidos.reader.container.AppContainer
 import org.eidos.reader.databinding.FragmentWorkListBinding
 import org.eidos.reader.remote.requests.WorkFilterRequest
@@ -89,8 +90,7 @@ class WorkListFragment : Fragment() {
             {
                 holderView, workBlurb ->
                     holderView.findNavController()
-                        .navigate(WorkListFragmentDirections
-                            .actionWorkListFragmentToWorkReader(workBlurb.workURL, false))
+                        .navigate(WorkDirections.actionShowWorkInfo(workBlurb, false))
             },
             { holderView, workBlurb ->
                 MaterialAlertDialogBuilder(holderView.context)

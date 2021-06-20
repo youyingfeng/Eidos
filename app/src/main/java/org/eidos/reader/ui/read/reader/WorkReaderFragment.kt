@@ -10,7 +10,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupActionBarWithNavController
 import org.eidos.reader.EidosApplication
 import org.eidos.reader.R
-import org.eidos.reader.WorkReaderArgs
+import org.eidos.reader.WorkArgs
 import org.eidos.reader.container.AppContainer
 import org.eidos.reader.databinding.FragmentWorkReaderBinding
 import org.eidos.reader.ui.misc.utilities.URLImageGetter
@@ -47,13 +47,13 @@ class WorkReaderFragment : Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+                              savedInstanceState: Bundle?): View {
         // Inflates the view
         _binding = FragmentWorkReaderBinding.inflate(inflater, container, false)
         appContainer = (requireActivity().application as EidosApplication).appContainer
 
         // Set up the ViewModel
-        val args = WorkReaderArgs.fromBundle(requireArguments())
+        val args = WorkReaderFragmentArgs.fromBundle(requireArguments())
         val urlImageGetter = URLImageGetter(binding.workBody, appContainer.imageLoader)
         viewModelFactory = WorkReaderViewModelFactory(
             args.workURL,

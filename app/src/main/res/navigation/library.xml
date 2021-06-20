@@ -9,18 +9,19 @@
         android:id="@+id/libraryFragment"
         android:name="org.eidos.reader.ui.library.LibraryFragment"
         android:label="Library"
-        tools:layout="@layout/fragment_library">
-        <action
-            android:id="@+id/action_libraryFragment_to_work_reader"
-            app:destination="@id/work">
-            <argument
-                android:name="workURL"
-                app:argType="string" />
-            <argument
-                android:name="fetchFromDatabase"
-                android:defaultValue="false"
-                app:argType="boolean" />
-        </action>
-    </fragment>
+        tools:layout="@layout/fragment_library"/>
+
     <include app:graph="@navigation/work" />
+
+    <action
+        android:id="@+id/action_show_work_info"
+        app:destination="@id/work">
+        <argument
+            android:name="workBlurb"
+            app:argType="org.eidos.reader.model.WorkBlurb" />
+        <argument
+            android:name="isStoredInDatabase"
+            app:argType="boolean"
+            android:defaultValue="false" />
+    </action>
 </navigation>

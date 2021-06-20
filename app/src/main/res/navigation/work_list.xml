@@ -8,6 +8,14 @@
         android:name="tagName"
         app:argType="string" />
 
+    <action
+        android:id="@+id/action_browse_tag"
+        app:destination="@id/work_list">
+        <argument
+            android:name="tagName"
+            app:argType="string" />
+    </action>
+
     <fragment
         android:id="@+id/workListFragment"
         android:name="org.eidos.reader.ui.browse.worklist.WorkListFragment"
@@ -19,17 +27,6 @@
         <action
             android:id="@+id/action_workListFragment_to_workListFilterFragment"
             app:destination="@id/workListFilterFragment" />
-        <action
-            android:id="@+id/action_workListFragment_to_work"
-            app:destination="@id/work">
-            <argument
-                android:name="workBlurb"
-                app:argType="org.eidos.reader.model.WorkBlurb" />
-            <argument
-                android:name="isStoredInDatabase"
-                app:argType="boolean"
-                android:defaultValue="false" />
-        </action>
     </fragment>
 
     <fragment
@@ -38,5 +35,17 @@
         android:label="Filter Options" />
 
     <include app:graph="@navigation/work" />
+    <action
+        android:id="@+id/action_show_work_info"
+        app:destination="@id/work">
+        <argument
+            android:name="workBlurb"
+            app:argType="org.eidos.reader.model.WorkBlurb" />
+        <argument
+            android:name="isStoredInDatabase"
+            app:argType="boolean"
+            android:defaultValue="false" />
+    </action>
+
 
 </navigation>

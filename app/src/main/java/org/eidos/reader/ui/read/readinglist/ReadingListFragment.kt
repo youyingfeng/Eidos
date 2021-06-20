@@ -14,10 +14,10 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.eidos.reader.EidosApplication
 import org.eidos.reader.R
+import org.eidos.reader.WorkDirections
 import org.eidos.reader.container.AppContainer
 import org.eidos.reader.databinding.FragmentReadingListBinding
 import org.eidos.reader.ui.library.LibraryFragment
-import org.eidos.reader.ui.library.LibraryFragmentDirections
 import org.eidos.reader.ui.misc.adapters.WorkBlurbCompactAdapter
 
 class ReadingListFragment : Fragment() {
@@ -49,10 +49,7 @@ class ReadingListFragment : Fragment() {
         val adapter = WorkBlurbCompactAdapter(
             { holderView, workBlurb ->
                 holderView.findNavController()
-                    .navigate(
-                        LibraryFragmentDirections
-                            .actionLibraryFragmentToWorkReader(workBlurb.workURL, true)
-                    )
+                    .navigate(WorkDirections.actionShowWorkInfo(workBlurb, true))
             },
             { holderView, workBlurb ->
                 MaterialAlertDialogBuilder(holderView.context)

@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.eidos.reader.EidosApplication
 import org.eidos.reader.R
+import org.eidos.reader.WorkDirections
 import org.eidos.reader.container.AppContainer
 import org.eidos.reader.databinding.FragmentLibraryBinding
 import org.eidos.reader.ui.misc.adapters.WorkBlurbLocalAdapter
@@ -54,10 +55,7 @@ class LibraryFragment : Fragment() {
         val adapter = WorkBlurbLocalAdapter(
             { holderView, workBlurb ->
                 holderView.findNavController()
-                    .navigate(
-                        LibraryFragmentDirections
-                            .actionLibraryFragmentToWorkReader(workBlurb.workURL, true)
-                    )
+                    .navigate(WorkDirections.actionShowWorkInfo(workBlurb, true))
             },
             { holderView, workBlurb ->
                 MaterialAlertDialogBuilder(holderView.context)

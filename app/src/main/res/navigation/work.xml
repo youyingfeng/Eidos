@@ -16,6 +16,18 @@
         app:argType="boolean"
         android:defaultValue="false" />
 
+    <action
+        android:id="@+id/action_show_work_info"
+        app:destination="@id/work">
+        <argument
+            android:name="workBlurb"
+            app:argType="org.eidos.reader.model.WorkBlurb" />
+        <argument
+            android:name="isStoredInDatabase"
+            app:argType="boolean"
+            android:defaultValue="false" />
+    </action>
+
     <fragment
         android:id="@+id/workInfoFragment"
         android:name="org.eidos.reader.ui.read.workinfo.WorkInfoFragment"
@@ -31,13 +43,6 @@
             android:name="isStoredInDatabase"
             app:argType="boolean"
             android:defaultValue="false" />
-        <action
-            android:id="@+id/action_workInfoFragment_to_work_list"
-            app:destination="@id/work_list">
-            <argument
-                android:name="tagName"
-                app:argType="string" />
-        </action>
     </fragment>
 
     <fragment
@@ -54,6 +59,5 @@
             android:defaultValue="false" />
     </fragment>
 
-    <include app:graph="@navigation/work_list" />
 
 </navigation>
