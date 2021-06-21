@@ -1,13 +1,16 @@
 package org.eidos.reader.repository
 
 import androidx.datastore.core.DataStore
-import androidx.datastore.dataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.emptyPreferences
+import androidx.work.WorkManager
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
 import org.eidos.reader.model.Comment
 import org.eidos.reader.model.Work
 import org.eidos.reader.model.WorkBlurb
@@ -20,6 +23,7 @@ import org.eidos.reader.remote.requests.WorkRequest
 import org.eidos.reader.storage.Storage
 import org.eidos.reader.ui.misc.preferences.ReaderPreferences
 import org.eidos.reader.ui.misc.preferences.ReaderPreferencesKeys
+import org.eidos.reader.workers.DownloadWorker
 import java.io.IOException
 
 /**
@@ -31,12 +35,12 @@ import java.io.IOException
  * This class is implemented as a singleton first (object keyword), but will have to be reworked to
  * adhere to proper dependency injection. Currently this class is not very testable as-is.
  */
-class EidosRepository
-    constructor(
-        private val remoteDataSource: AO3,
-        private val localDataSource: Storage,
-        val preferencesDataStore: DataStore<Preferences>
-    )
+class EidosRepository(
+    private val remoteDataSource: AO3,
+    private val localDataSource: Storage,
+    val preferencesDataStore: DataStore<Preferences>,
+    private val workManager: WorkManager
+)
 {
     // TODO: Implement local data source and cache (not as important)
 
@@ -76,6 +80,10 @@ class EidosRepository
         return localDataSource.insertWork(work)
     }
 
+    fun insertWorkIntoDatabase(workURL: String) {
+        workManager.enqueue(DownloadWorker.createDownloadRequest(workURL))
+    }
+
     fun deleteWorkFromDatabase(workURL: String) {
         return localDataSource.deleteWork(workURL)
     }
@@ -88,10 +96,6 @@ class EidosRepository
         return localDataSource.deleteAllWorks()
     }
 
-    private fun insertWorkIntoDatabase(workURL: String) {
-        TODO("Do not implement until MVP complete")
-        // unprivate this function once implemented
-    }
 
 
     /* Reading List */

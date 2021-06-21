@@ -92,7 +92,7 @@ class WorkListViewModel
     }
 
     fun addWorkToLibrary(workBlurb: WorkBlurb) {
-        workManager.enqueue(DownloadWorker.createDownloadRequest(workBlurb.workURL))
+        repository.insertWorkIntoDatabase(workBlurb.workURL)
     }
 
     fun addWorkToReadingList(workBlurb: WorkBlurb) {

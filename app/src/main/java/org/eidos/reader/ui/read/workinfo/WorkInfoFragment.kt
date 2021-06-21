@@ -9,12 +9,15 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupActionBarWithNavController
+import com.google.android.material.chip.Chip
+import com.google.android.material.chip.ChipGroup
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.eidos.reader.EidosApplication
 import org.eidos.reader.R
 import org.eidos.reader.WorkDirections
+import org.eidos.reader.WorkListDirections
 import org.eidos.reader.container.AppContainer
 import org.eidos.reader.databinding.FragmentWorkInfoBinding
 import org.eidos.reader.model.WorkBlurb
@@ -86,12 +89,38 @@ class WorkInfoFragment : Fragment() {
                     )
             )
         }
+
+        // importing info
+        binding.title.text = workBlurb.title
+        binding.author.text = workBlurb.authors.joinToString()
+        binding.giftees.text = workBlurb.giftees.joinToString()
+
+        // add chips into the group
+        workBlurb.fandoms.forEach { binding.fandomTags.addChipWithText(it) }
+        workBlurb.relationships.forEach { binding.relationshipTags.addChipWithText(it) }
+        workBlurb.characters.forEach { binding.characterTags.addChipWithText(it) }
+        workBlurb.freeforms.forEach { binding.characterTags.addChipWithText(it) }
+
     }
 
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun ChipGroup.addChipWithText(text: String) {
+        val newChip = Chip(context)
+        newChip.text = text
+        newChip.isCloseIconVisible = false
+        newChip.isClickable = true
+        this.addView(newChip, this.childCount)
+
+        newChip.setOnClickListener {
+            findNavController().navigate(
+                WorkListDirections.actionBrowseTag(text)
+            )
+        }
     }
 
     companion object {

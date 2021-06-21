@@ -119,6 +119,7 @@
                     android:text="Fandoms" />
 
                 <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/fandomTags"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
@@ -131,6 +132,7 @@
                     android:text="Relationships" />
 
                 <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/relationshipTags"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
@@ -143,6 +145,7 @@
                     android:text="Characters" />
 
                 <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/characterTags"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
@@ -155,6 +158,7 @@
                     android:text="Freeforms" />
 
                 <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/freeformTags"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 

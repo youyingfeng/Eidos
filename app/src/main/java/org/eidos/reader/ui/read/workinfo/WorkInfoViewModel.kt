@@ -23,12 +23,7 @@ class WorkInfoViewModel
     // TODO: this might not even be needed! arguments should be persisted iirc
 
     fun addWorkToLibrary(workBlurb: WorkBlurb) {
-        // use globalscope/coroutinescope first as we want this work to continue
-        // when there is time, update to workmanager
-        CoroutineScope(Dispatchers.IO).launch {
-            val work = repository.getWorkFromAO3(WorkRequest(workBlurb.workURL))
-            repository.insertWorkIntoDatabase(work)
-        }
+        repository.insertWorkIntoDatabase(workBlurb.workURL)
     }
 
     fun addWorkToReadingList(workBlurb: WorkBlurb) {
