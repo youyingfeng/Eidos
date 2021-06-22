@@ -10,7 +10,7 @@
 
     <action
         android:id="@+id/action_browse_tag"
-        app:destination="@id/work_list">
+        app:destination="@id/workListFragment">
         <argument
             android:name="tagName"
             app:argType="string" />
@@ -32,7 +32,11 @@
     <fragment
         android:id="@+id/workListFilterFragment"
         android:name="org.eidos.reader.ui.browse.worklistfilter.WorkListFilterFragment"
-        android:label="Filter Options" />
+        android:label="Filter Options" >
+        <argument
+            android:name="workFilterChoices"
+            app:argType="org.eidos.reader.remote.choices.WorkFilterChoices" />
+    </fragment>
 
     <include app:graph="@navigation/work" />
     <action

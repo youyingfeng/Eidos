@@ -24,4 +24,13 @@
             app:argType="boolean"
             android:defaultValue="false" />
     </action>
+
+
+    <!--
+    This graph is included because Android needs to be able to find the graph in the navgraph -
+    since Work does not contain WorkList graph, the library has to contain it.
+    If I want to navigate to some graph X, I must ensure that X is actually present in the
+    navgraph somehow.
+    -->
+    <include app:graph="@navigation/work_list" />
 </navigation>

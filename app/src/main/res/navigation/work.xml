@@ -18,7 +18,7 @@
 
     <action
         android:id="@+id/action_show_work_info"
-        app:destination="@id/work">
+        app:destination="@id/workInfoFragment">
         <argument
             android:name="workBlurb"
             app:argType="org.eidos.reader.model.WorkBlurb" />
@@ -58,6 +58,14 @@
             app:argType="boolean"
             android:defaultValue="false" />
     </fragment>
+
+    <action
+        android:id="@+id/action_browse_tag"
+        app:destination="@id/work_list">
+        <argument
+            android:name="tagName"
+            app:argType="string" />
+    </action>
 
 
 </navigation>

@@ -6,6 +6,8 @@ import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.setFragmentResultListener
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
 import androidx.navigation.findNavController
@@ -22,6 +24,7 @@ import org.eidos.reader.R
 import org.eidos.reader.WorkDirections
 import org.eidos.reader.container.AppContainer
 import org.eidos.reader.databinding.FragmentWorkListBinding
+import org.eidos.reader.remote.choices.WorkFilterChoices
 import org.eidos.reader.remote.requests.WorkFilterRequest
 import org.eidos.reader.ui.library.LibraryFragment
 import org.eidos.reader.ui.misc.adapters.WorkBlurbAdapter
@@ -37,24 +40,30 @@ class WorkListFragment : Fragment() {
         private val options = arrayOf("Download work to Library", "Add work to Reading List")
     }
 
-    private val viewModel: WorkListViewModel by activityViewModels {
-        WorkListViewModelFactory(
-            appContainer.repository,
-            WorkManager.getInstance(requireActivity().application as EidosApplication)
-        )
+    private val viewModel: WorkListViewModel by viewModels {
+        WorkListViewModelFactory(appContainer.repository, workFilterRequest)
     }
-//    private lateinit var viewModelFactory: WorkListViewModelFactory
 
     private var _binding: FragmentWorkListBinding? = null
-    // This property is only valid between onCreateView and
-    // onDestroyView.
+    // This property is only valid between onCreateView and onDestroyView.
     private val binding get() = _binding!!
 
     private lateinit var appContainer: AppContainer
+    private lateinit var workFilterRequest: WorkFilterRequest
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        appContainer = (requireActivity().application as EidosApplication).appContainer
 
+        val args = WorkListFragmentArgs.fromBundle(requireArguments())
+        workFilterRequest = WorkFilterRequest(args.tagName)
+
+        setFragmentResultListener("updatedFilterChoices") { requestKey, bundle ->
+            bundle.getParcelable<WorkFilterChoices>("workFilterChoices")?.let { updatedChoices ->
+                viewModel.updateFilterChoices(updatedChoices)
+                Timber.i("result received")
+            }
+        }
     }
 
     override fun onCreateView(
@@ -63,23 +72,16 @@ class WorkListFragment : Fragment() {
     ): View? {
         // inflates the root
         _binding = FragmentWorkListBinding.inflate(inflater, container, false)
-        appContainer = (requireActivity().application as EidosApplication).appContainer
-
-        val args = WorkListFragmentArgs.fromBundle(requireArguments())
-        val tagName = args.tagName
-        val workFilterRequest = WorkFilterRequest(tagName)
-        viewModel.initialiseWithRequest(workFilterRequest)
 
         // Set up back button, title and filter button in the toolbar
         (activity as AppCompatActivity).setSupportActionBar(binding.toolbar)
         (activity as AppCompatActivity).setupActionBarWithNavController(findNavController())
-        setActivityTitle(tagName)
         setHasOptionsMenu(true)
-//        binding.collapsingToolbar.title
 
         // Update tag title and work count
         viewModel.tagName.observe(viewLifecycleOwner) {
             binding.tagNameTextView.text = it
+            setActivityTitle(it)
         }
 
         viewModel.workCount.observe(viewLifecycleOwner) {
@@ -145,7 +147,10 @@ class WorkListFragment : Fragment() {
                 hideKeyboard()
                 findNavController()
                         .navigate(WorkListFragmentDirections
-                                .actionWorkListFragmentToWorkListFilterFragment())
+                                .actionWorkListFragmentToWorkListFilterFragment(
+                                    viewModel.getWorkFilterChoices()
+                                )
+                        )
             }
         }
 

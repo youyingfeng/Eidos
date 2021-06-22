@@ -1,5 +1,7 @@
 package org.eidos.reader.remote.requests
 
+import android.os.Parcel
+import android.os.Parcelable
 import org.eidos.reader.remote.choices.WorkFilterChoices
 import org.eidos.reader.ui.misc.values.LANGUAGES
 import org.eidos.reader.ui.misc.values.SORT_OPTIONS
@@ -21,21 +23,11 @@ import java.net.URLEncoder
 data class WorkFilterRequest(
     val tagName: String,
     var workFilterChoices: WorkFilterChoices = WorkFilterChoices()
-) {
-    companion object {
-        // Utility methods
-        private fun encodeMainTag(tag: String) : String {
-            return tag.replace("/", "*s*")
-                    .replace("&", "*a*")
-        }
+) : Parcelable {
 
-        private fun encodeAdditionalTag(tag: String) : String {
-            return URLEncoder.encode(tag, "UTF-8")
-        }
-    }
-
-    private val BASE_QUERY_STRING = "/tags/${encodeMainTag(tagName)}/works?utf8=✓&commit=Sort+and+Filter"
-    var pageNumber : Int = 1
+    private val BASE_QUERY_STRING =
+        "/tags/${encodeMainTag(tagName)}/works?utf8=✓&commit=Sort+and+Filter"
+    var pageNumber: Int = 1
 
     // FIXME: encoding doesn't really work well when fetching synonyms - should convert to actual synonym tag
     var queryStringWithoutPageArgs = StringBuilder(BASE_QUERY_STRING)
@@ -86,31 +78,31 @@ data class WorkFilterRequest(
      * These are written as vals to make it more kotlinic
      */
 
-    private val includedTagsQueryString : String
+    private val includedTagsQueryString: String
         get() {
             val tagConcat = workFilterChoices.includedTags.joinToString(
-                    separator = "%2C",
-                    transform = {
-                        encodeAdditionalTag(it)
-                    }
+                separator = "%2C",
+                transform = {
+                    encodeAdditionalTag(it)
+                }
             )
 
             return "&work_search[other_tag_names]=$tagConcat"
         }
 
-    private val excludedTagsQueryString : String
+    private val excludedTagsQueryString: String
         get() {
             val tagConcat = workFilterChoices.excludedTags.joinToString(
-                    separator = "%2C",
-                    transform = {
-                        encodeAdditionalTag(it)
-                    }
+                separator = "%2C",
+                transform = {
+                    encodeAdditionalTag(it)
+                }
             )
 
             return "&work_search[excluded_tag_names]=$tagConcat"
         }
 
-    private val showSingleChapterWorksOnlyQueryString : String
+    private val showSingleChapterWorksOnlyQueryString: String
         get() {
             if (workFilterChoices.showSingleChapterWorksOnly) {
                 return "&work_search[single_chapter]=1"
@@ -119,7 +111,7 @@ data class WorkFilterRequest(
             }
         }
 
-    private val ratingsQueryString : String
+    private val ratingsQueryString: String
         get() {
             var tempRatingsQueryString = ""
 
@@ -146,7 +138,7 @@ data class WorkFilterRequest(
             return tempRatingsQueryString
         }
 
-    private val warningsQueryString : String
+    private val warningsQueryString: String
         get() {
             /**
              * Chose No Warnings    14
@@ -212,7 +204,7 @@ data class WorkFilterRequest(
             return tempWarningsQueryString
         }
 
-    private val crossoversQueryString : String
+    private val crossoversQueryString: String
         get() {
             if (workFilterChoices.showCrossovers xor workFilterChoices.showNonCrossovers) {
                 return "&work_search[crossover]=${if (workFilterChoices.showCrossovers) "T" else "F"}"
@@ -221,7 +213,7 @@ data class WorkFilterRequest(
             }
         }
 
-    private val completionStatusQueryString : String
+    private val completionStatusQueryString: String
         get() {
             if (workFilterChoices.showCompletedWorks xor workFilterChoices.showIncompleteWorks) {
                 return "&work_search[complete]=${if (workFilterChoices.showCompletedWorks) "T" else "F"}"
@@ -230,11 +222,12 @@ data class WorkFilterRequest(
             }
         }
 
-    private val hitsRangeQueryString : String
+    private val hitsRangeQueryString: String
         get() {
             if (workFilterChoices.hitsMin == 0 && workFilterChoices.hitsMax == 0 ||
-                    workFilterChoices.hitsMin < 0 ||
-                    workFilterChoices.hitsMax <= 0) {
+                workFilterChoices.hitsMin < 0 ||
+                workFilterChoices.hitsMax <= 0
+            ) {
                 return ""
             } else if (workFilterChoices.hitsMin == workFilterChoices.hitsMax) {
                 return "&work_search[hits]=${workFilterChoices.hitsMin}"
@@ -248,7 +241,7 @@ data class WorkFilterRequest(
 
         }
 
-    private val kudosRangeQueryString : String
+    private val kudosRangeQueryString: String
         get() {
             if (workFilterChoices.kudosMin == 0 && workFilterChoices.kudosMax == 0) {
                 return ""
@@ -264,7 +257,7 @@ data class WorkFilterRequest(
 
         }
 
-    private val commentsRangeQueryString : String
+    private val commentsRangeQueryString: String
         // TODO: should I add happy path to the if conditions explicitly?
         get() {
             if (workFilterChoices.commentsMin == 0 && workFilterChoices.commentsMax == 0) {
@@ -281,7 +274,7 @@ data class WorkFilterRequest(
 
         }
 
-    private val bookmarksRangeQueryString : String
+    private val bookmarksRangeQueryString: String
         get() {
             if (workFilterChoices.bookmarksMin == 0 && workFilterChoices.bookmarksMax == 0) {
                 return ""
@@ -296,7 +289,7 @@ data class WorkFilterRequest(
             return "&work_search[bookmarks_count]=${workFilterChoices.bookmarksMin}-${workFilterChoices.bookmarksMax}"
         }
 
-    private val wordCountRangeQueryString : String
+    private val wordCountRangeQueryString: String
         get() {
             if (workFilterChoices.wordCountMin <= 0 && workFilterChoices.wordCountMax <= 0) {
                 return ""
@@ -305,7 +298,7 @@ data class WorkFilterRequest(
                     "&work_search[words_to]=${workFilterChoices.wordCountMax}"
         }
 
-    private val dateUpdatedRangeQueryString : String
+    private val dateUpdatedRangeQueryString: String
         get() {
             if (workFilterChoices.dateUpdatedMin.isEmpty() || workFilterChoices.dateUpdatedMax.isEmpty()) {
                 return ""
@@ -319,7 +312,7 @@ data class WorkFilterRequest(
             return "&work_search[date_from]=${workFilterChoices.dateUpdatedMin}&work_search[date_to]=${workFilterChoices.dateUpdatedMax}"
         }
 
-    private val searchTermQueryString : String
+    private val searchTermQueryString: String
         get() {
             if (workFilterChoices.searchTerm.isEmpty()) {
                 return ""
@@ -328,7 +321,7 @@ data class WorkFilterRequest(
             return "&work_search[query]=${workFilterChoices.searchTerm}"
         }
 
-    private val languageQueryString : String
+    private val languageQueryString: String
         get() {
             return if (workFilterChoices.language.isBlank()) {
                 "&work_search[language_id]="
@@ -337,7 +330,7 @@ data class WorkFilterRequest(
             }
         }
 
-    private val sortOrderQueryString : String
+    private val sortOrderQueryString: String
         get() {
             return if (workFilterChoices.sortOrder.isBlank()) {
                 "&work_search[sort_column]=revised_at"
@@ -346,10 +339,55 @@ data class WorkFilterRequest(
             }
         }
 
-    private val pageNumberQueryString : String
+    private val pageNumberQueryString: String
         get() {
             return "&page=$pageNumber"
         }
+
+    // Parcelable stuff
+
+    constructor(parcel: Parcel) : this(
+        parcel.readString() ?: "",
+        parcel.readParcelable(WorkFilterChoices::class.java.classLoader) ?: WorkFilterChoices()
+    ) {
+        // these are for the public vars, but I dont need them
+//        pageNumber = parcel.readInt()
+//        queryStringWithoutPageArgs = parcel.readString() ?: ""
+    }
+
+    override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeString(tagName)
+        parcel.writeParcelable(workFilterChoices, flags)
+//        parcel.writeInt(pageNumber)
+//        parcel.writeString(queryStringWithoutPageArgs)
+    }
+
+    override fun describeContents(): Int {
+        return 0
+    }
+
+    companion object {
+        @JvmField
+        val CREATOR: Parcelable.Creator<WorkFilterRequest> =
+            object : Parcelable.Creator<WorkFilterRequest> {
+                override fun createFromParcel(parcel: Parcel): WorkFilterRequest {
+                    return WorkFilterRequest(parcel)
+                }
+
+                override fun newArray(size: Int): Array<WorkFilterRequest?> {
+                    return arrayOfNulls(size)
+                }
+            }
+
+        private fun encodeMainTag(tag: String): String {
+            return tag.replace("/", "*s*")
+                .replace("&", "*a*")
+        }
+
+        private fun encodeAdditionalTag(tag: String): String {
+            return URLEncoder.encode(tag, "UTF-8")
+        }
+    }
 }
 
 /*

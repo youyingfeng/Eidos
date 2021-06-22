@@ -12,8 +12,10 @@ import android.widget.AutoCompleteTextView
 import android.widget.EditText
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupActionBarWithNavController
@@ -38,11 +40,11 @@ and also stop additional typing of dashes from fucking up the date format
 
 class WorkListFilterFragment : Fragment() {
 
-    private val workListViewModel : WorkListViewModel by activityViewModels()
+//    private val workListViewModel : WorkListViewModel by activityViewModels()
     private val viewModel : WorkListFilterViewModel by viewModels {
         WorkListFilterViewModelFactory(
             appContainer.repository,
-            workListViewModel.getWorkFilterChoices()
+            workFilterChoices
         )
     }
 
@@ -51,11 +53,19 @@ class WorkListFilterFragment : Fragment() {
         get() = _binding!!
 
     private lateinit var appContainer: AppContainer
+    private lateinit var workFilterChoices: WorkFilterChoices
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        appContainer = (requireActivity().application as EidosApplication).appContainer
+
+        val args = WorkListFilterFragmentArgs.fromBundle(requireArguments())
+        workFilterChoices = args.workFilterChoices
+    }
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         _binding = FormWorkFilterBinding.inflate(LayoutInflater.from(context))
-        appContainer = (requireActivity().application as EidosApplication).appContainer
 
         // Automatically creates a back button in the toolbar to navigate back
         (activity as AppCompatActivity).setSupportActionBar(binding.toolbar)
@@ -415,11 +425,15 @@ class WorkListFilterFragment : Fragment() {
         // TODO: link submit and cancel buttons, add reset button for both types of reset
         binding.confirmButton.setOnClickListener {
             // submit choices to parent viewmodel
-            workListViewModel.updateFilterChoices(viewModel.workFilterChoices)
+//            workListViewModel.updateFilterChoices(viewModel.workFilterChoices)
+
+            setFragmentResult(
+                "updatedFilterChoices",
+                bundleOf("workFilterChoices" to viewModel.workFilterChoices)
+            )
+
             // navigate back
-            val navController = findNavController()
-//            navController.navigateUp()
-            navController.popBackStack()
+            findNavController().popBackStack()
         }
 
         binding.clearButton.setOnClickListener {
@@ -438,12 +452,6 @@ class WorkListFilterFragment : Fragment() {
         _binding = null
     }
 
-    private fun processFormInput() : WorkFilterChoices {
-        // create a new Choices object with the given parameters
-        val choices = WorkFilterChoices()
-
-        return choices
-    }
 
     private fun loadFormParameters() {
         with (viewModel.workFilterChoices) {

@@ -19,12 +19,12 @@ import timber.log.Timber
 class WorkListViewModel
     constructor(
         private val repository: EidosRepository,
-        private val workManager: WorkManager
+        private var workFilterRequest: WorkFilterRequest
     )
     : ViewModel()
 {
 
-    private lateinit var workFilterRequest: WorkFilterRequest
+//    private lateinit var workFilterRequest: WorkFilterRequest
 
     private val _workBlurbs = MutableLiveData<List<WorkBlurb>>(emptyList())
     val workBlurbs: LiveData<List<WorkBlurb>>
@@ -42,14 +42,12 @@ class WorkListViewModel
     private var largestPageNumber = 0
     private var isFetchingWorks = false
 
-    fun initialiseWithRequest(workFilterRequest: WorkFilterRequest) {
+    init {
         viewModelScope.launch(Dispatchers.IO) {
             val workSearchMetadata = repository.getWorkSearchMetadataFromAO3(workFilterRequest)
 
             if (workSearchMetadata.tagName != workFilterRequest.tagName) {
                 this@WorkListViewModel.workFilterRequest = workFilterRequest.copy(tagName = workSearchMetadata.tagName)
-            } else {
-                this@WorkListViewModel.workFilterRequest = workFilterRequest
             }
 
             _tagName.postValue(workSearchMetadata.tagName)
@@ -60,9 +58,14 @@ class WorkListViewModel
         }
     }
 
+    fun initialiseWithRequest(workFilterRequest: WorkFilterRequest) {
+
+    }
+
     fun updateFilterChoices(choices: WorkFilterChoices) {
         workFilterRequest.updateChoices(choices)
-        resetPages()
+        _workBlurbs.value = emptyList()
+        largestPageNumber = 0   // this is to avoid a race condition when calling this in main thread
         getNextPage()
     }
 
@@ -86,7 +89,7 @@ class WorkListViewModel
         }
     }
 
-    private fun resetPages() {
+    private suspend fun resetPages() {
         _workBlurbs.postValue(emptyList())
         largestPageNumber = 0
     }

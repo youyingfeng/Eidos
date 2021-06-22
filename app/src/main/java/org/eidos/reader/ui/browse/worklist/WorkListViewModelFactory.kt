@@ -9,13 +9,13 @@ import org.eidos.reader.repository.EidosRepository
 class WorkListViewModelFactory
     constructor(
         private val repository: EidosRepository,
-        private val workManager: WorkManager
+        private val workFilterRequest: WorkFilterRequest
     )
 : ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(WorkListViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")
-            return WorkListViewModel(repository, workManager) as T
+            return WorkListViewModel(repository, workFilterRequest) as T
         }
         throw IllegalArgumentException("Factory cannot make ViewModel of type ${modelClass.simpleName}")
     }
