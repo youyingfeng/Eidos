@@ -26,19 +26,54 @@ class AO3
         .addLast(KotlinJsonAdapterFactory())
         .build()
 
+    /**
+     * Retrieves the number of works and the name of the tag from the specified page.
+     *
+     * Throws [Network.RedirectException] if a redirect is encountered, which indicates that
+     * one of the following scenarios has occured:
+     *
+     * 1. The tag of the [workFilterRequest] is a synonym of some other tag. The locationUrl will
+     * end with "/works".
+     * 2. The tag cannot be filtered on. The locationUrl will not end with "/works".
+     *
+     * Throws [Network.ServerException] if AO3 cannot resolve the request.
+     *
+     * Throws [Network.NetworkException] if the connection is bad.
+     */
     fun getWorkSearchMetadata(workFilterRequest: WorkFilterRequest): WorkSearchMetadata {
         val urlString = ARCHIVE_BASE_URL + workFilterRequest.queryString
         val responseBody = network.get(urlString)
         return parser.parseMetadata(responseBody)
     }
 
+    /**
+     * Retrieves a list of up to 20 [WorkBlurb]s based on the parameters passed
+     * in the [workFilterRequest].
+     *
+     * Throws [Network.RedirectException] if a redirect is encountered, which indicates that
+     * one of the following scenarios has occured:
+     *
+     * 1. The tag of the [workFilterRequest] is a synonym of some other tag. The locationUrl will
+     * end with "/works".
+     * 2. The tag cannot be filtered on. The locationUrl will not end with "/works".
+     *
+     * Throws [Network.ServerException] if AO3 cannot resolve the request.
+     *
+     * Throws [Network.NetworkException] if the connection is bad.
+     */
     fun getWorkBlurbs(workFilterRequest: WorkFilterRequest): List<WorkBlurb> {
         val urlString = ARCHIVE_BASE_URL + workFilterRequest.queryString
         val responseBody = network.get(urlString)
         return parser.parseWorksList(responseBody)
-
     }
 
+    /**
+     * Retrieves a [Work] at the location indicated in the [workRequest].
+     *
+     * Throws [Network.ServerException] if AO3 cannot resolve the request.
+     *
+     * Throws [Network.NetworkException] if the connection is bad.
+     */
     fun getWork(workRequest: WorkRequest): Work {
         // Input: the navigation page of the work
         // Output: the work itself
@@ -57,21 +92,29 @@ class AO3
 
     }
 
+    /**
+     * Extracts a [WorkBlurb] from the [Work] indicated in the [workRequest].
+     *
+     * TODO: consider cases where server cannot resolve location/authentication fails
+     *
+     * Throws [Network.NetworkException] if the connection is bad.
+     */
     fun getWorkBlurbFromWork(workRequest: WorkRequest): WorkBlurb {
         val workUrlString = ARCHIVE_BASE_URL + workRequest.getWorkURL()
         val workResponseBody = network.get(workUrlString)
         return parser.parseWorkBlurbFromWork(workResponseBody, workRequest.url)
     }
 
+    /**
+     * Retrieves a list of up to 15 tags from AO3's autocomplete API.
+     *
+     * Throws [Network.NetworkException] if the connection is bad.
+     */
     fun getAutocompleteResults(autocompleteRequest: AutocompleteRequest): List<String> {
         val urlString = "https://archiveofourown.org/autocomplete" + autocompleteRequest.queryString
         println(urlString)
 
         val responseBody: String = network.getJSON(urlString)
-
-        // TODO: parse the JSON results into a map/array - usually array should be enough
-        // Using Moshi, parse the json results. its easy. return as a list<string>
-
 
         val listResultType = Types.newParameterizedType(List::class.java, AutocompleteResult::class.java)
         val jsonAdapter: JsonAdapter<List<AutocompleteResult>> = moshi.adapter(listResultType)
@@ -81,13 +124,15 @@ class AO3
         // TODO: VVVVV low priority - eliminate the intermediate conversion to AutocompleteResult
         val autocompleteResults: List<AutocompleteResult> = jsonAdapter.fromJson(responseBody) ?: emptyList()
         val results = autocompleteResults.map { it.name }
-        results.forEach {
-            println(it)
-        }
 
         return results
     }
 
+    /**
+     * Retrieves a list of comments based on the chapter and page number passed in [commentsRequest].
+     *
+     * Throws [Network.NetworkException] if the connection is bad.
+     */
     fun getComments(commentsRequest: CommentsRequest): List<Comment> {
         val urlString = "https://archiveofourown.org${commentsRequest.queryString}"
 
