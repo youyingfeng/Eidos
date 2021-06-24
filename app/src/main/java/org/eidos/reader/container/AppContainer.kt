@@ -27,6 +27,7 @@ class AppContainer
     )
 {
     private val httpClient = OkHttpClient.Builder()
+        .followRedirects(false)
         .cache(CoilUtils.createDefaultCache(applicationContext))     // FIXME: this line crashes if appcontainer is not lazy
         .build()
     private val network = Network(httpClient)

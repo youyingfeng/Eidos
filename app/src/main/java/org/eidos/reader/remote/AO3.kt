@@ -13,6 +13,8 @@ import org.eidos.reader.remote.requests.CommentsRequest
 import org.eidos.reader.remote.requests.WorkFilterRequest
 import org.eidos.reader.remote.requests.WorkRequest
 
+private const val ARCHIVE_BASE_URL = "https://archiveofourown.org"
+
 class AO3
     constructor(
         private val network: Network,
@@ -25,47 +27,38 @@ class AO3
         .build()
 
     fun getWorkSearchMetadata(workFilterRequest: WorkFilterRequest): WorkSearchMetadata {
-        val urlString = "https://archiveofourown.org" + workFilterRequest.queryString
+        val urlString = ARCHIVE_BASE_URL + workFilterRequest.queryString
         val responseBody = network.get(urlString)
         return parser.parseMetadata(responseBody)
     }
 
     fun getWorkBlurbs(workFilterRequest: WorkFilterRequest): List<WorkBlurb> {
-        val urlString = "https://archiveofourown.org" + workFilterRequest.queryString
-        println(urlString)
+        val urlString = ARCHIVE_BASE_URL + workFilterRequest.queryString
+        val responseBody = network.get(urlString)
+        return parser.parseWorksList(responseBody)
 
-        try {
-            val responseBody = network.get(urlString)
-            return parser.parseWorksList(responseBody)
-        } catch (e: Network.NetworkException) {
-            print(e.message)
-            throw e
-        }
     }
 
     fun getWork(workRequest: WorkRequest): Work {
         // Input: the navigation page of the work
         // Output: the work itself
 
-        val workUrlString = "https://archiveofourown.org" + workRequest.getEntireWorkURL()
-        val navigationIndexUrlString = "https://archiveofourown.org" +
+        val workUrlString = ARCHIVE_BASE_URL + workRequest.getEntireWorkURL()
+        val navigationIndexUrlString = ARCHIVE_BASE_URL +
                 workRequest.getNavigationIndexPageURL()
 
-        try {
-            val workResponseBody = network.get(workUrlString)
-            val navigationIndexResponseBody = network.get(navigationIndexUrlString)
-            return parser.parseWork(
-                    workHtml = workResponseBody,
-                    navigationHtml = navigationIndexResponseBody,
-                    workURL = workRequest.url
-            )
-        } catch (e: Network.NetworkException) {
-            throw e
-        }
+        val workResponseBody = network.get(workUrlString)
+        val navigationIndexResponseBody = network.get(navigationIndexUrlString)
+        return parser.parseWork(
+                workHtml = workResponseBody,
+                navigationHtml = navigationIndexResponseBody,
+                workURL = workRequest.url
+        )
+
     }
 
     fun getWorkBlurbFromWork(workRequest: WorkRequest): WorkBlurb {
-        val workUrlString = "https://archiveofourown.org" + workRequest.getWorkURL()
+        val workUrlString = ARCHIVE_BASE_URL + workRequest.getWorkURL()
         val workResponseBody = network.get(workUrlString)
         return parser.parseWorkBlurbFromWork(workResponseBody, workRequest.url)
     }
@@ -74,11 +67,7 @@ class AO3
         val urlString = "https://archiveofourown.org/autocomplete" + autocompleteRequest.queryString
         println(urlString)
 
-        val responseBody: String = try {
-            network.getJSON(urlString)
-        } catch (e: Network.NetworkException) {
-            throw e
-        }
+        val responseBody: String = network.getJSON(urlString)
 
         // TODO: parse the JSON results into a map/array - usually array should be enough
         // Using Moshi, parse the json results. its easy. return as a list<string>
@@ -102,13 +91,7 @@ class AO3
     fun getComments(commentsRequest: CommentsRequest): List<Comment> {
         val urlString = "https://archiveofourown.org${commentsRequest.queryString}"
 
-        val responseBody: String = try {
-            network.get(urlString)
-        } catch (e: Network.NetworkException) {
-            throw e
-        }
-
-//        println(responseBody)
+        val responseBody: String = network.get(urlString)
 
         return parser.parseCommentsHTML(responseBody)
     }
