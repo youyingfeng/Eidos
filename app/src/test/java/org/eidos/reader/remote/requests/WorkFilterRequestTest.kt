@@ -13,18 +13,18 @@ class WorkFilterRequestTest {
     @Test
     fun `URL should contain no additional arguments when no methods are called`() {
         val workFilterRequest = WorkFilterRequest("Marvel")
-        assertEquals("/tags/Marvel/works?utf8=✓&commit=Sort+and+Filter", workFilterRequest.queryString)
+        assertEquals("/tags/Marvel/works?utf8=✓&commit=Sort+and+Filter", workFilterRequest.absolutePath)
     }
 
     @Test
     fun `Special characters in the main tag should be formatted correctly in the URL`() {
         var workFilterRequest = WorkFilterRequest("Pepper Potts/Tony Stark")
         assertEquals("/tags/Pepper Potts*s*Tony Stark/works?utf8=✓&commit=Sort+and+Filter",
-                     workFilterRequest.queryString)
+                     workFilterRequest.absolutePath)
 
         workFilterRequest = WorkFilterRequest("Pepper Potts & Tony Stark")
         assertEquals("/tags/Pepper Potts *a* Tony Stark/works?utf8=✓&commit=Sort+and+Filter",
-                     workFilterRequest.queryString)
+                     workFilterRequest.absolutePath)
     }
 
     @Test

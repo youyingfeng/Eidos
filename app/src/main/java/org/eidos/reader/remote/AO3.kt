@@ -41,7 +41,7 @@ class AO3
      * Throws [Network.NetworkException] if the connection is bad.
      */
     fun getWorkSearchMetadata(workFilterRequest: WorkFilterRequest): WorkSearchMetadata {
-        val urlString = ARCHIVE_BASE_URL + workFilterRequest.queryString
+        val urlString = ARCHIVE_BASE_URL + workFilterRequest.absolutePath
         val responseBody = try {
             network.get(urlString)
         } catch (e: Network.RedirectException) {
@@ -72,7 +72,7 @@ class AO3
      * Throws [Network.NetworkException] if the connection is bad.
      */
     fun getWorkBlurbs(workFilterRequest: WorkFilterRequest): List<WorkBlurb> {
-        val urlString = ARCHIVE_BASE_URL + workFilterRequest.queryString
+        val urlString = ARCHIVE_BASE_URL + workFilterRequest.absolutePath
         val responseBody = network.get(urlString)
         return parser.parseWorksList(responseBody)
     }
@@ -88,16 +88,16 @@ class AO3
         // Input: the navigation page of the work
         // Output: the work itself
 
-        val workUrlString = ARCHIVE_BASE_URL + workRequest.getEntireWorkURL()
+        val workUrlString = ARCHIVE_BASE_URL + workRequest.viewEntireWorkAbsolutePath
         val navigationIndexUrlString = ARCHIVE_BASE_URL +
-                workRequest.getNavigationIndexPageURL()
+                workRequest.navigationAbsolutePath
 
         val workResponseBody = network.get(workUrlString)
         val navigationIndexResponseBody = network.get(navigationIndexUrlString)
         return parser.parseWork(
                 workHtml = workResponseBody,
                 navigationHtml = navigationIndexResponseBody,
-                workURL = workRequest.url
+                workURL = workRequest.absolutePath
         )
 
     }
@@ -110,9 +110,9 @@ class AO3
      * Throws [Network.NetworkException] if the connection is bad.
      */
     fun getWorkBlurbFromWork(workRequest: WorkRequest): WorkBlurb {
-        val workUrlString = ARCHIVE_BASE_URL + workRequest.getWorkURL()
+        val workUrlString = ARCHIVE_BASE_URL + workRequest.viewFirstChapterAbsolutePath
         val workResponseBody = network.get(workUrlString)
-        return parser.parseWorkBlurbFromWork(workResponseBody, workRequest.url)
+        return parser.parseWorkBlurbFromWork(workResponseBody, workRequest.absolutePath)
     }
 
     /**
@@ -121,7 +121,7 @@ class AO3
      * Throws [Network.NetworkException] if the connection is bad.
      */
     fun getAutocompleteResults(autocompleteRequest: AutocompleteRequest): List<String> {
-        val urlString = "https://archiveofourown.org/autocomplete" + autocompleteRequest.queryString
+        val urlString = "https://archiveofourown.org" + autocompleteRequest.absolutePath
         println(urlString)
 
         val responseBody: String = network.getJSON(urlString)
@@ -144,7 +144,7 @@ class AO3
      * Throws [Network.NetworkException] if the connection is bad.
      */
     fun getComments(commentsRequest: CommentsRequest): List<Comment> {
-        val urlString = "https://archiveofourown.org${commentsRequest.queryString}"
+        val urlString = "https://archiveofourown.org${commentsRequest.absolutePath}"
 
         val responseBody: String = network.get(urlString)
 

@@ -1,12 +1,12 @@
 package org.eidos.reader.remote.requests
 
-class WorkRequest(path: String) {
-    // queryString should be only /works/<id>/navigate
-    // view_adult = true will also be added at a later part
-    val queryString = path + "/navigate"
-    val url = path
-
-    fun getNavigationIndexPageURL() = url + "/navigate"
-    fun getEntireWorkURL() = url + "?view_adult=true&view_full_work=true"
-    fun getWorkURL() = url + "?view_adult=true"
+/**
+ * Represents the absolute paths involved in retrieving the work at the specified [absolutePath].
+ *
+ * [absolutePath] should be of the format /works/$id
+ */
+class WorkRequest(val absolutePath: String) {
+    val navigationAbsolutePath = "$absolutePath/navigate"
+    val viewEntireWorkAbsolutePath = "$absolutePath?view_adult=true&view_full_work=true"
+    val viewFirstChapterAbsolutePath = "$absolutePath?view_adult=true"
 }

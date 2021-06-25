@@ -9,14 +9,12 @@ class Network(val httpClient: OkHttpClient) {
     // TODO: In the future, this class will also need to handle cookies. But that is in the distant future.
 
 
-    /*
-    Input: URL
-    Output: body of the resultant HTTP response
-    Throws exception if body is empty / 404 / whatever
+    /**
+     * Makes a request to the [url], and returns the resultant response body as a [String].
      */
-    fun get(urlString: String) : String {
+    fun get(url: String) : String {
         val request: Request = Request.Builder()
-            .url(urlString)
+            .url(url)
             .build()
 
         val response = try {
@@ -42,11 +40,14 @@ class Network(val httpClient: OkHttpClient) {
         return responseBody
     }
 
-    fun getJSON(urlString: String) : String {
+    /**
+     * Makes a JSON request to the [url], and returns the response body as a [String].
+     */
+    fun getJSON(url: String) : String {
         val request: Request = Request.Builder()
             .addHeader("X-Requested-With", "XMLHttpRequest")
             .addHeader("Accept", "application/json, text/javascript, */*; q=0.01")
-            .url(urlString)
+            .url(url)
             .build()
 
         val response = try {

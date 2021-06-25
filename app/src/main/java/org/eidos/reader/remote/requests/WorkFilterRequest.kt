@@ -10,27 +10,21 @@ import java.net.URLEncoder
 /* ATTENTION: NOTES ON WORK FILTER CAN BE FOUND AT THE BOTTOM */
 
 /**
- * This class represents a query string that will have arguments appended as each method is called.
- * All methods should only be called once at maximum.
- * Multiple calls will default to the arguments of the last call if I am not wrong.
- *
- * Most likely will be called by viewmodel - viewmodel takes in the form from view and generates the request
- * before passing it to the controller/remote
+ * Converts the [tagName] and the parameters in [workFilterChoices] into a relative URL.
  */
 
-// TODO: Refactor the methods to use variables so that any accidental extra calls will not screw up the queryString.
-
-data class WorkFilterRequest(
-    val tagName: String,
-    var workFilterChoices: WorkFilterChoices = WorkFilterChoices()
-) : Parcelable {
-
+data class WorkFilterRequest
+    constructor(
+        val tagName: String,
+        var workFilterChoices: WorkFilterChoices = WorkFilterChoices()
+    )
+    : Parcelable
+{
     private val BASE_QUERY_STRING =
         "/tags/${encodeMainTag(tagName)}/works?utf8=✓&commit=Sort+and+Filter"
     var pageNumber: Int = 1
 
-    // FIXME: encoding doesn't really work well when fetching synonyms - should convert to actual synonym tag
-    var queryStringWithoutPageArgs = StringBuilder(BASE_QUERY_STRING)
+    private var queryStringWithoutPageArgs = StringBuilder(BASE_QUERY_STRING)
         .append(includedTagsQueryString)
         .append(excludedTagsQueryString)
         .append(showSingleChapterWorksOnlyQueryString)
@@ -48,9 +42,13 @@ data class WorkFilterRequest(
         .append(sortOrderQueryString)
         .toString()
 
-    val queryString: String
+    val absolutePath: String
         get() = queryStringWithoutPageArgs + pageNumberQueryString
 
+    /**
+     * Updates the [workFilterChoices] and regenerates the [absolutePath] based on the
+     * new parameters.
+     */
     fun updateChoices(workFilterChoices: WorkFilterChoices) {
         this.workFilterChoices = workFilterChoices
         queryStringWithoutPageArgs = StringBuilder(BASE_QUERY_STRING)

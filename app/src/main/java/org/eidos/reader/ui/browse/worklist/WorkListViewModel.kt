@@ -66,12 +66,7 @@ class WorkListViewModel
                 resetPages()
                 getNextPage()
             } catch (e: Exception) {
-                when (e) {
-
-                    else -> {
-                        _exception.postValue(e)
-                    }
-                }
+                _exception.postValue(e)
             }
 
         }

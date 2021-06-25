@@ -6,5 +6,5 @@ package org.eidos.reader.remote.requests
  * the model. In reality, it is just a helper class to encapsulate search parameters.
  */
 interface AutocompleteRequest {
-    val queryString: String
+    val absolutePath: String
 }
