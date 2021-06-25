@@ -88,12 +88,11 @@ class AO3
         // Input: the navigation page of the work
         // Output: the work itself
 
-        val workUrlString = ARCHIVE_BASE_URL + workRequest.viewEntireWorkAbsolutePath
-        val navigationIndexUrlString = ARCHIVE_BASE_URL +
-                workRequest.navigationAbsolutePath
+        val workUrl = ARCHIVE_BASE_URL + workRequest.viewEntireWorkAbsolutePath
+        val navigationIndexUrl = ARCHIVE_BASE_URL + workRequest.navigationAbsolutePath
 
-        val workResponseBody = network.get(workUrlString)
-        val navigationIndexResponseBody = network.get(navigationIndexUrlString)
+        val workResponseBody = network.get(workUrl)
+        val navigationIndexResponseBody = network.get(navigationIndexUrl)
         return parser.parseWork(
                 workHtml = workResponseBody,
                 navigationHtml = navigationIndexResponseBody,
@@ -110,8 +109,8 @@ class AO3
      * Throws [Network.NetworkException] if the connection is bad.
      */
     fun getWorkBlurbFromWork(workRequest: WorkRequest): WorkBlurb {
-        val workUrlString = ARCHIVE_BASE_URL + workRequest.viewFirstChapterAbsolutePath
-        val workResponseBody = network.get(workUrlString)
+        val workUrl = ARCHIVE_BASE_URL + workRequest.viewFirstChapterAbsolutePath
+        val workResponseBody = network.get(workUrl)
         return parser.parseWorkBlurbFromWork(workResponseBody, workRequest.absolutePath)
     }
 
@@ -121,10 +120,10 @@ class AO3
      * Throws [Network.NetworkException] if the connection is bad.
      */
     fun getAutocompleteResults(autocompleteRequest: AutocompleteRequest): List<String> {
-        val urlString = "https://archiveofourown.org" + autocompleteRequest.absolutePath
-        println(urlString)
+        val autocompleteUrl = ARCHIVE_BASE_URL + autocompleteRequest.absolutePath
+        println(autocompleteUrl)
 
-        val responseBody: String = network.getJSON(urlString)
+        val responseBody: String = network.getJSON(autocompleteUrl)
 
         val listResultType = Types.newParameterizedType(List::class.java, AutocompleteResult::class.java)
         val jsonAdapter: JsonAdapter<List<AutocompleteResult>> = moshi.adapter(listResultType)
@@ -144,9 +143,9 @@ class AO3
      * Throws [Network.NetworkException] if the connection is bad.
      */
     fun getComments(commentsRequest: CommentsRequest): List<Comment> {
-        val urlString = "https://archiveofourown.org${commentsRequest.absolutePath}"
+        val commentsUrl = "https://archiveofourown.org${commentsRequest.absolutePath}"
 
-        val responseBody: String = network.get(urlString)
+        val responseBody: String = network.get(commentsUrl)
 
         return parser.parseCommentsHTML(responseBody)
     }
