@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.Flow
 import org.eidos.reader.R
 import org.eidos.reader.remote.requests.*
 import org.eidos.reader.repository.EidosRepository
+import timber.log.Timber
 import java.lang.Exception
 
 class BrowseSearchViewModel(val repository: EidosRepository) : ViewModel() {
@@ -19,18 +20,15 @@ class BrowseSearchViewModel(val repository: EidosRepository) : ViewModel() {
     private lateinit var currentRunningJob: Job
 
     fun fetchAutocompleteResults(searchInput: String, searchTypeID: Int) {
-        // FIXME: This is a hacky ass fix - nested coroutines? wtf bro.
-        // FIXME: but it works.
-        viewModelScope.launch {
-            if (::currentRunningJob.isInitialized) {
-                currentRunningJob.cancelAndJoin()
-            }
+        if (::currentRunningJob.isInitialized) {
+            currentRunningJob.cancel()
+            Timber.i("job cancelled")
+        }
 
-            currentRunningJob = viewModelScope.launch(Dispatchers.IO) {
-                delay(100L)
-                val result = getAutocompleteResults(searchInput, searchTypeID)
-                _autocompleteResults.postValue(result)
-            }
+        currentRunningJob = viewModelScope.launch(Dispatchers.IO) {
+            delay(100L) // this is just to prevent API spam, although im not sure how much this helps
+            val result = getAutocompleteResults(searchInput, searchTypeID)
+            _autocompleteResults.postValue(result)
         }
     }
 
