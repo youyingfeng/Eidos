@@ -384,6 +384,11 @@ data class WorkFilterRequest(
                 .replace("&", "*a*")
         }
 
+        fun decodeMainTag(encodedTag: String): String {
+            return encodedTag.replace("*s*", "/")
+                .replace("*a*", "&")
+        }
+
         private fun encodeAdditionalTag(tag: String): String {
             return URLEncoder.encode(tag, "UTF-8")
         }

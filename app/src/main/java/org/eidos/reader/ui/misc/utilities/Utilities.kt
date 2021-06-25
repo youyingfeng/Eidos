@@ -38,8 +38,5 @@ class Utilities {
             (activity as AppCompatActivity?)!!.supportActionBar?.title = title
         }
 
-
-
-
     }
 }

@@ -42,7 +42,17 @@ class AO3
      */
     fun getWorkSearchMetadata(workFilterRequest: WorkFilterRequest): WorkSearchMetadata {
         val urlString = ARCHIVE_BASE_URL + workFilterRequest.queryString
-        val responseBody = network.get(urlString)
+        val responseBody = try {
+            network.get(urlString)
+        } catch (e: Network.RedirectException) {
+            val tokens = e.locationUrl.split("/")
+            if (tokens.last() == "works") {
+                val redirectedTagName = WorkFilterRequest.decodeMainTag(tokens[tokens.lastIndex - 1])
+                throw TagSynonymException(redirectedTagName = redirectedTagName)
+            } else {
+                throw TagNotFilterableException()
+            }
+        }
         return parser.parseMetadata(responseBody)
     }
 
@@ -145,4 +155,8 @@ class AO3
         val id: String,
         val name: String
     )
+
+    /* Exceptions */
+    class TagSynonymException(message: String = "This tag is a synonym of another tag.", val redirectedTagName: String) : Exception(message)
+    class TagNotFilterableException(message: String = "This tag is not marked common, and cannot be filtered on.") : Exception(message)
 }

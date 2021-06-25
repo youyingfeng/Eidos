@@ -10,9 +10,12 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 import org.eidos.reader.model.WorkBlurb
+import org.eidos.reader.network.Network
+import org.eidos.reader.remote.AO3
 import org.eidos.reader.remote.choices.WorkFilterChoices
 import org.eidos.reader.remote.requests.WorkFilterRequest
 import org.eidos.reader.repository.EidosRepository
+import org.eidos.reader.ui.misc.utilities.SingleLiveEvent
 import org.eidos.reader.workers.DownloadWorker
 import timber.log.Timber
 
@@ -38,23 +41,39 @@ class WorkListViewModel
     val workCount: LiveData<Int>
         get() = _workCount
 
+    private val _exception = SingleLiveEvent<Exception>()
+    val exception: LiveData<Exception>
+        get() = _exception
+
 
     private var largestPageNumber = 0
     private var isFetchingWorks = false
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
-            val workSearchMetadata = repository.getWorkSearchMetadataFromAO3(workFilterRequest)
+            try {
+                val workSearchMetadata = try {
+                    repository.getWorkSearchMetadataFromAO3(workFilterRequest)
+                } catch (e: AO3.TagSynonymException) {
+                    Timber.i(e.redirectedTagName)
+                    workFilterRequest = workFilterRequest.copy(tagName = e.redirectedTagName)
+                    repository.getWorkSearchMetadataFromAO3(workFilterRequest)
+                }
 
-            if (workSearchMetadata.tagName != workFilterRequest.tagName) {
-                this@WorkListViewModel.workFilterRequest = workFilterRequest.copy(tagName = workSearchMetadata.tagName)
+                _tagName.postValue(workSearchMetadata.tagName)
+                _workCount.postValue(workSearchMetadata.workCount)
+
+                resetPages()
+                getNextPage()
+            } catch (e: Exception) {
+                when (e) {
+
+                    else -> {
+                        _exception.postValue(e)
+                    }
+                }
             }
 
-            _tagName.postValue(workSearchMetadata.tagName)
-            _workCount.postValue(workSearchMetadata.workCount)
-
-            resetPages()
-            getNextPage()
         }
     }
 

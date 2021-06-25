@@ -107,7 +107,7 @@ class Network(val httpClient: OkHttpClient) {
     // redirects are 302 unless specified
     // these are the base classes
     open class ServerException(message: String = "Could not find content on the Archive") : Exception(message)
-    class RedirectException(message: String = "AO3 is redirecting you to another page", locationUrl: String) : Exception(message)
+    class RedirectException(message: String = "AO3 is redirecting you to another page", val locationUrl: String) : Exception(message)
     class AuthenticationException(message: String) : Exception(message)
 
     // these should either be deleted or extend one of the above

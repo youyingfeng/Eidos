@@ -19,11 +19,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.work.WorkManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.snackbar.Snackbar
 import org.eidos.reader.EidosApplication
 import org.eidos.reader.R
 import org.eidos.reader.WorkDirections
 import org.eidos.reader.container.AppContainer
 import org.eidos.reader.databinding.FragmentWorkListBinding
+import org.eidos.reader.network.Network
+import org.eidos.reader.remote.AO3
 import org.eidos.reader.remote.choices.WorkFilterChoices
 import org.eidos.reader.remote.requests.WorkFilterRequest
 import org.eidos.reader.ui.library.LibraryFragment
@@ -88,6 +91,21 @@ class WorkListFragment : Fragment() {
             binding.workCountTextView.text = "Listing $it works"
         }
 
+        // handle errors
+        viewModel.exception.observe(viewLifecycleOwner) {
+            when (it) {
+                is Network.ServerException -> {
+                    Snackbar.make(binding.coordinator, "Server error", Snackbar.LENGTH_INDEFINITE)
+                        .show()
+                }
+                is AO3.TagNotFilterableException -> {
+                    Snackbar.make(binding.coordinator, "Tag cannot be filtered on", Snackbar.LENGTH_INDEFINITE)
+                        .show()
+                    binding.workListDisplay.clearOnScrollListeners()
+                }
+            }
+        }
+
         val adapter = WorkBlurbAdapter(
             {
                 holderView, workBlurb ->
@@ -130,8 +148,6 @@ class WorkListFragment : Fragment() {
                 }
             }
         })
-
-        Timber.i("WorkListFragment onCreateView completed")
 
         return binding.root
     }
