@@ -66,9 +66,7 @@ class WorkListFragment : Fragment() {
         setFragmentResultListener("updatedFilterChoices") { requestKey, bundle ->
             bundle.getParcelable<WorkFilterChoices>("workFilterChoices")?.let { updatedChoices ->
                 // TODO: update the VM field and listen to the new VM field again here
-                if (viewModel.updateFilterChoices(updatedChoices)) {
-//                    searchWorkBlurbs()
-                }
+                viewModel.updateFilterChoices(updatedChoices)
                 Timber.i("result received")
             }
         }
@@ -131,9 +129,13 @@ class WorkListFragment : Fragment() {
         )
         binding.workListDisplay.adapter = adapter
 
-        currentJob = viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.searchWorkBlurbs().collectLatest {
-                adapter.submitData(it)
+        // listens for changes to the flow
+        viewModel.workBlurbFlow.observe(viewLifecycleOwner) { pagingDataFlow ->
+            currentJob?.cancel()
+            currentJob = viewLifecycleOwner.lifecycleScope.launch {
+                pagingDataFlow.collectLatest {
+                    adapter.submitData(it)
+                }
             }
         }
 
@@ -178,14 +180,4 @@ class WorkListFragment : Fragment() {
         _binding = null
         setHasOptionsMenu(false)
     }
-
-//    private fun searchWorkBlurbs() {
-//        currentJob?.cancel()
-//        currentJob = lifecycleScope.launch(Dispatchers.IO) {
-//            viewLifecycleOwner.repeatOnLifecycle()
-//            viewModel.searchWorkBlurbs().collectLatest {
-//                (binding.workListDisplay.adapter as WorkBlurbAdapter).submitData(it)
-//            }
-//        }
-//    }
 }

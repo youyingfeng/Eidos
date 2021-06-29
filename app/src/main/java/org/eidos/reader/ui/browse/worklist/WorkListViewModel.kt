@@ -28,13 +28,6 @@ class WorkListViewModel
     )
     : ViewModel()
 {
-
-//    private lateinit var workFilterRequest: WorkFilterRequest
-
-    private val _workBlurbs = MutableLiveData<List<WorkBlurb>>(emptyList())
-    val workBlurbs: LiveData<List<WorkBlurb>>
-        get() = _workBlurbs
-
     private var _workBlurbFlow = MutableLiveData<Flow<PagingData<WorkBlurb>>>()
     val workBlurbFlow: LiveData<Flow<PagingData<WorkBlurb>>> get() = _workBlurbFlow
 
@@ -50,10 +43,6 @@ class WorkListViewModel
     val exception: LiveData<Exception>
         get() = _exception
 
-
-    private var largestPageNumber = 0
-    private var isFetchingWorks = false
-
     init {
         viewModelScope.launch(Dispatchers.IO) {
             try {
@@ -68,37 +57,25 @@ class WorkListViewModel
                 _tagName.postValue(workSearchMetadata.tagName)
                 _workCount.postValue(workSearchMetadata.workCount)
                 
-//                searchWorkBlurbs()
-
-//                resetPages()
-//                getNextPage()
+                searchWorkBlurbs()
             } catch (e: Exception) {
                 _exception.postValue(e)
             }
-
         }
     }
 
-    fun searchWorkBlurbs(): Flow<PagingData<WorkBlurb>> {
-        Timber.i("wtf")
+    private fun searchWorkBlurbs() {
         val newResult = repository.getWorkBlurbStreamFromAO3(workFilterRequest)
             .cachedIn(viewModelScope)
-        Timber.i("loaded")
-//        _workBlurbFlow.postValue(newResult)
-        Timber.i("loaded")
-        return newResult
+        _workBlurbFlow.postValue(newResult)
     }
 
-
-    fun updateFilterChoices(choices: WorkFilterChoices): Boolean {
+    fun updateFilterChoices(choices: WorkFilterChoices) {
         if (workFilterRequest.workFilterChoices != choices) {
             workFilterRequest.updateChoices(choices)
-            return true
-        } else {
-            return false
+            searchWorkBlurbs()
         }
     }
-
 
     fun addWorkToLibrary(workBlurb: WorkBlurb) {
         repository.insertWorkIntoDatabase(workBlurb.workURL)

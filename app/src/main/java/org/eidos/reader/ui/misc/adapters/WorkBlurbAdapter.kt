@@ -26,18 +26,6 @@ class WorkBlurbAdapter
     )
     : PagingDataAdapter<WorkBlurb, WorkBlurbAdapter.WorkBlurbViewHolder>(workBlurbComparator)
 {
-//    var data = listOf<WorkBlurb>()
-//        set(value) {
-//            field = value
-//            notifyDataSetChanged()
-//            Timber.i("Adapter data set")
-//            Timber.i(field.size.toString())
-//        }
-
-//    override fun getItemCount(): Int {
-//        return data.size
-//    }
-
     override fun onBindViewHolder(holder: WorkBlurbViewHolder, position: Int) {
         Timber.i("onBindViewHolder called")
         val workBlurb = getItem(position)
@@ -54,12 +42,22 @@ class WorkBlurbAdapter
                 return@setOnLongClickListener true
             }
         }
-
-
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WorkBlurbViewHolder {
         return WorkBlurbViewHolder.from(parent)
+    }
+
+    companion object {
+        private val workBlurbComparator = object : DiffUtil.ItemCallback<WorkBlurb>() {
+            override fun areItemsTheSame(oldItem: WorkBlurb, newItem: WorkBlurb): Boolean {
+                return oldItem.workURL == newItem.workURL
+            }
+
+            override fun areContentsTheSame(oldItem: WorkBlurb, newItem: WorkBlurb): Boolean {
+                return oldItem == newItem
+            }
+        }
     }
 
     class WorkBlurbViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -146,18 +144,6 @@ class WorkBlurbAdapter
                 if (count < 1000) return count.toString()
                 val exponent = log(count.toDouble(), 1000.toDouble())
                 return String.format("%.1f %c", count / 1000.0.pow(exponent), "KMGTPE"[exponent.toInt() - 1])
-            }
-        }
-    }
-
-    companion object {
-        private val workBlurbComparator = object : DiffUtil.ItemCallback<WorkBlurb>() {
-            override fun areItemsTheSame(oldItem: WorkBlurb, newItem: WorkBlurb): Boolean {
-                return oldItem.workURL == newItem.workURL
-            }
-
-            override fun areContentsTheSame(oldItem: WorkBlurb, newItem: WorkBlurb): Boolean {
-                return oldItem == newItem
             }
         }
     }
