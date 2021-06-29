@@ -29,6 +29,8 @@ class AO3PagingSource
         } catch (exception: Network.ServerException) { // FIXME: change this to catch everything before production
             // the only errors that *should* happen are network errors
             return LoadResult.Error(exception)
+        } catch (exception: Network.NetworkException) {
+            return LoadResult.Error(exception)
         }
 
         val nextKey = if (workBlurbs.isEmpty()) {

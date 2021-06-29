@@ -31,6 +31,7 @@ import org.eidos.reader.remote.AO3
 import org.eidos.reader.remote.choices.WorkFilterChoices
 import org.eidos.reader.remote.requests.WorkFilterRequest
 import org.eidos.reader.ui.misc.adapters.WorkBlurbAdapter
+import org.eidos.reader.ui.misc.adapters.WorkBlurbsLoadStateAdapter
 import org.eidos.reader.ui.misc.utilities.Utilities.Companion.hideKeyboard
 import org.eidos.reader.ui.misc.utilities.Utilities.Companion.setActivityTitle
 import timber.log.Timber
@@ -127,7 +128,10 @@ class WorkListFragment : Fragment() {
                     .show()
             }
         )
-        binding.workListDisplay.adapter = adapter
+        binding.workListDisplay.adapter = adapter.withLoadStateHeaderAndFooter(
+            header = WorkBlurbsLoadStateAdapter { adapter.retry() },
+            footer = WorkBlurbsLoadStateAdapter { adapter.retry() }
+        )
 
         // listens for changes to the flow
         viewModel.workBlurbFlow.observe(viewLifecycleOwner) { pagingDataFlow ->
