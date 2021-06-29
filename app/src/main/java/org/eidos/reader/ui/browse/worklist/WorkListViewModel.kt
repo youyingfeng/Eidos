@@ -4,19 +4,21 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.work.WorkManager
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 import org.eidos.reader.model.WorkBlurb
-import org.eidos.reader.network.Network
 import org.eidos.reader.remote.AO3
 import org.eidos.reader.remote.choices.WorkFilterChoices
 import org.eidos.reader.remote.requests.WorkFilterRequest
 import org.eidos.reader.repository.EidosRepository
 import org.eidos.reader.ui.misc.utilities.SingleLiveEvent
-import org.eidos.reader.workers.DownloadWorker
 import timber.log.Timber
 
 class WorkListViewModel
@@ -32,6 +34,9 @@ class WorkListViewModel
     private val _workBlurbs = MutableLiveData<List<WorkBlurb>>(emptyList())
     val workBlurbs: LiveData<List<WorkBlurb>>
         get() = _workBlurbs
+
+    private var _workBlurbFlow = MutableLiveData<Flow<PagingData<WorkBlurb>>>()
+    val workBlurbFlow: LiveData<Flow<PagingData<WorkBlurb>>> get() = _workBlurbFlow
 
     private val _tagName = MutableLiveData<String>("")
     val tagName: LiveData<String>
@@ -62,9 +67,11 @@ class WorkListViewModel
 
                 _tagName.postValue(workSearchMetadata.tagName)
                 _workCount.postValue(workSearchMetadata.workCount)
+                
+//                searchWorkBlurbs()
 
-                resetPages()
-                getNextPage()
+//                resetPages()
+//                getNextPage()
             } catch (e: Exception) {
                 _exception.postValue(e)
             }
@@ -72,41 +79,26 @@ class WorkListViewModel
         }
     }
 
-    fun initialiseWithRequest(workFilterRequest: WorkFilterRequest) {
-
+    fun searchWorkBlurbs(): Flow<PagingData<WorkBlurb>> {
+        Timber.i("wtf")
+        val newResult = repository.getWorkBlurbStreamFromAO3(workFilterRequest)
+            .cachedIn(viewModelScope)
+        Timber.i("loaded")
+//        _workBlurbFlow.postValue(newResult)
+        Timber.i("loaded")
+        return newResult
     }
 
-    fun updateFilterChoices(choices: WorkFilterChoices) {
-        workFilterRequest.updateChoices(choices)
-        _workBlurbs.value = emptyList()
-        largestPageNumber = 0   // this is to avoid a race condition when calling this in main thread
-        getNextPage()
-    }
 
-    fun getNextPage() {
-        if (!isFetchingWorks) {
-            Timber.i("getNextPage() called")
-            // set the bool to stop repeated fetching
-            isFetchingWorks = true
-            largestPageNumber++
-            workFilterRequest.pageNumber = largestPageNumber    // guaranteed to be >= 1
-            val currentList : MutableList<WorkBlurb> = workBlurbs.value!!.toMutableList()
-
-            viewModelScope.launch(Dispatchers.IO) {
-                currentList.addAll(repository.getWorkBlurbsFromAO3(workFilterRequest))
-                _workBlurbs.postValue(currentList)
-                isFetchingWorks = false
-                Timber.i("More WorkBlurbs successfully fetched")
-            }
+    fun updateFilterChoices(choices: WorkFilterChoices): Boolean {
+        if (workFilterRequest.workFilterChoices != choices) {
+            workFilterRequest.updateChoices(choices)
+            return true
         } else {
-            Timber.i("Currently fetching works, extra requests blocked")
+            return false
         }
     }
 
-    private suspend fun resetPages() {
-        _workBlurbs.postValue(emptyList())
-        largestPageNumber = 0
-    }
 
     fun addWorkToLibrary(workBlurb: WorkBlurb) {
         repository.insertWorkIntoDatabase(workBlurb.workURL)

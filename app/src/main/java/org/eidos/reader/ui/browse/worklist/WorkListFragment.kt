@@ -1,25 +1,26 @@
 package org.eidos.reader.ui.browse.worklist
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
-import androidx.navigation.Navigation
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupActionBarWithNavController
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import androidx.work.WorkManager
+import androidx.paging.LoadState
+import androidx.paging.map
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.distinctUntilChangedBy
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.launch
 import org.eidos.reader.EidosApplication
 import org.eidos.reader.R
 import org.eidos.reader.WorkDirections
@@ -29,7 +30,6 @@ import org.eidos.reader.network.Network
 import org.eidos.reader.remote.AO3
 import org.eidos.reader.remote.choices.WorkFilterChoices
 import org.eidos.reader.remote.requests.WorkFilterRequest
-import org.eidos.reader.ui.library.LibraryFragment
 import org.eidos.reader.ui.misc.adapters.WorkBlurbAdapter
 import org.eidos.reader.ui.misc.utilities.Utilities.Companion.hideKeyboard
 import org.eidos.reader.ui.misc.utilities.Utilities.Companion.setActivityTitle
@@ -54,6 +54,8 @@ class WorkListFragment : Fragment() {
     private lateinit var appContainer: AppContainer
     private lateinit var workFilterRequest: WorkFilterRequest
 
+    private var currentJob: Job? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         appContainer = (requireActivity().application as EidosApplication).appContainer
@@ -63,7 +65,10 @@ class WorkListFragment : Fragment() {
 
         setFragmentResultListener("updatedFilterChoices") { requestKey, bundle ->
             bundle.getParcelable<WorkFilterChoices>("workFilterChoices")?.let { updatedChoices ->
-                viewModel.updateFilterChoices(updatedChoices)
+                // TODO: update the VM field and listen to the new VM field again here
+                if (viewModel.updateFilterChoices(updatedChoices)) {
+//                    searchWorkBlurbs()
+                }
                 Timber.i("result received")
             }
         }
@@ -126,28 +131,19 @@ class WorkListFragment : Fragment() {
         )
         binding.workListDisplay.adapter = adapter
 
-        //get data into the adapter
-        viewModel.workBlurbs.observe(viewLifecycleOwner, Observer {
-            it?.let {
-                adapter.data = it
+        currentJob = viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.searchWorkBlurbs().collectLatest {
+                adapter.submitData(it)
             }
-        })
+        }
 
-        // set scroll listener to load more data
-        // possible but complicated soln: https://stackoverflow.com/questions/36127734/detect-when-recyclerview-reaches-the-bottom-most-position-while-scrolling/48514857#48514857
-        // using the simple naive soln first,
-        binding.workListDisplay.addOnScrollListener(object: RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                if (!recyclerView.canScrollVertically(1) && dy > 0) {
-                    // this should hit when you have scrolled to the bottom of the list
-                    // Timber.i("Bottom of the list reached")
-                    viewModel.getNextPage()
-                } else if (recyclerView.canScrollVertically(-1) && dy < 0) {
-                    // this should only hit when you scroll to the very top of the list
-                    // Timber.i("Top of the list reached")
-                }
-            }
-        })
+        lifecycleScope.launch {
+            adapter.loadStateFlow
+                .distinctUntilChangedBy { it.refresh }
+                .filter { it.refresh is LoadState.NotLoading }
+                .collect { binding.workListDisplay.scrollToPosition(0) }
+        }
+        
 
         return binding.root
     }
@@ -182,4 +178,14 @@ class WorkListFragment : Fragment() {
         _binding = null
         setHasOptionsMenu(false)
     }
+
+//    private fun searchWorkBlurbs() {
+//        currentJob?.cancel()
+//        currentJob = lifecycleScope.launch(Dispatchers.IO) {
+//            viewLifecycleOwner.repeatOnLifecycle()
+//            viewModel.searchWorkBlurbs().collectLatest {
+//                (binding.workListDisplay.adapter as WorkBlurbAdapter).submitData(it)
+//            }
+//        }
+//    }
 }
