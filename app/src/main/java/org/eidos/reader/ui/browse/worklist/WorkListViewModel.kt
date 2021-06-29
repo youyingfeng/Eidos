@@ -9,11 +9,10 @@ import androidx.paging.cachedIn
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 import org.eidos.reader.model.WorkBlurb
+import org.eidos.reader.model.WorkSearchMetadata
 import org.eidos.reader.remote.AO3
 import org.eidos.reader.remote.choices.WorkFilterChoices
 import org.eidos.reader.remote.requests.WorkFilterRequest
@@ -28,22 +27,21 @@ class WorkListViewModel
     )
     : ViewModel()
 {
+    init {
+        fetchMetadataAndWorkBlurbStream()
+    }
+
     private var _workBlurbFlow = MutableLiveData<Flow<PagingData<WorkBlurb>>>()
     val workBlurbFlow: LiveData<Flow<PagingData<WorkBlurb>>> get() = _workBlurbFlow
 
-    private val _tagName = MutableLiveData<String>("")
-    val tagName: LiveData<String>
-        get() = _tagName
-
-    private val _workCount = MutableLiveData<Int>(0)
-    val workCount: LiveData<Int>
-        get() = _workCount
+    private val _metadata = MutableLiveData<WorkSearchMetadata>()
+    val metadata: LiveData<WorkSearchMetadata> get() = _metadata
 
     private val _exception = SingleLiveEvent<Exception>()
     val exception: LiveData<Exception>
         get() = _exception
 
-    init {
+    private fun fetchMetadataAndWorkBlurbStream() {
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 val workSearchMetadata = try {
@@ -53,11 +51,9 @@ class WorkListViewModel
                     workFilterRequest = workFilterRequest.copy(tagName = e.redirectedTagName)
                     repository.getWorkSearchMetadataFromAO3(workFilterRequest)
                 }
+                _metadata.postValue(workSearchMetadata)
 
-                _tagName.postValue(workSearchMetadata.tagName)
-                _workCount.postValue(workSearchMetadata.workCount)
-                
-                searchWorkBlurbs()
+                searchWorkBlurbs()  // must be called inside here to avoid race condition
             } catch (e: Exception) {
                 _exception.postValue(e)
             }
@@ -73,7 +69,7 @@ class WorkListViewModel
     fun updateFilterChoices(choices: WorkFilterChoices) {
         if (workFilterRequest.workFilterChoices != choices) {
             workFilterRequest.updateChoices(choices)
-            searchWorkBlurbs()
+            fetchMetadataAndWorkBlurbStream()
         }
     }
 

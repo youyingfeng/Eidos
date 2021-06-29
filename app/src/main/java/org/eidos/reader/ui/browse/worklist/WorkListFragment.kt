@@ -2,7 +2,9 @@ package org.eidos.reader.ui.browse.worklist
 
 import android.os.Bundle
 import android.view.*
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
@@ -86,13 +88,10 @@ class WorkListFragment : Fragment() {
         setHasOptionsMenu(true)
 
         // Update tag title and work count
-        viewModel.tagName.observe(viewLifecycleOwner) {
-            binding.tagNameTextView.text = it
-            setActivityTitle(it)
-        }
-
-        viewModel.workCount.observe(viewLifecycleOwner) {
-            binding.workCountTextView.text = "Listing $it works"
+        viewModel.metadata.observe(viewLifecycleOwner) { metadata ->
+            binding.tagNameTextView.text = metadata.tagName
+            setActivityTitle(metadata.tagName)
+            binding.workCountTextView.text = "Listing ${metadata.workCount} works"
         }
 
         // handle errors
@@ -132,6 +131,38 @@ class WorkListFragment : Fragment() {
             header = WorkBlurbsLoadStateAdapter { adapter.retry() },
             footer = WorkBlurbsLoadStateAdapter { adapter.retry() }
         )
+        adapter.addLoadStateListener { loadState ->
+            val isListEmpty = loadState.refresh is LoadState.NotLoading && adapter.itemCount == 0
+
+            val isRefreshSuccessful = loadState.source.refresh is LoadState.NotLoading
+            val isRefreshing = loadState.source.refresh is LoadState.Loading
+            val isRefreshUnsuccessful = loadState.source.refresh is LoadState.Error
+            // Only show the list if refresh succeeds and not empty.
+            binding.workListDisplay.isVisible = isRefreshSuccessful && !isListEmpty
+            // show the loading state otherwise
+            binding.emptyListLoadStateDisplay.isVisible = !isRefreshSuccessful || isListEmpty
+            // Show loading spinner during initial load or refresh.
+            binding.progressBar.isVisible = isRefreshing
+            // Show the retry state if initial load or refresh fails.
+            binding.retryButton.isVisible = isRefreshUnsuccessful
+            // show an empty list if list turns out to be empty
+            binding.emptyList.isVisible = isListEmpty
+
+            // Toast on any error, regardless of whether it came from RemoteMediator or PagingSource
+            val errorState = loadState.source.append as? LoadState.Error
+                ?: loadState.source.prepend as? LoadState.Error
+                ?: loadState.append as? LoadState.Error
+                ?: loadState.prepend as? LoadState.Error
+            errorState?.let {
+                Toast.makeText(
+                    context,
+                    "\uD83D\uDE28 Wooops ${it.error}",
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+
+        }
+        binding.retryButton.setOnClickListener { adapter.retry() }
 
         // listens for changes to the flow
         viewModel.workBlurbFlow.observe(viewLifecycleOwner) { pagingDataFlow ->
