@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import org.eidos.reader.R
 import org.eidos.reader.databinding.LayoutCommentBinding
-import org.eidos.reader.model.Comment
+import org.eidos.reader.model.domain.Comment
 import timber.log.Timber
 
 class CommentAdapter

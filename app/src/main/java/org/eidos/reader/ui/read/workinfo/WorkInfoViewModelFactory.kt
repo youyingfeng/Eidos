@@ -2,7 +2,7 @@ package org.eidos.reader.ui.read.workinfo
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import org.eidos.reader.model.WorkBlurb
+import org.eidos.reader.model.domain.WorkBlurb
 import org.eidos.reader.repository.EidosRepository
 
 class WorkInfoViewModelFactory

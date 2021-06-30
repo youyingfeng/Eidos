@@ -8,22 +8,21 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.work.WorkManager
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.launch
-import org.eidos.reader.model.Comment
-import org.eidos.reader.model.Work
-import org.eidos.reader.model.WorkBlurb
-import org.eidos.reader.model.WorkSearchMetadata
+import org.eidos.reader.model.domain.Comment
+import org.eidos.reader.model.domain.Work
+import org.eidos.reader.model.domain.WorkBlurb
+import org.eidos.reader.model.domain.WorkSearchMetadata
+import org.eidos.reader.model.ui.WorkBlurbUiModel
 import org.eidos.reader.remote.AO3
 import org.eidos.reader.remote.requests.AutocompleteRequest
 import org.eidos.reader.remote.requests.CommentsRequest
 import org.eidos.reader.remote.requests.WorkFilterRequest
 import org.eidos.reader.remote.requests.WorkRequest
 import org.eidos.reader.repository.paging.remote.AO3PagingSource
+import org.eidos.reader.repository.paging.remote.WorkBlurbUiModelPagingSource
 import org.eidos.reader.storage.Storage
 import org.eidos.reader.ui.misc.preferences.ReaderPreferences
 import org.eidos.reader.ui.misc.preferences.ReaderPreferencesKeys
@@ -67,6 +66,17 @@ class EidosRepository(
                 enablePlaceholders = false,
             ),
             pagingSourceFactory = { AO3PagingSource(remoteDataSource, workFilterRequest) }
+        ).flow
+    }
+
+    fun getWorkBlurbUiModelStreamFromAO3(workFilterRequest: WorkFilterRequest)
+    : Flow<PagingData<WorkBlurbUiModel>> {
+        return Pager(
+            config = PagingConfig(
+                pageSize = 20, // magic number, no difference
+                enablePlaceholders = false,
+            ),
+            pagingSourceFactory = { WorkBlurbUiModelPagingSource(remoteDataSource, workFilterRequest) }
         ).flow
     }
 

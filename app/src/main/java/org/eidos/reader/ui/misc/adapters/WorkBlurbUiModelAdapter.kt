@@ -10,7 +10,9 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import org.eidos.reader.R
 import org.eidos.reader.databinding.LayoutWorkBlurbBinding
-import org.eidos.reader.model.WorkBlurb
+import org.eidos.reader.model.domain.WorkBlurb
+import org.eidos.reader.model.ui.WorkBlurbUiModel
+import org.eidos.reader.ui.misc.viewholders.SeparatorViewHolder
 import timber.log.Timber
 import kotlin.math.log
 import kotlin.math.pow
@@ -19,42 +21,76 @@ import kotlin.math.pow
 Adapter to translate WorkBlurb data to compact work blurb views.
  */
 
-class WorkBlurbAdapter
+class WorkBlurbUiModelAdapter
     constructor(
         private val onClickAction: (View, WorkBlurb) -> Unit,
         private val onLongClickAction: (View, WorkBlurb) -> Unit,
     )
-    : PagingDataAdapter<WorkBlurb, WorkBlurbAdapter.WorkBlurbViewHolder>(workBlurbComparator)
+    : PagingDataAdapter<WorkBlurbUiModel, RecyclerView.ViewHolder>(workBlurbComparator)
 {
-    override fun onBindViewHolder(holder: WorkBlurbViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         Timber.i("onBindViewHolder called")
-        val workBlurb = getItem(position)
-        if (workBlurb == null) {
-            holder.itemView.setOnClickListener(null)
-            holder.itemView.setOnLongClickListener(null)
-        } else {
-            holder.bind(workBlurb)
-            holder.itemView.setOnClickListener { view ->
-                onClickAction(view, workBlurb)
+        val uiModel = getItem(position)
+
+        when (uiModel) {
+            is WorkBlurbUiModel.WorkBlurbItem -> {
+                (holder as WorkBlurbViewHolder).bind(uiModel.workBlurb)
+                holder.itemView.setOnClickListener { view ->
+                    onClickAction(view, uiModel.workBlurb)
+                }
+                holder.itemView.setOnLongClickListener { view ->
+                    onLongClickAction(view, uiModel.workBlurb)
+                    return@setOnLongClickListener true
+                }
             }
-            holder.itemView.setOnLongClickListener { view ->
-                onLongClickAction(view, workBlurb)
-                return@setOnLongClickListener true
+            is WorkBlurbUiModel.SeparatorItem -> {
+                (holder as SeparatorViewHolder).bind(uiModel.description)
+                holder.itemView.setOnClickListener(null)
+                holder.itemView.setOnClickListener(null)
             }
+            null -> {
+                holder.itemView.setOnClickListener(null)
+                holder.itemView.setOnClickListener(null)
+            }
+        }
+
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        return when (getItem(position)) {
+            is WorkBlurbUiModel.WorkBlurbItem -> R.layout.layout_work_blurb
+            is WorkBlurbUiModel.SeparatorItem -> R.layout.separator_item
+            null -> throw UnsupportedOperationException("Unknown view")
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WorkBlurbViewHolder {
-        return WorkBlurbViewHolder.from(parent)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        return if (viewType == R.layout.layout_work_blurb) {
+            WorkBlurbViewHolder.from(parent)
+        } else {
+            SeparatorViewHolder.from(parent)
+        }
     }
 
     companion object {
-        private val workBlurbComparator = object : DiffUtil.ItemCallback<WorkBlurb>() {
-            override fun areItemsTheSame(oldItem: WorkBlurb, newItem: WorkBlurb): Boolean {
-                return oldItem.workURL == newItem.workURL
+        private val workBlurbComparator = object : DiffUtil.ItemCallback<WorkBlurbUiModel>() {
+            override fun areItemsTheSame(
+                oldItem: WorkBlurbUiModel,
+                newItem: WorkBlurbUiModel
+            ): Boolean {
+                return (oldItem is WorkBlurbUiModel.WorkBlurbItem
+                        && newItem is WorkBlurbUiModel.WorkBlurbItem
+                        && oldItem.workBlurb.workURL == newItem.workBlurb.workURL)
+                        ||
+                       (oldItem is WorkBlurbUiModel.SeparatorItem
+                        && newItem is WorkBlurbUiModel.SeparatorItem
+                        && oldItem.description == newItem.description)
             }
 
-            override fun areContentsTheSame(oldItem: WorkBlurb, newItem: WorkBlurb): Boolean {
+            override fun areContentsTheSame(
+                oldItem: WorkBlurbUiModel,
+                newItem: WorkBlurbUiModel
+            ): Boolean {
                 return oldItem == newItem
             }
         }

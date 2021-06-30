@@ -7,7 +7,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import org.eidos.reader.model.WorkBlurb
+import org.eidos.reader.model.domain.WorkBlurb
 import org.eidos.reader.remote.requests.WorkRequest
 import org.eidos.reader.repository.EidosRepository
 import timber.log.Timber

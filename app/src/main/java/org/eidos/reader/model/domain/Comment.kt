@@ -1,4 +1,4 @@
-package org.eidos.reader.model
+package org.eidos.reader.model.domain
 
 data class Comment(
     val commentID: String,

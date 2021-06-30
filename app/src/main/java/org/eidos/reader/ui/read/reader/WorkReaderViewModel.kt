@@ -6,14 +6,11 @@ import androidx.core.text.HtmlCompat
 import androidx.lifecycle.*
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.map
-import org.eidos.reader.EidosApplication
-import org.eidos.reader.model.Comment
-import org.eidos.reader.model.Work
+import org.eidos.reader.model.domain.Comment
+import org.eidos.reader.model.domain.Work
 import org.eidos.reader.remote.requests.CommentsRequest
 import org.eidos.reader.remote.requests.WorkRequest
 import org.eidos.reader.repository.EidosRepository
-import org.eidos.reader.ui.misc.preferences.ReaderPreferences
-import org.eidos.reader.ui.misc.utilities.URLImageGetter
 import timber.log.Timber
 
 class WorkReaderViewModel

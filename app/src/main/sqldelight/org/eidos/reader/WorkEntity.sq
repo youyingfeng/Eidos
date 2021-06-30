@@ -1,5 +1,5 @@
 import kotlin.collections.List;
-import org.eidos.reader.model.Chapter;
+import org.eidos.reader.model.domain.Chapter;
 
 CREATE TABLE SavedWork (
     workURL TEXT PRIMARY KEY,

@@ -1,11 +1,9 @@
 package org.eidos.reader.remote.parser
 
 import org.eidos.reader.model.*
+import org.eidos.reader.model.domain.*
 import org.jsoup.Jsoup
-import org.jsoup.nodes.Document
 import org.jsoup.nodes.Element
-import org.jsoup.nodes.Entities
-import org.jsoup.parser.Parser
 import org.jsoup.select.Elements
 
 class HTMLParser {

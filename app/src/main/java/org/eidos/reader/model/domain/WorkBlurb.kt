@@ -1,4 +1,4 @@
-package org.eidos.reader.model
+package org.eidos.reader.model.domain
 
 import android.os.Parcel
 import android.os.Parcelable

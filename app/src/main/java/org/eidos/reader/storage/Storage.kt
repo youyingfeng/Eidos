@@ -5,15 +5,13 @@ import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import com.squareup.sqldelight.ColumnAdapter
-import com.squareup.sqldelight.android.AndroidSqliteDriver
-import com.squareup.sqldelight.db.SqlDriver
 import org.eidos.reader.Database
 import org.eidos.reader.ReadingHistoryWorkBlurb
 import org.eidos.reader.ReadingListWorkBlurb
 import org.eidos.reader.SavedWork
-import org.eidos.reader.model.Chapter
-import org.eidos.reader.model.Work
-import org.eidos.reader.model.WorkBlurb
+import org.eidos.reader.model.domain.Chapter
+import org.eidos.reader.model.domain.Work
+import org.eidos.reader.model.domain.WorkBlurb
 import timber.log.Timber
 
 class Storage(private val database: Database) {

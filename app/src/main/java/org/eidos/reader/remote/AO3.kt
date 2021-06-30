@@ -2,11 +2,11 @@ package org.eidos.reader.remote
 
 import com.squareup.moshi.*
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
-import org.eidos.reader.model.Work
-import org.eidos.reader.model.WorkBlurb
+import org.eidos.reader.model.domain.Work
+import org.eidos.reader.model.domain.WorkBlurb
 import org.eidos.reader.network.Network
-import org.eidos.reader.model.Comment
-import org.eidos.reader.model.WorkSearchMetadata
+import org.eidos.reader.model.domain.Comment
+import org.eidos.reader.model.domain.WorkSearchMetadata
 import org.eidos.reader.remote.parser.HTMLParser
 import org.eidos.reader.remote.requests.AutocompleteRequest
 import org.eidos.reader.remote.requests.CommentsRequest

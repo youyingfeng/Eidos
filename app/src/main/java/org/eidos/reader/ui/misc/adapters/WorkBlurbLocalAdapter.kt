@@ -8,7 +8,7 @@ import androidx.core.text.HtmlCompat
 import androidx.recyclerview.widget.RecyclerView
 import org.eidos.reader.R
 import org.eidos.reader.databinding.LayoutWorkBlurbBinding
-import org.eidos.reader.model.WorkBlurb
+import org.eidos.reader.model.domain.WorkBlurb
 import timber.log.Timber
 import kotlin.math.log
 import kotlin.math.pow

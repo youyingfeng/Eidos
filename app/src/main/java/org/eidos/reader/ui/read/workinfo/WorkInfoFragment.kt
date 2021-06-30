@@ -11,17 +11,11 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import org.eidos.reader.EidosApplication
-import org.eidos.reader.R
-import org.eidos.reader.WorkDirections
 import org.eidos.reader.WorkListDirections
 import org.eidos.reader.container.AppContainer
 import org.eidos.reader.databinding.FragmentWorkInfoBinding
-import org.eidos.reader.model.WorkBlurb
-import org.eidos.reader.remote.requests.WorkRequest
+import org.eidos.reader.model.domain.WorkBlurb
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER

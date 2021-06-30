@@ -13,10 +13,8 @@ import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.paging.LoadState
-import androidx.paging.map
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
@@ -32,7 +30,7 @@ import org.eidos.reader.network.Network
 import org.eidos.reader.remote.AO3
 import org.eidos.reader.remote.choices.WorkFilterChoices
 import org.eidos.reader.remote.requests.WorkFilterRequest
-import org.eidos.reader.ui.misc.adapters.WorkBlurbAdapter
+import org.eidos.reader.ui.misc.adapters.WorkBlurbUiModelAdapter
 import org.eidos.reader.ui.misc.adapters.WorkBlurbsLoadStateAdapter
 import org.eidos.reader.ui.misc.utilities.Utilities.Companion.hideKeyboard
 import org.eidos.reader.ui.misc.utilities.Utilities.Companion.setActivityTitle
@@ -109,7 +107,7 @@ class WorkListFragment : Fragment() {
             }
         }
 
-        val adapter = WorkBlurbAdapter(
+        val adapter = WorkBlurbUiModelAdapter(
             {
                 holderView, workBlurb ->
                     holderView.findNavController()
@@ -147,6 +145,8 @@ class WorkListFragment : Fragment() {
             binding.retryButton.isVisible = isRefreshUnsuccessful
             // show an empty list if list turns out to be empty
             binding.emptyList.isVisible = isListEmpty
+                    && loadState.source.prepend.endOfPaginationReached
+                    && loadState.source.append.endOfPaginationReached
 
             // Toast on any error, regardless of whether it came from RemoteMediator or PagingSource
             val errorState = loadState.source.append as? LoadState.Error

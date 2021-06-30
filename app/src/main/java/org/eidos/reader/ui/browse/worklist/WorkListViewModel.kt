@@ -6,13 +6,17 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
+import androidx.paging.insertSeparators
+import androidx.paging.map
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
-import org.eidos.reader.model.WorkBlurb
-import org.eidos.reader.model.WorkSearchMetadata
+import org.eidos.reader.model.domain.WorkBlurb
+import org.eidos.reader.model.domain.WorkSearchMetadata
+import org.eidos.reader.model.ui.WorkBlurbUiModel
 import org.eidos.reader.remote.AO3
 import org.eidos.reader.remote.choices.WorkFilterChoices
 import org.eidos.reader.remote.requests.WorkFilterRequest
@@ -31,8 +35,8 @@ class WorkListViewModel
         fetchMetadataAndWorkBlurbStream()
     }
 
-    private var _workBlurbFlow = MutableLiveData<Flow<PagingData<WorkBlurb>>>()
-    val workBlurbFlow: LiveData<Flow<PagingData<WorkBlurb>>> get() = _workBlurbFlow
+    private var _workBlurbFlow = MutableLiveData<Flow<PagingData<WorkBlurbUiModel>>>()
+    val workBlurbFlow: LiveData<Flow<PagingData<WorkBlurbUiModel>>> get() = _workBlurbFlow
 
     private val _metadata = MutableLiveData<WorkSearchMetadata>()
     val metadata: LiveData<WorkSearchMetadata> get() = _metadata
@@ -61,7 +65,7 @@ class WorkListViewModel
     }
 
     private fun searchWorkBlurbs() {
-        val newResult = repository.getWorkBlurbStreamFromAO3(workFilterRequest)
+        val newResult = repository.getWorkBlurbUiModelStreamFromAO3(workFilterRequest)
             .cachedIn(viewModelScope)
         _workBlurbFlow.postValue(newResult)
     }

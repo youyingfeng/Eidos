@@ -28,31 +28,6 @@ class WorkFilterRequestTest {
     }
 
     @Test
-    fun `Special characters in included and excluded tags should be formatted correctly in the URL`() {
-        /* Included tags*/
-        var workFilterRequest = WorkFilterRequest("Marvel")
-            .includeTags(TAG_WITH_SLASH_CHARACTER)
-        assertEquals("/tags/Marvel/works?utf8=✓&commit=Sort+and+Filter&work_search[other_tag_names]=Pepper+Potts%2FTony+Stark",
-                     workFilterRequest.queryString)
-
-        workFilterRequest = WorkFilterRequest(NORMAL_FANDOM_NAME)
-            .includeTags(TAG_WITH_AMPERSAND_CHARACTER)
-        assertEquals("/tags/Marvel/works?utf8=✓&commit=Sort+and+Filter&work_search[other_tag_names]=Pepper+Potts+%26+Tony+Stark",
-                     workFilterRequest.queryString)
-
-        workFilterRequest = WorkFilterRequest(NORMAL_FANDOM_NAME)
-                .excludeTags(TAG_WITH_SLASH_CHARACTER)
-        assertEquals("/tags/Marvel/works?utf8=✓&commit=Sort+and+Filter&work_search[excluded_tag_names]=Pepper+Potts%2FTony+Stark",
-                workFilterRequest.queryString)
-
-        workFilterRequest = WorkFilterRequest(NORMAL_FANDOM_NAME)
-                .excludeTags(TAG_WITH_AMPERSAND_CHARACTER)
-        assertEquals("/tags/Marvel/works?utf8=✓&commit=Sort+and+Filter&work_search[excluded_tag_names]=Pepper+Potts+%26+Tony+Stark",
-                workFilterRequest.queryString)
-
-    }
-
-    @Test
     fun `Multiple included and excluded tags should be represented correctly in the URL`() {
         // TODO
     }

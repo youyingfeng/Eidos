@@ -10,7 +10,7 @@
     <!--Read the page in its entirety!-->
     <argument
         android:name="workBlurb"
-        app:argType="org.eidos.reader.model.WorkBlurb" />
+        app:argType="org.eidos.reader.model.domain.WorkBlurb" />
     <argument
         android:name="isStoredInDatabase"
         app:argType="boolean"
@@ -21,7 +21,7 @@
         app:destination="@id/workInfoFragment">
         <argument
             android:name="workBlurb"
-            app:argType="org.eidos.reader.model.WorkBlurb" />
+            app:argType="org.eidos.reader.model.domain.WorkBlurb" />
         <argument
             android:name="isStoredInDatabase"
             app:argType="boolean"
@@ -38,7 +38,7 @@
             app:destination="@id/workReaderFragment" />
         <argument
             android:name="workBlurb"
-            app:argType="org.eidos.reader.model.WorkBlurb" />
+            app:argType="org.eidos.reader.model.domain.WorkBlurb" />
         <argument
             android:name="isStoredInDatabase"
             app:argType="boolean"
