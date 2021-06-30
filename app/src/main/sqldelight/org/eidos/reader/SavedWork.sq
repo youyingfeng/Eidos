@@ -64,9 +64,32 @@ CREATE TABLE SavedWork (
 -- );
 
 
-getWorksCount:
+countWorks:
 SELECT COUNT(*)
 FROM SavedWork;
+
+savedWorkBlurb:
+SELECT
+workURL,
+title,
+authors,
+giftees,
+lastUpdatedDate,
+fandoms,
+rating,
+warnings,
+categories,
+completionStatus,
+characters,
+relationships,
+freeforms,
+summary,
+language,
+wordCount,
+chapterCount,
+maxChapters
+FROM SavedWork
+LIMIT :limit OFFSET :offset;
 
 insert:
 INSERT INTO SavedWork

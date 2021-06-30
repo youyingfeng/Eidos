@@ -21,6 +21,33 @@ CREATE TABLE ReadingListWorkBlurb (
     maxChapters INTEGER AS Int NOT NULL
 );
 
+countWorkBlurbs:
+SELECT COUNT(*) FROM ReadingListWorkBlurb;
+
+readingListWorkBlurb:
+SELECT
+workURL,
+title,
+authors,
+giftees,
+lastUpdatedDate,
+fandoms,
+rating,
+warnings,
+categories,
+completionStatus,
+characters,
+relationships,
+freeforms,
+summary,
+language,
+wordCount,
+chapterCount,
+maxChapters
+FROM ReadingListWorkBlurb
+LIMIT :limit OFFSET :offset;
+
+
 getAllWorkBlurbs:
 SELECT
 workURL,

@@ -1,35 +1,53 @@
 package org.eidos.reader.storage
 
+import androidx.paging.PagingSource
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import com.squareup.sqldelight.ColumnAdapter
-import org.eidos.reader.Database
-import org.eidos.reader.ReadingHistoryWorkBlurb
-import org.eidos.reader.ReadingListWorkBlurb
-import org.eidos.reader.SavedWork
+import com.squareup.sqldelight.android.paging3.QueryPagingSource
+import com.squareup.sqldelight.runtime.coroutines.asFlow
+import com.squareup.sqldelight.runtime.coroutines.mapToList
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.map
+import org.eidos.reader.*
 import org.eidos.reader.model.domain.Chapter
 import org.eidos.reader.model.domain.Work
 import org.eidos.reader.model.domain.WorkBlurb
+import org.eidos.reader.storage.DatabaseModelMapper.Companion.toWorkBlurb
 import timber.log.Timber
 
 class Storage(private val database: Database) {
-    private val workEntityQueries = database.workEntityQueries
+    private val savedWorkQueries = database.savedWorkQueries
+
+    val savedWorkBlurbs = savedWorkQueries.getAllWorkBlurbs()
+        .asFlow()
+        .mapToList()
+        .map { list -> list.map { it.toWorkBlurb() } }
+
+    fun getSavedWorkBlurbsPagingSource(): PagingSource<Long, SavedWorkBlurb> {
+        return QueryPagingSource(
+            countQuery = savedWorkQueries.countWorks(),
+            transacter = savedWorkQueries,
+            dispatcher = Dispatchers.IO,
+            queryProvider = savedWorkQueries::savedWorkBlurb
+        )
+    }
 
     /* Methods for saved works */
     fun getWork(workURL: String): Work {
-        return workEntityQueries.getWork(workURL, workMapper).executeAsOne()
+        return savedWorkQueries.getWork(workURL, workMapper).executeAsOne()
     }
 
     fun getAllWorkBlurbs(): List<WorkBlurb> {
-        val workBlurbs = workEntityQueries.getAllWorkBlurbs(workBlurbMapper).executeAsList()
+        val workBlurbs = savedWorkQueries.getAllWorkBlurbs(workBlurbMapper).executeAsList()
         Timber.i("Number of works retrieved = ${workBlurbs.size}")
         return workBlurbs
     }
 
     fun insertWork(work: Work) {
-        workEntityQueries.upsert(
+        savedWorkQueries.upsert(
             workURL = work.workURL,
             title = work.title,
             authors = work.authors,
@@ -60,9 +78,9 @@ class Storage(private val database: Database) {
     // the only reason why works are missing is because people delete them
     // this does not happen willy nilly
     fun updateWorks(updatedWorks: List<Work>) {
-        workEntityQueries.transaction {
+        savedWorkQueries.transaction {
             updatedWorks.forEach { work ->
-                workEntityQueries.update(
+                savedWorkQueries.update(
                     workURL = work.workURL,
                     title = work.title,
                     authors = work.authors,
@@ -92,11 +110,11 @@ class Storage(private val database: Database) {
     }
 
     fun deleteWork(workURL: String) {
-        return workEntityQueries.delete(workURL)
+        return savedWorkQueries.delete(workURL)
     }
 
     fun deleteAllWorks() {
-        return workEntityQueries.deleteAll()
+        return savedWorkQueries.deleteAll()
     }
 
     /* Methods for Reading History */
@@ -136,6 +154,15 @@ class Storage(private val database: Database) {
 
     /* Methods for Reading List */
     private val readingListQueries = database.readingListQueries
+
+    fun getReadingListWorkBlurbsPagingSource(): PagingSource<Long, ReadingListWorkBlurb> {
+        return QueryPagingSource(
+            countQuery = readingListQueries.countWorkBlurbs(),
+            transacter = readingListQueries,
+            dispatcher = Dispatchers.IO,
+            queryProvider = readingListQueries::readingListWorkBlurb
+        )
+    }
 
     fun getReadingList(): List<WorkBlurb> {
         val workBlurbs = readingListQueries.getAllWorkBlurbs(workBlurbMapper).executeAsList()

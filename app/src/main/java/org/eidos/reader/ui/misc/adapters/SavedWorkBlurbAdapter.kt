@@ -5,56 +5,67 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.core.text.HtmlCompat
+import androidx.paging.PagingDataAdapter
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import org.eidos.reader.R
+import org.eidos.reader.SavedWorkBlurb
 import org.eidos.reader.databinding.LayoutWorkBlurbBinding
 import org.eidos.reader.model.domain.WorkBlurb
-import timber.log.Timber
+import org.eidos.reader.model.ui.WorkBlurbUiModel
 import kotlin.math.log
 import kotlin.math.pow
 
-/*
-Adapter to translate WorkBlurb data to compact work blurb views.
- */
-
-class WorkBlurbLocalAdapter
+class SavedWorkBlurbAdapter
     constructor(
-        private val onClickAction: (View, WorkBlurb) -> Unit,
-        private val onLongClickAction: (View, WorkBlurb) -> Unit,
+        private val onClickAction: (View, SavedWorkBlurb) -> Unit,
+        private val onLongClickAction: (View, SavedWorkBlurb) -> Unit,
     )
-    : RecyclerView.Adapter<WorkBlurbLocalAdapter.WorkBlurbLocalViewHolder>()
+    : PagingDataAdapter<SavedWorkBlurb, SavedWorkBlurbAdapter.SavedWorkBlurbViewHolder>(workBlurbComparator)
 {
-    var data = listOf<WorkBlurb>()
-        set(value) {
-            field = value
-            notifyDataSetChanged()
-            Timber.i("Adapter data set")
-            Timber.i(field.size.toString())
-        }
 
-    override fun getItemCount(): Int {
-        return data.size
-    }
+    override fun onBindViewHolder(holder: SavedWorkBlurbViewHolder, position: Int) {
+        val savedWorkBlurb = getItem(position)
+        if (savedWorkBlurb != null) {
+            holder.bind(savedWorkBlurb)
+            holder.itemView.setOnClickListener { view ->
+                onClickAction(view, savedWorkBlurb)
+            }
 
-    override fun onBindViewHolder(holder: WorkBlurbLocalViewHolder, position: Int) {
-        Timber.i("onBindViewHolder called")
-        val workBlurb = data[position]
-        holder.bind(workBlurb)
-        holder.itemView.setOnClickListener { view ->
-            onClickAction(view, workBlurb)
-        }
-
-        holder.itemView.setOnLongClickListener { view ->
-            onLongClickAction(view, workBlurb)
-            return@setOnLongClickListener true
+            holder.itemView.setOnLongClickListener { view ->
+                onLongClickAction(view, savedWorkBlurb)
+                return@setOnLongClickListener true
+            }
+        } else {
+            holder.itemView.setOnClickListener(null)
+            holder.itemView.setOnLongClickListener(null)
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WorkBlurbLocalViewHolder {
-        return WorkBlurbLocalViewHolder.from(parent)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SavedWorkBlurbViewHolder {
+        return SavedWorkBlurbViewHolder.from(parent)
     }
 
-    class WorkBlurbLocalViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    companion object {
+        private val workBlurbComparator = object : DiffUtil.ItemCallback<SavedWorkBlurb>() {
+            override fun areItemsTheSame(
+                oldItem: SavedWorkBlurb,
+                newItem: SavedWorkBlurb
+            ): Boolean {
+                return oldItem.workURL == newItem.workURL
+            }
+
+            override fun areContentsTheSame(
+                oldItem: SavedWorkBlurb,
+                newItem: SavedWorkBlurb
+            ): Boolean {
+                return oldItem == newItem
+            }
+        }
+    }
+
+
+    class SavedWorkBlurbViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val binding = LayoutWorkBlurbBinding.bind(itemView)
 
         init {
@@ -64,7 +75,7 @@ class WorkBlurbLocalAdapter
             binding.workBookmarks.visibility = View.GONE
         }
 
-        fun bind(item: WorkBlurb) {
+        fun bind(item: SavedWorkBlurb) {
             binding.workTitle.text = item.title
             binding.workAuthors.text = item.authors
                 .fold(StringBuilder()) { acc, next -> acc.append(next).append(" · ") }
@@ -108,17 +119,17 @@ class WorkBlurbLocalAdapter
                 .removeSuffix(", ")
                 .toString()
             binding.workRelationships.text = item.relationships
-                .fold(StringBuilder()) { acc, next -> acc.append(next).append(", ") }
-                .removeSuffix(", ")
-                .toString()
+                ?.fold(StringBuilder()) { acc, next -> acc.append(next).append(", ") }
+                ?.removeSuffix(", ")
+                ?.toString()
             binding.workCharacters.text = item.characters
-                .fold(StringBuilder()) { acc, next -> acc.append(next).append(", ") }
-                .removeSuffix(", ")
-                .toString()
+                ?.fold(StringBuilder()) { acc, next -> acc.append(next).append(", ") }
+                ?.removeSuffix(", ")
+                ?.toString()
             binding.workFreeforms.text = item.freeforms
-                .fold(StringBuilder()) { acc, next -> acc.append(next).append(", ") }
-                .removeSuffix(", ")
-                .toString()
+                ?.fold(StringBuilder()) { acc, next -> acc.append(next).append(", ") }
+                ?.removeSuffix(", ")
+                ?.toString()
 
             binding.workSummary.text = HtmlCompat.fromHtml(item.summary, HtmlCompat.FROM_HTML_MODE_LEGACY)
 
@@ -126,19 +137,19 @@ class WorkBlurbLocalAdapter
             binding.workWordCount.text = formatNumber(item.wordCount)
             binding.workChapters.text = "${item.chapterCount}/${if (item.maxChapters == 0) "?" else item.maxChapters.toString()}"
             binding.workDateUpdated.text = item.lastUpdatedDate
-            binding.workKudos.text = formatNumber(item.kudosCount)
-            binding.workComments.text = formatNumber(item.commentsCount)
-            binding.workBookmarks.text = formatNumber(item.bookmarksCount)
-            binding.workHits.text = formatNumber(item.hitCount)
+//            binding.workKudos.text = formatNumber(item.kudosCount)
+//            binding.workComments.text = formatNumber(item.commentsCount)
+//            binding.workBookmarks.text = formatNumber(item.bookmarksCount)
+//            binding.workHits.text = formatNumber(item.hitCount)
         }
 
         companion object {
-            fun from(parent: ViewGroup): WorkBlurbLocalViewHolder {
+            fun from(parent: ViewGroup): SavedWorkBlurbViewHolder {
                 // FIXME: consider doing viewbinding here and passing the binding object to the viewHolder instead
                 // See: https://stackoverflow.com/questions/60491966/how-to-do-latest-jetpack-view-binding-in-adapter-bind-the-views
                 val view = LayoutInflater.from(parent.context)
                     .inflate(R.layout.layout_work_blurb, parent, false)
-                return WorkBlurbLocalViewHolder(view)
+                return SavedWorkBlurbViewHolder(view)
             }
 
             fun formatNumber(count: Int) : String {
@@ -149,4 +160,3 @@ class WorkBlurbLocalAdapter
         }
     }
 }
-
