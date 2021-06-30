@@ -57,23 +57,23 @@ upsertToEnd {
 
     INSERT INTO ReadingHistoryWorkBlurb
     VALUES(
-        workURL = :workURL,
-        title = :title,
-        authors = :authors,
-        giftees = :giftees,
-        lastUpdatedDate = :lastUpdatedDate,
-        fandoms = :fandoms,
-        rating = :rating,
-        warnings = :warnings,
-        categories = :categories,
-        completionStatus = :completionStatus,
-        characters = :characters,
-        relationships = :relationships,
-        freeforms = :freeforms,
-        summary = :summary,
-        language = :language,
-        wordCount = :wordCount,
-        chapterCount = :chapterCount,
-        maxChapters = :maxChapters
+        :workURL,
+        :title,
+        :authors,
+        :giftees,
+        :lastUpdatedDate,
+        :fandoms,
+        :rating,
+        :warnings,
+        :categories,
+        :completionStatus,
+        :characters,
+        :relationships,
+        :freeforms,
+        :summary,
+        :language,
+        :wordCount,
+        :chapterCount,
+        :maxChapters
     );
 }

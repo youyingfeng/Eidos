@@ -7,7 +7,6 @@ import androidx.datastore.preferences.core.emptyPreferences
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import androidx.paging.map
 import androidx.work.WorkManager
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
@@ -26,7 +25,6 @@ import org.eidos.reader.remote.requests.WorkFilterRequest
 import org.eidos.reader.remote.requests.WorkRequest
 import org.eidos.reader.repository.paging.remote.AO3PagingSource
 import org.eidos.reader.repository.paging.remote.WorkBlurbUiModelPagingSource
-import org.eidos.reader.storage.DatabaseModelMapper.Companion.toWorkBlurb
 import org.eidos.reader.storage.Storage
 import org.eidos.reader.ui.misc.preferences.ReaderPreferences
 import org.eidos.reader.ui.misc.preferences.ReaderPreferencesKeys
@@ -63,7 +61,7 @@ class EidosRepository(
         return remoteDataSource.getWorkBlurbs(workFilterRequest)
     }
 
-    fun getWorkBlurbStreamFromAO3(workFilterRequest: WorkFilterRequest): Flow<PagingData<WorkBlurb>> {
+    private fun getWorkBlurbStreamFromAO3(workFilterRequest: WorkFilterRequest): Flow<PagingData<WorkBlurb>> {
         return Pager(
             config = PagingConfig(
                 pageSize = 20, // magic number, no difference
@@ -100,7 +98,7 @@ class EidosRepository(
         return localDataSource.getAllWorkBlurbs()
     }
 
-    fun getWorkBlurbStreamFromDatabase(): Flow<PagingData<SavedWorkBlurb>> {
+    private fun getWorkBlurbStreamFromDatabase(): Flow<PagingData<SavedWorkBlurb>> {
         return Pager(
             config = PagingConfig(
                 initialLoadSize = 20,
@@ -113,7 +111,7 @@ class EidosRepository(
     }
 
     fun getWorkBlurbFlowFromDatabase(): Flow<List<WorkBlurb>> {
-        return localDataSource.savedWorkBlurbs
+        return localDataSource.savedWorkBlurbsFlow
     }
 
     fun getWorkFromDatabase(workURL: String): Work {
@@ -147,7 +145,7 @@ class EidosRepository(
         return localDataSource.getReadingList()
     }
 
-    fun getWorkBlurbStreamFromReadingList(): Flow<PagingData<ReadingListWorkBlurb>> {
+    private fun getWorkBlurbStreamFromReadingList(): Flow<PagingData<ReadingListWorkBlurb>> {
         return Pager(
             config = PagingConfig(
                 initialLoadSize = 20,
@@ -157,6 +155,10 @@ class EidosRepository(
             pagingSourceFactory = { localDataSource.getReadingListWorkBlurbsPagingSource() }
         ).flow
 //            .map { pagingData -> pagingData.map { blurb -> blurb.toWorkBlurb() } }
+    }
+
+    fun getReadingListFlow(): Flow<List<WorkBlurb>> {
+        return localDataSource.readingListFlow
     }
 
     fun addWorkBlurbToReadingList(workBlurb: WorkBlurb) {

@@ -8,10 +8,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import org.eidos.reader.EidosApplication
 import org.eidos.reader.R
 import org.eidos.reader.WorkDirections
@@ -65,14 +68,11 @@ class ReadingListFragment : Fragment() {
         )
         binding.workListDisplay.adapter = adapter
 
-        viewModel.workBlurbs.observe(viewLifecycleOwner, {
-            it?.let {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.readingListFlow.collectLatest {
                 adapter.data = it
             }
-        })
-
-        // manually update readinglist
-        viewModel.fetchWorkBlurbsFromDatabase()
+        }
 
         return binding.root
     }

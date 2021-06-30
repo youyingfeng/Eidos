@@ -19,25 +19,10 @@ class ReadingListViewModel(val repository: EidosRepository) : ViewModel() {
     val workBlurbs: LiveData<List<WorkBlurb>>
         get() = _workBlurbs
 
-//    init {
-//        fetchWorkBlurbsFromDatabase()
-//        Timber.i("init complete")
-//    }
-
-    fun fetchWorkBlurbsFromDatabase() {
-        viewModelScope.launch(Dispatchers.IO) {
-            _workBlurbs.postValue(repository.getWorkBlurbsFromReadingList())
-            Timber.i("WorkBlurbs successfully fetched from DB")
-        }
-    }
+    val readingListFlow = repository.getReadingListFlow()
 
     fun addWorkToLibrary(workBlurb: WorkBlurb) {
-        // use globalscope/coroutinescope first as we want this work to continue
-        // when there is time, update to workmanager
-        CoroutineScope(Dispatchers.IO).launch {
-            val work = repository.getWorkFromAO3(WorkRequest(workBlurb.workURL))
-            repository.insertWorkIntoDatabase(work)
-        }
+        repository.insertWorkIntoDatabase(workBlurb.workURL)
     }
 
     fun removeWorkFromReadingList(workBlurb: WorkBlurb) {

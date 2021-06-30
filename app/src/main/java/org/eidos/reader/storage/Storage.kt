@@ -10,21 +10,18 @@ import com.squareup.sqldelight.android.paging3.QueryPagingSource
 import com.squareup.sqldelight.runtime.coroutines.asFlow
 import com.squareup.sqldelight.runtime.coroutines.mapToList
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.map
 import org.eidos.reader.*
 import org.eidos.reader.model.domain.Chapter
 import org.eidos.reader.model.domain.Work
 import org.eidos.reader.model.domain.WorkBlurb
-import org.eidos.reader.storage.DatabaseModelMapper.Companion.toWorkBlurb
 import timber.log.Timber
 
 class Storage(private val database: Database) {
     private val savedWorkQueries = database.savedWorkQueries
 
-    val savedWorkBlurbs = savedWorkQueries.getAllWorkBlurbs()
+    val savedWorkBlurbsFlow = savedWorkQueries.getAllWorkBlurbs(workBlurbMapper)
         .asFlow()
         .mapToList()
-        .map { list -> list.map { it.toWorkBlurb() } }
 
     fun getSavedWorkBlurbsPagingSource(): PagingSource<Long, SavedWorkBlurb> {
         return QueryPagingSource(
@@ -155,6 +152,10 @@ class Storage(private val database: Database) {
     /* Methods for Reading List */
     private val readingListQueries = database.readingListQueries
 
+    val readingListFlow = readingListQueries.getAllWorkBlurbs(workBlurbMapper)
+        .asFlow()
+        .mapToList()
+
     fun getReadingListWorkBlurbsPagingSource(): PagingSource<Long, ReadingListWorkBlurb> {
         return QueryPagingSource(
             countQuery = readingListQueries.countWorkBlurbs(),
@@ -169,26 +170,26 @@ class Storage(private val database: Database) {
         return workBlurbs
     }
 
-    fun addWorkBlurbToReadingList(work: WorkBlurb) {
+    fun addWorkBlurbToReadingList(workBlurb: WorkBlurb) {
         readingListQueries.upsertToEnd(
-            workURL = work.workURL,
-            title = work.title,
-            authors = work.authors,
-            giftees = work.giftees,
-            lastUpdatedDate = work.lastUpdatedDate,
-            fandoms = work.fandoms,
-            rating = work.rating,
-            warnings = work.warnings,
-            categories = work.categories,
-            completionStatus = work.completionStatus,
-            characters = work.characters,
-            relationships = work.relationships,
-            freeforms = work.freeforms,
-            summary = work.summary,
-            language = work.language,
-            wordCount = work.wordCount,
-            chapterCount = work.chapterCount,
-            maxChapters = work.maxChapters
+            workURL = workBlurb.workURL,
+            title = workBlurb.title,
+            authors = workBlurb.authors,
+            giftees = workBlurb.giftees,
+            lastUpdatedDate = workBlurb.lastUpdatedDate,
+            fandoms = workBlurb.fandoms,
+            rating = workBlurb.rating,
+            warnings = workBlurb.warnings,
+            categories = workBlurb.categories,
+            completionStatus = workBlurb.completionStatus,
+            characters = workBlurb.characters,
+            relationships = workBlurb.relationships,
+            freeforms = workBlurb.freeforms,
+            summary = workBlurb.summary,
+            language = workBlurb.language,
+            wordCount = workBlurb.wordCount,
+            chapterCount = workBlurb.chapterCount,
+            maxChapters = workBlurb.maxChapters
         )
     }
 
