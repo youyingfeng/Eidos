@@ -17,18 +17,15 @@ class BrowseSearchViewModel(val repository: EidosRepository) : ViewModel() {
     val autocompleteResults : LiveData<List<String>>
         get() = _autocompleteResults
 
-    private lateinit var currentRunningJob: Job
+    private var currentRunningJob: Job? = null
 
     fun fetchAutocompleteResults(searchInput: String, searchTypeID: Int) {
-        if (::currentRunningJob.isInitialized) {
-            currentRunningJob.cancel()
-            Timber.i("job cancelled")
-        }
-
+        currentRunningJob?.cancel()
         currentRunningJob = viewModelScope.launch(Dispatchers.IO) {
             delay(100L) // this is just to prevent API spam, although im not sure how much this helps
-            val result = getAutocompleteResults(searchInput, searchTypeID)
-            _autocompleteResults.postValue(result)
+            // the isActive check enables cancellation, as coroutine cancellation is cooperative
+            val result = if (isActive) getAutocompleteResults(searchInput, searchTypeID) else return@launch
+            if (isActive) _autocompleteResults.postValue(result)
         }
     }
 
