@@ -18,6 +18,7 @@ import org.eidos.reader.EidosApplication
 import org.eidos.reader.WorkDirections
 import org.eidos.reader.container.AppContainer
 import org.eidos.reader.databinding.FragmentLibraryBinding
+import org.eidos.reader.databinding.LocalWorkListBinding
 import org.eidos.reader.ui.misc.adapters.WorkBlurbLocalAdapter
 import org.eidos.reader.ui.misc.utilities.Utilities.Companion.hideKeyboard
 
@@ -33,7 +34,7 @@ class LibraryFragment : Fragment() {
         LibraryViewModelFactory(appContainer.repository)
     }
 
-    private var _binding: FragmentLibraryBinding? = null
+    private var _binding: LocalWorkListBinding? = null
     private val binding get() = _binding!!
 
     private lateinit var appContainer: AppContainer
@@ -42,7 +43,7 @@ class LibraryFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentLibraryBinding.inflate(inflater, container, false)
+        _binding = LocalWorkListBinding.inflate(inflater, container, false)
         appContainer = (requireActivity().application as EidosApplication).appContainer
 
         // TODO: structure roughly the same as worklist

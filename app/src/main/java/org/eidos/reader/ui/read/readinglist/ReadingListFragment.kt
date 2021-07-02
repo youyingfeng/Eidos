@@ -20,6 +20,7 @@ import org.eidos.reader.R
 import org.eidos.reader.WorkDirections
 import org.eidos.reader.container.AppContainer
 import org.eidos.reader.databinding.FragmentReadingListBinding
+import org.eidos.reader.databinding.LocalWorkListBinding
 import org.eidos.reader.ui.library.LibraryFragment
 import org.eidos.reader.ui.misc.adapters.WorkBlurbCompactAdapter
 import org.eidos.reader.ui.misc.utilities.Utilities.Companion.hideKeyboard
@@ -36,7 +37,7 @@ class ReadingListFragment : Fragment() {
         ReadingListViewModelFactory(appContainer.repository)
     }
 
-    private var _binding: FragmentReadingListBinding? = null
+    private var _binding: LocalWorkListBinding? = null
     private val binding get() = _binding!!
 
     private lateinit var appContainer: AppContainer
@@ -45,7 +46,7 @@ class ReadingListFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentReadingListBinding.inflate(inflater, container, false)
+        _binding = LocalWorkListBinding.inflate(inflater, container, false)
         appContainer = (requireActivity().application as EidosApplication).appContainer
         (activity as AppCompatActivity).setSupportActionBar(binding.toolbar)
         (activity as AppCompatActivity).setupActionBarWithNavController(findNavController())
