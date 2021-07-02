@@ -9,7 +9,7 @@
         android:id="@+id/readingListFragment"
         android:name="org.eidos.reader.ui.read.readinglist.ReadingListFragment"
         android:label="Read"
-        tools:layout="@layout/fragment_reading_list" />
+        tools:layout="@layout/local_work_list" />
 
     <include app:graph="@navigation/work" />
 

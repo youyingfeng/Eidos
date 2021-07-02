@@ -9,7 +9,7 @@
         android:id="@+id/libraryFragment"
         android:name="org.eidos.reader.ui.library.LibraryFragment"
         android:label="Library"
-        tools:layout="@layout/fragment_library"/>
+        tools:layout="@layout/local_work_list"/>
 
     <include app:graph="@navigation/work" />
 
