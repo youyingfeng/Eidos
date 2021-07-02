@@ -5,11 +5,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.Flow
 import org.eidos.reader.R
 import org.eidos.reader.remote.requests.*
 import org.eidos.reader.repository.EidosRepository
-import timber.log.Timber
 import java.lang.Exception
 
 class BrowseSearchViewModel(val repository: EidosRepository) : ViewModel() {

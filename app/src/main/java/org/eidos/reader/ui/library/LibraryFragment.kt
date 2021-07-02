@@ -69,23 +69,12 @@ class LibraryFragment : Fragment() {
 
         binding.workListDisplay.adapter = adapter
 
+        // update the list upon every change in the list provided by the flow
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.workBlurbFlow.collectLatest {
-                adapter.data = it
+                adapter.submitList(it)
             }
         }
-
-        //get data into the adapter
-//        viewModel.workBlurbs.observe(viewLifecycleOwner, Observer {
-//            it?.let {
-//                adapter.data = it
-//            }
-//        })
-
-        view
-
-        // manually force the viewmodel to update again
-//        viewModel.fetchWorkBlurbsFromDatabase()
 
         return binding.root
     }
@@ -95,5 +84,4 @@ class LibraryFragment : Fragment() {
         hideKeyboard()
         _binding = null
     }
-
 }

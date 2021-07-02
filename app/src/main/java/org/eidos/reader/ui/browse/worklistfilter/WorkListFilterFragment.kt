@@ -8,27 +8,23 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import android.widget.AutoCompleteTextView
 import android.widget.EditText
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.google.android.material.chip.Chip
-import com.google.android.material.chip.ChipGroup
 import org.eidos.reader.EidosApplication
 import org.eidos.reader.R
 import org.eidos.reader.container.AppContainer
 import org.eidos.reader.databinding.FormWorkFilterBinding
 import org.eidos.reader.remote.choices.WorkFilterChoices
 import org.eidos.reader.ui.misc.utilities.Utilities.Companion.hideKeyboard
-import org.eidos.reader.ui.browse.worklist.WorkListViewModel
-import org.eidos.reader.ui.misc.adapters.AutocompleteStringAdapter
+import org.eidos.reader.ui.misc.adapters.AutocompleteResultAdapter
 import org.eidos.reader.ui.misc.values.LANGUAGES_ARRAY
 import org.eidos.reader.ui.misc.values.SORT_OPTIONS_ARRAY
 import timber.log.Timber
@@ -75,7 +71,7 @@ class WorkListFilterFragment : Fragment() {
 
         // Set autocomplete recyclerviews
         val includeTagsAutocompleteAdapter =
-            AutocompleteStringAdapter { _, autocompleteResultString ->
+            AutocompleteResultAdapter { _, autocompleteResultString ->
                 if (!viewModel.workFilterChoices.includedTags.contains(autocompleteResultString)) {
                     // adds a new chip to the chipgroup if it does not already exist
                     val newChip = Chip(this.context)
@@ -98,7 +94,7 @@ class WorkListFilterFragment : Fragment() {
         binding.includedTagsAutocompleteRecyclerView.adapter = includeTagsAutocompleteAdapter
 
         val excludeTagsAutocompleteAdapter =
-            AutocompleteStringAdapter { _, autocompleteResultString ->
+            AutocompleteResultAdapter { _, autocompleteResultString ->
                 if (!viewModel.workFilterChoices.excludedTags.contains(autocompleteResultString)) {
                     // adds a new chip to the chipgroup if it does not already exist
                     val newChip = Chip(this.context)
@@ -424,9 +420,7 @@ class WorkListFilterFragment : Fragment() {
 
         // TODO: link submit and cancel buttons, add reset button for both types of reset
         binding.confirmButton.setOnClickListener {
-            // submit choices to parent viewmodel
-//            workListViewModel.updateFilterChoices(viewModel.workFilterChoices)
-
+            // send filter choices back to worklist fragment
             setFragmentResult(
                 "updatedFilterChoices",
                 bundleOf("workFilterChoices" to viewModel.workFilterChoices)
@@ -441,7 +435,6 @@ class WorkListFilterFragment : Fragment() {
             viewModel.resetChoicesToDefault()
             loadFormParameters()
         }
-
 
         return binding.root
     }

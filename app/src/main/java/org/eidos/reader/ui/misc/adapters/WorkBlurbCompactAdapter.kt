@@ -5,6 +5,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.core.text.HtmlCompat
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import org.eidos.reader.R
 import org.eidos.reader.databinding.LayoutWorkBlurbCompactBinding
@@ -22,28 +24,15 @@ class WorkBlurbCompactAdapter
         private val onClickAction: (View, WorkBlurb) -> Unit,
         private val onLongClickAction: (View, WorkBlurb) -> Unit
     )
-    : RecyclerView.Adapter<WorkBlurbCompactAdapter.WorkBlurbCompactViewHolder>()
+    : ListAdapter<WorkBlurb, WorkBlurbCompactAdapter.WorkBlurbCompactViewHolder>(WorkBlurbDiffCallback)
 {
-    var data = listOf<WorkBlurb>()
-        set(value) {
-            field = value
-            notifyDataSetChanged()
-            Timber.i("Adapter data set")
-            Timber.i(field.size.toString())
-        }
-
-    override fun getItemCount(): Int {
-        return data.size
-    }
-
     override fun onBindViewHolder(holder: WorkBlurbCompactViewHolder, position: Int) {
         Timber.i("onBindViewHolder called")
-        val workBlurb = data[position]
+        val workBlurb = getItem(position)
         holder.bind(workBlurb)
         holder.itemView.setOnClickListener { view ->
             onClickAction(view, workBlurb)
         }
-
         holder.itemView.setOnLongClickListener { view ->
             onLongClickAction(view, workBlurb)
             return@setOnLongClickListener true
@@ -53,6 +42,17 @@ class WorkBlurbCompactAdapter
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WorkBlurbCompactViewHolder {
         return WorkBlurbCompactViewHolder.from(parent)
     }
+
+    companion object WorkBlurbDiffCallback : DiffUtil.ItemCallback<WorkBlurb>() {
+        override fun areItemsTheSame(oldItem: WorkBlurb, newItem: WorkBlurb): Boolean {
+            return oldItem.workURL == newItem.workURL
+        }
+
+        override fun areContentsTheSame(oldItem: WorkBlurb, newItem: WorkBlurb): Boolean {
+            return oldItem == newItem
+        }
+    }
+
 
     class WorkBlurbCompactViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val binding = LayoutWorkBlurbCompactBinding.bind(itemView)
@@ -122,4 +122,3 @@ class WorkBlurbCompactAdapter
         }
     }
 }
-

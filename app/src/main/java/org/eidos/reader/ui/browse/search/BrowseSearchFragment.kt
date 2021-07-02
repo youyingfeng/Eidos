@@ -1,6 +1,5 @@
 package org.eidos.reader.ui.browse.search
 
-import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -8,14 +7,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
 import org.eidos.reader.EidosApplication
 import org.eidos.reader.R
 import org.eidos.reader.WorkListDirections
 import org.eidos.reader.container.AppContainer
 import org.eidos.reader.databinding.FragmentBrowseSearchBinding
-import org.eidos.reader.ui.misc.adapters.AutocompleteStringAdapter
+import org.eidos.reader.ui.misc.adapters.AutocompleteResultAdapter
 import org.eidos.reader.ui.misc.utilities.Utilities.Companion.hideKeyboard
 
 class BrowseSearchFragment : Fragment() {
@@ -41,7 +39,7 @@ class BrowseSearchFragment : Fragment() {
         _binding = FragmentBrowseSearchBinding.inflate(inflater, container, false)
         appContainer = (requireActivity().application as EidosApplication).appContainer
 
-        val adapter = AutocompleteStringAdapter { holderView: View, autocompleteResultString: String ->
+        val adapter = AutocompleteResultAdapter { holderView: View, autocompleteResultString: String ->
             hideKeyboard()
 
             if (binding.searchTypeChipGroup.checkedChipId != R.id.usersChip) {
@@ -52,14 +50,15 @@ class BrowseSearchFragment : Fragment() {
             }
 
         }
+
         binding.autocompleteResultsDisplay.adapter = adapter
 
         // get data into adapter
-        viewModel.autocompleteResults.observe(viewLifecycleOwner, Observer {
+        viewModel.autocompleteResults.observe(viewLifecycleOwner) {
             it?.let {
                 adapter.data = it
             }
-        })
+        }
 
         binding.searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener,
             android.widget.SearchView.OnQueryTextListener {
@@ -68,7 +67,6 @@ class BrowseSearchFragment : Fragment() {
                 query?.let {
                     viewModel.fetchAutocompleteResults(it, binding.searchTypeChipGroup.checkedChipId)
                 }
-
                 return true
             }
 
@@ -76,10 +74,8 @@ class BrowseSearchFragment : Fragment() {
                 newText?.let {
                     viewModel.fetchAutocompleteResults(it, binding.searchTypeChipGroup.checkedChipId)
                 }
-
                 return true
             }
-
         })
 
         // update UI elements and results when a new chip is clicked
@@ -107,5 +103,4 @@ class BrowseSearchFragment : Fragment() {
         hideKeyboard()
         _binding = null
     }
-
 }

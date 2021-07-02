@@ -22,6 +22,7 @@ import org.eidos.reader.container.AppContainer
 import org.eidos.reader.databinding.FragmentReadingListBinding
 import org.eidos.reader.ui.library.LibraryFragment
 import org.eidos.reader.ui.misc.adapters.WorkBlurbCompactAdapter
+import org.eidos.reader.ui.misc.utilities.Utilities.Companion.hideKeyboard
 
 class ReadingListFragment : Fragment() {
 
@@ -66,15 +67,21 @@ class ReadingListFragment : Fragment() {
                     .show()
             }
         )
+
         binding.workListDisplay.adapter = adapter
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.readingListFlow.collectLatest {
-                adapter.data = it
+                adapter.submitList(it)
             }
         }
 
         return binding.root
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        hideKeyboard()
+        _binding = null
+    }
 }
