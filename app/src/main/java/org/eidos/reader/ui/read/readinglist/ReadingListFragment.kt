@@ -16,12 +16,9 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import org.eidos.reader.EidosApplication
-import org.eidos.reader.R
 import org.eidos.reader.WorkDirections
 import org.eidos.reader.container.AppContainer
-import org.eidos.reader.databinding.FragmentReadingListBinding
 import org.eidos.reader.databinding.LocalWorkListBinding
-import org.eidos.reader.ui.library.LibraryFragment
 import org.eidos.reader.ui.misc.adapters.WorkBlurbCompactAdapter
 import org.eidos.reader.ui.misc.utilities.Utilities.Companion.hideKeyboard
 

@@ -17,7 +17,6 @@ import kotlinx.coroutines.launch
 import org.eidos.reader.EidosApplication
 import org.eidos.reader.WorkDirections
 import org.eidos.reader.container.AppContainer
-import org.eidos.reader.databinding.FragmentLibraryBinding
 import org.eidos.reader.databinding.LocalWorkListBinding
 import org.eidos.reader.ui.misc.adapters.WorkBlurbLocalAdapter
 import org.eidos.reader.ui.misc.utilities.Utilities.Companion.hideKeyboard
