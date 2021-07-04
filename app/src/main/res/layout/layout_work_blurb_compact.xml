@@ -24,10 +24,8 @@
 
         <TextView
             android:id="@+id/workRatingIcon"
-            style="@style/body_text"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:fontFamily="@font/libertinus_serif_semibold"
             android:gravity="center"
             android:includeFontPadding="false"
             android:lineSpacingExtra="0dp"
@@ -39,7 +37,6 @@
 
     <TextView
         android:id="@+id/workTitle"
-        style="@style/heading_text"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -54,7 +51,6 @@
 
     <TextView
         android:id="@+id/workAuthors"
-        style="@style/body_text"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:ellipsize="end"
@@ -66,7 +62,6 @@
 
     <TextView
         android:id="@+id/workFandoms"
-        style="@style/body_text"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:ellipsize="end"
@@ -80,7 +75,6 @@
 
     <TextView
         android:id="@+id/workWarnings"
-        style="@style/body_text"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
@@ -95,7 +89,6 @@
 
     <TextView
         android:id="@+id/workSummary"
-        style="@style/body_text"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"

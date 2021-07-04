@@ -30,7 +30,7 @@
                 android:paddingTop="?attr/actionBarSize"
                 android:paddingEnd="@dimen/space_medium_16dp"
                 android:paddingBottom="@dimen/space_medium_16dp"
-                app:layout_collapseMode="pin">
+                app:layout_collapseMode="none">
 
                 <TextView
                     android:id="@+id/tagNameTextView"

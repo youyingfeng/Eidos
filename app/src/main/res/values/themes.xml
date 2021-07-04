@@ -3,7 +3,7 @@
     <style name="Theme.Eidos" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- https://medium.com/over-engineering/setting-up-a-material-components-theme-for-android-fbf7774da739 -->
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/primaryColor</item>3
+        <item name="colorPrimary">@color/primaryColor</item>
         <item name="colorPrimaryVariant">@color/primaryDarkColor</item>
         <item name="colorOnPrimary">@color/primaryTextColor</item>
         <!-- Secondary brand color. -->
@@ -20,7 +20,5 @@
         <item name="colorOnSurface">@color/off_black</item>
         <item name="colorBackground">@color/off_white</item>
         <item name="colorOnBackground">@color/off_black</item>
-
-        -->
     </style>
 </resources>

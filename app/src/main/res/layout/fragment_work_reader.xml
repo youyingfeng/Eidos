@@ -111,7 +111,6 @@
 
             <TextView
                 android:id="@+id/workBody"
-                style="@style/reader_text"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:padding="@dimen/space_large_24dp"
