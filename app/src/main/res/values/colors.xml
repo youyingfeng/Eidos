@@ -19,14 +19,6 @@
     <color name="primaryTextColor">#000000</color>
     <color name="secondaryTextColor">#ffffff</color>
 
-    <color name="uiHighlightColor">#900</color>
-    <color name="chip_unselected_color">#E0E0E0</color>
-
-
-    <color name="ui_text_standard">#333333</color>
-    <color name="ui_text_dark">#202020</color>
-    <color name="ui_text_light">#505050</color>
-
     <color name="rating_gen">#469F47</color>
     <color name="rating_teen">#B4A22B</color>
     <color name="rating_mature">#CF6E1A</color>
