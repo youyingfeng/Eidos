@@ -54,7 +54,7 @@
         android:layout_marginEnd="24dp"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        app:chipBackgroundColor="@android:color/transparent"
+        app:chipBackgroundColor="@color/backgroundColor"
         app:chipIcon="@drawable/ic_card_date_updated_16"
         app:chipIconSize="16dp"
         app:chipMinTouchTargetSize="0dp"
@@ -174,8 +174,9 @@
             android:id="@+id/workLanguage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:chipBackgroundColor="@android:color/transparent"
+            app:chipBackgroundColor="@color/backgroundColor"
             app:chipIcon="@drawable/ic_card_language_16"
+            app:chipIconEnabled="true"
             app:chipIconSize="16dp"
             app:chipMinTouchTargetSize="0dp" />
 
@@ -183,8 +184,9 @@
             android:id="@+id/workWordCount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:chipBackgroundColor="@android:color/transparent"
+            app:chipBackgroundColor="@color/backgroundColor"
             app:chipIcon="@drawable/ic_card_word_count_16"
+            app:chipIconEnabled="true"
             app:chipIconSize="16dp"
             app:chipMinTouchTargetSize="0dp" />
 
@@ -192,8 +194,9 @@
             android:id="@+id/workChapters"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:chipBackgroundColor="@android:color/transparent"
+            app:chipBackgroundColor="@color/backgroundColor"
             app:chipIcon="@drawable/ic_card_chapters_16"
+            app:chipIconEnabled="true"
             app:chipIconSize="16dp"
             app:chipMinTouchTargetSize="0dp" />
 
@@ -201,8 +204,9 @@
             android:id="@+id/workKudos"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:chipBackgroundColor="@android:color/transparent"
+            app:chipBackgroundColor="@color/backgroundColor"
             app:chipIcon="@drawable/ic_card_kudos_16"
+            app:chipIconEnabled="true"
             app:chipIconSize="16dp"
             app:chipMinTouchTargetSize="0dp" />
 
@@ -210,8 +214,9 @@
             android:id="@+id/workComments"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:chipBackgroundColor="@android:color/transparent"
+            app:chipBackgroundColor="@color/backgroundColor"
             app:chipIcon="@drawable/ic_card_comments_16"
+            app:chipIconEnabled="true"
             app:chipIconSize="16dp"
             app:chipMinTouchTargetSize="0dp" />
 
@@ -219,8 +224,9 @@
             android:id="@+id/workBookmarks"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:chipBackgroundColor="@android:color/transparent"
+            app:chipBackgroundColor="@color/backgroundColor"
             app:chipIcon="@drawable/ic_card_bookmarks_16"
+            app:chipIconEnabled="true"
             app:chipIconSize="16dp"
             app:chipMinTouchTargetSize="0dp" />
 
@@ -228,8 +234,9 @@
             android:id="@+id/workHits"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:chipBackgroundColor="@android:color/transparent"
+            app:chipBackgroundColor="@color/backgroundColor"
             app:chipIcon="@drawable/ic_card_hits_16"
+            app:chipIconEnabled="true"
             app:chipIconSize="16dp"
             app:chipMinTouchTargetSize="0dp" />
     </com.google.android.material.chip.ChipGroup>

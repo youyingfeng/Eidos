@@ -35,68 +35,62 @@
 
         <com.google.android.material.chip.Chip
             android:id="@+id/allTagsChip"
-            style="@style/Widget.MaterialComponents.Chip.Choice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checkable="true"
             android:text="All Tags"
-            app:chipCornerRadius="4dp"
+            app:checkedIconEnabled="false"
             app:chipIcon="@drawable/ic_chip_all_tags_16"
             app:chipIconVisible="true" />
 
         <com.google.android.material.chip.Chip
             android:id="@+id/fandomsChip"
-            style="@style/Widget.MaterialComponents.Chip.Choice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checkable="true"
             android:text="Fandoms"
-            app:chipCornerRadius="4dp"
+            app:checkedIconEnabled="false"
             app:chipIcon="@drawable/ic_drawer_fandoms_24"
             app:chipIconVisible="true" />
 
         <com.google.android.material.chip.Chip
             android:id="@+id/charactersChip"
-            style="@style/Widget.MaterialComponents.Chip.Choice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checkable="true"
             android:text="Characters"
-            app:chipCornerRadius="4dp"
+            app:checkedIconEnabled="false"
             app:chipIcon="@drawable/ic_card_characters_24"
             app:chipIconVisible="true" />
 
         <com.google.android.material.chip.Chip
             android:id="@+id/relationshipsChip"
-            style="@style/Widget.MaterialComponents.Chip.Choice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checkable="true"
             android:text="Relationships"
-            app:chipCornerRadius="4dp"
+            app:checkedIconEnabled="false"
             app:chipIcon="@drawable/ic_card_relationships_14"
             app:chipIconVisible="true" />
 
         <com.google.android.material.chip.Chip
             android:id="@+id/freeformsChip"
-            style="@style/Widget.MaterialComponents.Chip.Choice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checkable="true"
             android:text="Freeforms"
-            app:chipCornerRadius="4dp"
+            app:checkedIconEnabled="false"
             app:chipIcon="@drawable/ic_card_freeforms_14"
             app:chipIconVisible="true" />
 
         <com.google.android.material.chip.Chip
             android:id="@+id/usersChip"
-            style="@style/Widget.MaterialComponents.Chip.Choice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checkable="true"
             android:text="Users"
             android:visibility="gone"
-            app:chipCornerRadius="4dp"
+            app:checkedIconEnabled="false"
             app:chipIcon="@drawable/ic_chip_users_16"
             app:chipIconVisible="true" />
 

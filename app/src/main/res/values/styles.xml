@@ -4,4 +4,25 @@
         <item name="android:textColor">#00000000</item>
     </style>
 
+    <style name="default_chip" parent="@style/Widget.MaterialComponents.Chip.Choice">
+        <item name="chipCornerRadius">4dp</item>
+        <item name="chipIconTint">@color/chip_selector_text_color</item>
+        <item name="android:textColor">@color/chip_selector_text_color</item>
+        <item name="chipBackgroundColor">@color/chip_selector_color</item>
+        <item name="chipMinTouchTargetSize">40dp</item>
+    </style>
+
+    <style name="outlined_text_box" parent="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="boxStrokeColor">@color/secondaryColor</item>
+        <item name="hintTextColor">@color/secondaryColor</item>
+        <item name="boxStrokeErrorColor">@color/errorColor</item>
+    </style>
+
+    <style name="outlined_dropdown_menu" parent="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
+        <item name="boxStrokeColor">@color/secondaryDarkColor</item>
+        <item name="hintTextColor">@color/secondaryDarkColor</item>
+        <item name="boxStrokeErrorColor">@color/errorColor</item>
+    </style>
+
+
 </resources>

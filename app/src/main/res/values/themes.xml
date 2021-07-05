@@ -12,13 +12,16 @@
         <item name="colorOnSecondary">@color/secondaryTextColor</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">@color/primaryColor</item>
-        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <!-- Other colors. -->
+        <item name="colorError">@color/errorColor</item>
+        <item name="colorOnError">@color/errorTextColor</item>
+        <item name="colorSurface">@color/primaryColor</item>
+        <item name="colorOnSurface">@color/primaryTextColor</item>
+        <item name="colorBackground">@color/backgroundColor</item>
+        <item name="colorOnBackground">@color/defaultTextColor</item>
         <!-- Customize your theme here. -->
-        <item name="colorError">@color/secondaryDarkColor</item>
-        <item name="colorOnError">@color/white</item>
-        <item name="colorSurface">@color/white</item>
-        <item name="colorOnSurface">@color/off_black</item>
-        <item name="colorBackground">@color/off_white</item>
-        <item name="colorOnBackground">@color/off_black</item>
+        <item name="textInputStyle">@style/outlined_text_box</item>
+        <item name="chipStyle">@style/default_chip</item>
     </style>
 </resources>

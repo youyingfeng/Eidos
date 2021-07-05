@@ -12,12 +12,18 @@
 
     <color name="primaryColor">#fafafa</color>
     <color name="primaryLightColor">#ffffff</color>
-    <color name="primaryDarkColor">#c7c7c7</color>
+    <color name="primaryDarkColor">#e0e0e0</color>
     <color name="secondaryColor">#d81b60</color>
     <color name="secondaryLightColor">#ff5c8d</color>
     <color name="secondaryDarkColor">#a00037</color>
-    <color name="primaryTextColor">#000000</color>
+    <color name="primaryTextColor">#333333</color>
     <color name="secondaryTextColor">#ffffff</color>
+
+    <color name="backgroundColor">#ffffff</color>
+    <color name="defaultTextColor">#333333</color>
+    <color name="errorColor">#db3b0a</color>
+    <color name="errorTextColor">#ffffff</color>
+
 
     <color name="rating_gen">#469F47</color>
     <color name="rating_teen">#B4A22B</color>
