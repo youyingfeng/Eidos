@@ -25,5 +25,6 @@
         <item name="textInputStyle">@style/outlined_text_box</item>
         <item name="chipStyle">@style/default_chip</item>
         <item name="materialButtonStyle">@style/default_button</item>
+        <item name="sliderStyle">@style/default_slider</item>
     </style>
 </resources>

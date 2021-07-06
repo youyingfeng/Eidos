@@ -40,6 +40,10 @@
     <style name="reader_text_appearance" parent="@style/TextAppearance.MaterialComponents.Body1">
         <item name="android:textColor">@color/defaultTextColor</item>
     </style>
-
-
+    
+    <style name="default_slider" parent="Widget.MaterialComponents.Slider">
+        <item name="trackColorActive">@color/secondaryColor</item>
+        <item name="trackColorInactive">@color/secondaryLightColor</item>
+        <item name="thumbColor">@color/primaryColor</item>
+    </style>
 </resources>
