@@ -3,9 +3,16 @@ package org.eidos.reader
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
+import org.eidos.reader.container.AppContainer
 import org.eidos.reader.databinding.ActivityMainBinding
+import org.eidos.reader.repository.EidosRepository
 import org.eidos.reader.ui.misc.utilities.setupWithNavController
 import timber.log.Timber
 
@@ -14,8 +21,22 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private var currentNavController: LiveData<NavController>? = null
 
+    private lateinit var repository: EidosRepository
+    private val viewModel: MainViewModel by viewModels { MainViewModelFactory(repository) }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        repository = (application as EidosApplication).appContainer.repository
+
+        viewModel.useNightMode.observe(this) { shouldUseNightMode ->
+            if (shouldUseNightMode) {
+                Timber.i("night mode activated")
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+            } else {
+                Timber.i("night mode deactivated")
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+            }
+        }
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         val view = binding.root
@@ -45,7 +66,6 @@ class MainActivity : AppCompatActivity() {
     private fun setupBottomNavigationBar() {
         val bottomNavigationView = binding.navigationBar
 
-//        val navGraphIds = listOf(R.navigation.home, R.navigation.list, R.navigation.form)
         // FIXME: remember to update this line with the list of navigation graphs!!!
         val navGraphIds = listOf(
             R.navigation.browse,

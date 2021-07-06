@@ -3,10 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/more"
-    app:startDestination="@id/moreFragment">
+    app:startDestination="@id/settingsFragment">
     <fragment
-        android:id="@+id/moreFragment"
-        android:name="org.eidos.reader.ui.more.MoreFragment"
-        android:label="fragment_more"
-        tools:layout="@layout/fragment_more" />
+        android:id="@+id/settingsFragment"
+        android:name="org.eidos.reader.ui.more.SettingsFragment"
+        android:label="SettingsFragment" />
 </navigation>
