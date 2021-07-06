@@ -33,6 +33,7 @@
 
                 <TextView
                     android:id="@+id/workTitleTextView"
+                    style="@style/ui_text_header"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Title of the work that spans over two lines"
@@ -70,7 +71,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Previous"
-                    android:textColor="@color/off_black"
                     app:layout_constraintBottom_toBottomOf="@+id/textView"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/textView" />
@@ -80,7 +80,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Next"
-                    android:textColor="@color/off_black"
                     app:layout_constraintBottom_toBottomOf="@+id/textView"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/textView" />
@@ -111,6 +110,7 @@
 
             <TextView
                 android:id="@+id/workBody"
+                style="@style/reader_text_appearance"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:padding="@dimen/space_large_24dp"
@@ -133,7 +133,6 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/currentChapterIndicator"
-                    style="@style/Widget.MaterialComponents.Button.TextButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="0/0"

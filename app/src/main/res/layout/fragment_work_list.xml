@@ -34,6 +34,7 @@
 
                 <TextView
                     android:id="@+id/tagNameTextView"
+                    style="@style/ui_text_header"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Lorem Ipsum Dolor Sit Amet"

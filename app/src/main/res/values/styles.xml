@@ -24,5 +24,22 @@
         <item name="boxStrokeErrorColor">@color/errorColor</item>
     </style>
 
+    <style name="default_button" parent="@style/Widget.MaterialComponents.Button.TextButton">
+        <item name="android:textColor">@color/secondaryColor</item>
+    </style>
+
+    <style name="ui_text_appearance" parent="@style/TextAppearance.MaterialComponents.Body2">
+        <item name="android:textColor">@color/defaultTextColor</item>
+    </style>
+
+    <style name="ui_text_header" parent="ui_text_appearance">
+        <item name="android:textSize">20sp</item>
+        <item name="fontFamily">serif</item>
+    </style>
+
+    <style name="reader_text_appearance" parent="@style/TextAppearance.MaterialComponents.Body1">
+        <item name="android:textColor">@color/defaultTextColor</item>
+    </style>
+
 
 </resources>

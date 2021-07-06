@@ -21,7 +21,9 @@
         <item name="colorBackground">@color/backgroundColor</item>
         <item name="colorOnBackground">@color/defaultTextColor</item>
         <!-- Customize your theme here. -->
+        <item name="android:textViewStyle">@style/ui_text_appearance</item>
         <item name="textInputStyle">@style/outlined_text_box</item>
         <item name="chipStyle">@style/default_chip</item>
+        <item name="materialButtonStyle">@style/default_button</item>
     </style>
 </resources>

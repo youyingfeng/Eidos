@@ -37,6 +37,7 @@
 
     <TextView
         android:id="@+id/workTitle"
+        style="@style/ui_text_header"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -80,7 +81,6 @@
         android:ellipsize="end"
         android:maxLines="2"
         android:text="There was an error retrieving this work from AO3."
-        android:textColor="#555555"
         app:layout_constrainedWidth="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@id/workAuthors"
