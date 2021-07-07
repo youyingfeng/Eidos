@@ -1,15 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="purple_200">#FFBB86FC</color>
-    <color name="purple_500">#FF6200EE</color>
-    <color name="purple_700">#FF3700B3</color>
-    <color name="teal_200">#FF03DAC5</color>
-    <color name="teal_700">#FF018786</color>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
-    <color name="off_black">#454545</color>
-    <color name="off_white">#FAFAFA</color>
-
     <color name="primaryColor">#fafafa</color>
     <color name="primaryLightColor">#ffffff</color>
     <color name="primaryDarkColor">#e0e0e0</color>
@@ -19,14 +9,17 @@
     <color name="primaryTextColor">#333333</color>
     <color name="secondaryTextColor">#ffffff</color>
 
-    <color name="backgroundColor">#ffffff</color>
+    <color name="defaultColor">#ffffff</color>
     <color name="defaultTextColor">#333333</color>
     <color name="errorColor">#db3b0a</color>
     <color name="errorTextColor">#ffffff</color>
 
-
+    <color name="rating_none">#FFFFFFFF</color>
     <color name="rating_gen">#469F47</color>
     <color name="rating_teen">#B4A22B</color>
     <color name="rating_mature">#CF6E1A</color>
     <color name="rating_explicit">#B2220F</color>
+
+    <color name="transparent">#00000000</color>
+    <color name="chip_default_bg">@color/primaryDarkColor</color>
 </resources>

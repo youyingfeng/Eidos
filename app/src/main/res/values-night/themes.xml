@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.Eidos" parent="Theme.MaterialComponents.Light.NoActionBar">
+    <style name="Theme.Eidos" parent="Theme.MaterialComponents.NoActionBar">
         <!-- https://medium.com/over-engineering/setting-up-a-material-components-theme-for-android-fbf7774da739 -->
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/primaryColor</item>
@@ -16,8 +16,8 @@
         <!-- Other colors. -->
         <item name="colorError">@color/errorColor</item>
         <item name="colorOnError">@color/errorTextColor</item>
-        <item name="colorSurface">@color/primaryColor</item>
-        <item name="colorOnSurface">@color/primaryTextColor</item>
+        <item name="colorSurface">@color/defaultColor</item>
+        <item name="colorOnSurface">@color/defaultTextColor</item>
         <item name="colorBackground">@color/defaultColor</item>
         <item name="colorOnBackground">@color/defaultTextColor</item>
         <!-- Customize your theme here. -->

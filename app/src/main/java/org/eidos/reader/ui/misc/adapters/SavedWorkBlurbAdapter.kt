@@ -11,8 +11,6 @@ import androidx.recyclerview.widget.RecyclerView
 import org.eidos.reader.R
 import org.eidos.reader.SavedWorkBlurb
 import org.eidos.reader.databinding.LayoutWorkBlurbBinding
-import org.eidos.reader.model.domain.WorkBlurb
-import org.eidos.reader.model.ui.WorkBlurbUiModel
 import kotlin.math.log
 import kotlin.math.pow
 
@@ -93,7 +91,7 @@ class SavedWorkBlurbAdapter
 
             binding.workRatingIconBackground.setCardBackgroundColor(when(item.rating) {
                 "Not Rated" -> ContextCompat.getColor(
-                    binding.workRatingIconBackground.context, R.color.white)
+                    binding.workRatingIconBackground.context, R.color.rating_none)
                 "General Audiences" -> ContextCompat.getColor(
                     binding.workRatingIconBackground.context, R.color.rating_gen)
                 "Teen And Up Audiences" -> ContextCompat.getColor(
@@ -103,7 +101,7 @@ class SavedWorkBlurbAdapter
                 "Explicit" -> ContextCompat.getColor(
                     binding.workRatingIconBackground.context, R.color.rating_explicit)
                 else -> ContextCompat.getColor(
-                    binding.workRatingIconBackground.context, R.color.white)
+                    binding.workRatingIconBackground.context, R.color.rating_none)
             })
 
             binding.workFandoms.text = item.fandoms

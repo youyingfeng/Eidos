@@ -10,6 +10,7 @@
         <item name="android:textColor">@color/chip_selector_text_color</item>
         <item name="chipBackgroundColor">@color/chip_selector_color</item>
         <item name="chipMinTouchTargetSize">40dp</item>
+        <item name="chipSurfaceColor">@color/transparent</item>
     </style>
 
     <style name="outlined_text_box" parent="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">

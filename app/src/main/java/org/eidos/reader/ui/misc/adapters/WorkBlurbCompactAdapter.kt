@@ -75,7 +75,7 @@ class WorkBlurbCompactAdapter
 
             binding.workRatingIconBackground.setCardBackgroundColor(when(item.rating) {
                 "Not Rated" -> ContextCompat.getColor(
-                    binding.workRatingIconBackground.context, R.color.white)
+                    binding.workRatingIconBackground.context, R.color.rating_none)
                 "General Audiences" -> ContextCompat.getColor(
                     binding.workRatingIconBackground.context, R.color.rating_gen)
                 "Teen And Up Audiences" -> ContextCompat.getColor(
@@ -85,7 +85,7 @@ class WorkBlurbCompactAdapter
                 "Explicit" -> ContextCompat.getColor(
                     binding.workRatingIconBackground.context, R.color.rating_explicit)
                 else -> ContextCompat.getColor(
-                    binding.workRatingIconBackground.context, R.color.white)
+                    binding.workRatingIconBackground.context, R.color.rating_none)
             })
 
             binding.workFandoms.text = item.fandoms

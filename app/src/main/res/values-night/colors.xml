@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="primaryColor">#333333</color>
+    <color name="primaryLightColor">#555555</color>
+    <color name="primaryDarkColor">#000000</color>
+    <color name="secondaryColor">#ef5350</color>
+    <color name="secondaryLightColor">#ff867c</color>
+    <color name="secondaryDarkColor">#b61827</color>
+    <color name="primaryTextColor">#ffffff</color>
+    <color name="secondaryTextColor">#333333</color>
+
+    <color name="defaultColor">#333333</color>
+    <color name="defaultTextColor">#ffffff</color>
+    <color name="errorColor">#ffb74d</color>
+    <color name="errorTextColor">#333333</color>
+
+    <color name="rating_none">#FFFFFFFF</color>
+    <color name="rating_gen">#469F47</color>
+    <color name="rating_teen">#B4A22B</color>
+    <color name="rating_mature">#CF6E1A</color>
+    <color name="rating_explicit">#B2220F</color>
+
+    <color name="transparent">#00000000</color>
+    <color name="chip_default_bg">@color/primaryLightColor</color>
+</resources>
