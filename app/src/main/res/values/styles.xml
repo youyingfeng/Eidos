@@ -28,6 +28,11 @@
     <style name="default_button" parent="@style/Widget.MaterialComponents.Button.TextButton">
         <item name="android:textColor">@color/secondaryColor</item>
     </style>
+    
+    <style name="contained_button" parent="@style/Widget.MaterialComponents.Button.UnelevatedButton">
+        <item name="backgroundTint">@color/chip_selector_color</item>
+        <item name="android:textColor">@color/chip_selector_text_color</item>
+    </style>
 
     <style name="ui_text_appearance" parent="@style/TextAppearance.MaterialComponents.Body2">
         <item name="android:textColor">@color/defaultTextColor</item>

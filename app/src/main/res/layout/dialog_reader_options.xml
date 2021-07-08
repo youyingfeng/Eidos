@@ -1,27 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:padding="24dp">
 
     <TextView
-        android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="TextView"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:text="Theme" />
+
+    <com.google.android.material.button.MaterialButtonToggleGroup
+        android:id="@+id/themeToggle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:checkedButton="@id/lightModeButton"
+        app:selectionRequired="true"
+        app:singleSelection="true">
+
+        <Button
+            android:id="@+id/lightModeButton"
+            style="@style/contained_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:checkable="true"
+            android:text="Light" />
+
+        <Button
+            android:id="@+id/darkModeButton"
+            style="@style/contained_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:checkable="true"
+            android:text="Dark" />
+    </com.google.android.material.button.MaterialButtonToggleGroup>
 
     <TextView
-        android:id="@+id/textView4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="TextView"
-        app:layout_constraintStart_toStartOf="@id/title"
-        app:layout_constraintTop_toBottomOf="@+id/title" />
+        android:text="Font Size" />
 
     <com.google.android.material.slider.Slider
         android:id="@+id/fontSizeSlider"
@@ -30,8 +53,6 @@
         android:stepSize="1.0"
         android:valueFrom="10.0"
         android:valueTo="20.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView4"
         app:tickVisible="true"
-        app:trackHeight="16dp" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        app:trackHeight="8dp" />
+</LinearLayout>

@@ -58,6 +58,8 @@ class WorkReaderViewModel
         .map { it.readerTextSize }
         .asLiveData()
 
+    val uiPreferences = repository.uiPreferencesFlow.asLiveData()
+
     init {
         viewModelScope.launch {
             if (fetchFromDatabase) {
@@ -189,6 +191,12 @@ class WorkReaderViewModel
     fun updateTextSize(newTextSize: Float) {
         viewModelScope.launch {
             repository.updateTextSize(newTextSize)
+        }
+    }
+
+    fun setNightMode(useNightMode: Boolean) {
+        viewModelScope.launch {
+            repository.setNightMode(useNightMode)
         }
     }
 }
