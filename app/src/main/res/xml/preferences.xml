@@ -1,11 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <PreferenceCategory android:title="Appearance">
+    <PreferenceCategory android:title="User Interface">
 
         <SwitchPreference
             android:defaultValue="false"
             android:key="useNightMode"
             android:title="Night Mode" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="Reader Appearance">
+        <org.eidos.reader.ui.misc.customviews.FloatSeekBarPreference
+            android:defaultValue="16"
+            android:title="Font Size"
+            app:format="%.0f"
+            app:key="reader_text_size"
+            app:maxValue="20.0"
+            app:minValue="10.0"
+            app:showSeekBarValue="true"
+            app:singleLineTitle="true"
+            app:valueSpacing="1.0" />
     </PreferenceCategory>
 </PreferenceScreen>

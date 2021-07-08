@@ -7,3 +7,6 @@ https://medium.com/android-news/scrolling-behavior-for-appbars-in-android-41aff9
     
 Scopes
 https://stackoverflow.com/questions/65008486/globalscope-vs-coroutinescope-vs-lifecyclescope
+
+Nested Preferences
+https://developer.android.com/guide/topics/ui/settings/organize-your-settings

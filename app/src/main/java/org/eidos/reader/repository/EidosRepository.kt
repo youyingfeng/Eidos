@@ -11,7 +11,6 @@ import androidx.work.WorkManager
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.stateIn
 import org.eidos.reader.ReadingListWorkBlurb
 import org.eidos.reader.SavedWorkBlurb
 import org.eidos.reader.model.domain.Comment
@@ -27,8 +26,6 @@ import org.eidos.reader.remote.requests.WorkRequest
 import org.eidos.reader.repository.paging.remote.AO3PagingSource
 import org.eidos.reader.repository.paging.remote.WorkBlurbUiModelPagingSource
 import org.eidos.reader.storage.Storage
-import org.eidos.reader.ui.misc.preferences.ReaderPreferences
-import org.eidos.reader.ui.misc.preferences.ReaderPreferencesKeys
 import org.eidos.reader.ui.misc.preferences.UiPreferences
 import org.eidos.reader.ui.misc.preferences.UiPreferencesKeys
 import org.eidos.reader.workers.DownloadWorker
@@ -173,26 +170,7 @@ class EidosRepository(
         return localDataSource.deleteWorkBlurbFromReadingList(workURL)
     }
 
-    /* Reader Settings */
-    val readerPreferencesFlow: Flow<ReaderPreferences> = preferencesDataStore.data
-        .catch { exception ->
-            if (exception is IOException) {
-                emit(emptyPreferences())
-            } else {
-                throw exception
-            }
-        }.map { preferences ->
-            Timber.i("ReaderPreferencesFlow Updated")
-            val textSize = preferences[ReaderPreferencesKeys.TEXT_SIZE] ?: 18F
-            return@map ReaderPreferences(textSize = textSize)
-        }
-
-    suspend fun updateTextSize(textSize: Float) {
-        preferencesDataStore.edit { preferences ->
-            preferences[ReaderPreferencesKeys.TEXT_SIZE] = textSize
-        }
-    }
-
+    /* Preferences */
     val uiPreferencesFlow: Flow<UiPreferences> = preferencesDataStore.data
         .catch { exception ->
             if (exception is IOException) {
@@ -204,7 +182,11 @@ class EidosRepository(
         .map { preferences ->
             Timber.i("UiPreferencesFlow Updated")
             val useNightMode = preferences[UiPreferencesKeys.USE_NIGHT_MODE] ?: false
-            return@map UiPreferences(useNightMode = useNightMode)
+            val readerTextSize = preferences[UiPreferencesKeys.READER_TEXT_SIZE] ?: 16F
+            return@map UiPreferences(
+                useNightMode = useNightMode,
+                readerTextSize = readerTextSize
+            )
         }
 
     suspend fun setNightMode(useNightMode: Boolean) {
@@ -213,4 +195,9 @@ class EidosRepository(
         }
     }
 
+    suspend fun updateTextSize(textSize: Float) {
+        preferencesDataStore.edit { preferences ->
+            preferences[UiPreferencesKeys.READER_TEXT_SIZE] = textSize
+        }
+    }
 }

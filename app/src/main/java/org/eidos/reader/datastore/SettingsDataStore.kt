@@ -4,6 +4,7 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.floatPreferencesKey
 import androidx.preference.PreferenceDataStore
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -31,6 +32,23 @@ class SettingsDataStore
         return runBlocking {
             dataStore.data.map { preferences ->
                 preferences[booleanPreferencesKey(key!!)] ?: defValue
+            }
+            .first()
+        }
+    }
+
+    override fun putFloat(key: String?, value: Float) {
+        CoroutineScope(Dispatchers.IO).launch {
+            dataStore.edit { preferences ->
+                preferences[floatPreferencesKey(key!!)] = value
+            }
+        }
+    }
+
+    override fun getFloat(key: String?, defValue: Float): Float {
+        return runBlocking {
+            dataStore.data.map { preferences ->
+                preferences[floatPreferencesKey(key!!)] ?: defValue
             }
             .first()
         }

@@ -23,4 +23,11 @@
 
     <!-- Determines the color of the text and icons when an item is selected/active in the drawer -->
     <attr name="colorDrawerForegroundActive" format="reference|color"/>
+
+    <declare-styleable name="FloatSeekBarPreference">
+        <attr name="minValue"/>
+        <attr name="maxValue"/>
+        <attr name="valueSpacing"/>
+        <attr name="format"/>
+    </declare-styleable>
 </resources>

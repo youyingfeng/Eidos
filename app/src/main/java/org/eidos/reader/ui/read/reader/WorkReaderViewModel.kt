@@ -54,10 +54,8 @@ class WorkReaderViewModel
     val chapterTitles: LiveData<List<String>>
         get() = _chapterTitles
 
-    val textSize = repository.readerPreferencesFlow
-        .map { readerPreferences ->
-            readerPreferences.textSize
-        }
+    val textSize = repository.uiPreferencesFlow
+        .map { it.readerTextSize }
         .asLiveData()
 
     init {
