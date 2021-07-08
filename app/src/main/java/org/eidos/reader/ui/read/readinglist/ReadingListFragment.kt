@@ -48,6 +48,8 @@ class ReadingListFragment : Fragment() {
         (activity as AppCompatActivity).setSupportActionBar(binding.toolbar)
         (activity as AppCompatActivity).setupActionBarWithNavController(findNavController())
 
+        binding.tagNameTextView.text = "Reading List"
+
         val adapter = WorkBlurbCompactAdapter(
             { holderView, workBlurb ->
                 holderView.findNavController()
@@ -71,6 +73,7 @@ class ReadingListFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.readingListFlow.collectLatest {
                 adapter.submitList(it)
+                binding.workCountTextView.text = "Listing ${it.size} works"
             }
         }
 

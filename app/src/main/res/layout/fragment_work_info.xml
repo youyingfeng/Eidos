@@ -23,14 +23,16 @@
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-
-
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_marginBottom="64dp"
+            android:nestedScrollingEnabled="true"
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:scrollbars="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -39,6 +41,7 @@
 
                 <TextView
                     android:id="@+id/title"
+                    style="@style/ui_text_header"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Title" />
@@ -65,12 +68,14 @@
                     android:id="@+id/saveWorkButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:text="Add to Library" />
 
                 <Button
                     android:id="@+id/saveReadingListButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:text="Read Later" />
             </LinearLayout>
 
@@ -116,6 +121,7 @@
                     android:id="@+id/fandomTagsHeader"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
                     android:text="Fandoms" />
 
                 <com.google.android.material.chip.ChipGroup
@@ -129,6 +135,7 @@
                     android:id="@+id/relationshipTagsHeader"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
                     android:text="Relationships" />
 
                 <com.google.android.material.chip.ChipGroup
@@ -142,6 +149,7 @@
                     android:id="@+id/characterTagsHeader"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
                     android:text="Characters" />
 
                 <com.google.android.material.chip.ChipGroup
@@ -155,7 +163,8 @@
                     android:id="@+id/freeformTagsHeader"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Freeforms" />
+                    android:text="Freeforms"
+                    android:layout_marginTop="8dp" />
 
                 <com.google.android.material.chip.ChipGroup
                     android:id="@+id/freeformTags"
@@ -173,9 +182,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|center_horizontal"
+        android:layout_margin="@dimen/space_medium_16dp"
         android:clickable="true"
+        android:paddingStart="20dp"
         android:text="READ"
-        app:icon="@drawable/ic_card_chapters_16" />
+        app:icon="@drawable/ic_card_chapters_16"
+        app:iconPadding="12dp" />
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

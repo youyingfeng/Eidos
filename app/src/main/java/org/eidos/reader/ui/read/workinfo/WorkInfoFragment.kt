@@ -89,11 +89,15 @@ class WorkInfoFragment : Fragment() {
         binding.author.text = workBlurb.authors.joinToString()
         binding.giftees.text = workBlurb.giftees.joinToString()
 
+        binding.rating.text = workBlurb.rating
+        binding.warnings.text = workBlurb.warnings.joinToString()
+        binding.categories.text = workBlurb.categories.joinToString()
+
         // add chips into the group
         workBlurb.fandoms.forEach { binding.fandomTags.addChipWithText(it) }
         workBlurb.relationships.forEach { binding.relationshipTags.addChipWithText(it) }
         workBlurb.characters.forEach { binding.characterTags.addChipWithText(it) }
-        workBlurb.freeforms.forEach { binding.characterTags.addChipWithText(it) }
+        workBlurb.freeforms.forEach { binding.freeformTags.addChipWithText(it) }
 
     }
 

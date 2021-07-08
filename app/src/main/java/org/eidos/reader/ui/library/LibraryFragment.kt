@@ -49,6 +49,8 @@ class LibraryFragment : Fragment() {
         (activity as AppCompatActivity).setSupportActionBar(binding.toolbar)
         (activity as AppCompatActivity).setupActionBarWithNavController(findNavController())
 
+        binding.tagNameTextView.text = "Library"
+
         val adapter = WorkBlurbLocalAdapter(
             { holderView, workBlurb ->
                 holderView.findNavController()
@@ -73,6 +75,7 @@ class LibraryFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.workBlurbFlow.collectLatest {
                 adapter.submitList(it)
+                binding.workCountTextView.text = "Listing ${it.size} works"
             }
         }
 
