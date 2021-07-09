@@ -35,15 +35,13 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginEnd="16dp"
-                    android:text="Lorem Ipsum Dolor Sit Amet"
                     android:textSize="24sp" />
 
                 <TextView
                     android:id="@+id/workCountTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
-                    android:text="Listing 250 works" />
+                    android:layout_margin="16dp" />
             </LinearLayout>
 
             <com.google.android.material.appbar.MaterialToolbar

@@ -31,8 +31,8 @@
     <fragment
         android:id="@+id/workInfoFragment"
         android:name="org.eidos.reader.ui.read.workinfo.WorkInfoFragment"
-        android:label="fragment_work_info"
-        tools:layout="@layout/fragment_work_info" >
+        android:label="View Work"
+        tools:layout="@layout/fragment_work_info">
         <action
             android:id="@+id/action_workInfoFragment_to_workReaderFragment"
             app:destination="@id/workReaderFragment" />
@@ -41,22 +41,22 @@
             app:argType="org.eidos.reader.model.domain.WorkBlurb" />
         <argument
             android:name="isStoredInDatabase"
-            app:argType="boolean"
-            android:defaultValue="false" />
+            android:defaultValue="false"
+            app:argType="boolean" />
     </fragment>
 
     <fragment
         android:id="@+id/workReaderFragment"
         android:name="org.eidos.reader.ui.read.reader.WorkReaderFragment"
-        android:label="fragment_work_reader"
-        tools:layout="@layout/fragment_work_reader" >
+        android:label="Read Work"
+        tools:layout="@layout/fragment_work_reader">
         <argument
             android:name="workURL"
             app:argType="string" />
         <argument
             android:name="fetchFromDatabase"
-            app:argType="boolean"
-            android:defaultValue="false" />
+            android:defaultValue="false"
+            app:argType="boolean" />
     </fragment>
 
     <action

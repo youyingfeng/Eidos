@@ -7,5 +7,5 @@
     <fragment
         android:id="@+id/settingsFragment"
         android:name="org.eidos.reader.ui.more.SettingsFragment"
-        android:label="SettingsFragment" />
+        android:label="Preferences" />
 </navigation>
