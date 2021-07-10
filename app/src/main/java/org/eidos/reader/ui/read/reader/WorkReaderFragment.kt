@@ -137,17 +137,25 @@ class WorkReaderFragment : Fragment() {
             openChapterSelectionDialog()
         }
 
-        /* COMMENTS */
-        val adapter = CommentAdapter()
-        binding.commentsDisplay.adapter = adapter
+        viewModel.workTitle.observe(viewLifecycleOwner) {
+            binding.workTitleTextView.text = it
+        }
 
-        viewModel.comments.observe(viewLifecycleOwner, {
-            it?.let {
-                adapter.data = it
-                print(it)
-                Timber.i("comments loaded")
-            }
-        })
+        viewModel.workAuthors.observe(viewLifecycleOwner) {
+            binding.workAuthorsTextView.text = it.joinToString()
+        }
+
+        /* COMMENTS */
+//        val adapter = CommentAdapter()
+//        binding.commentsDisplay.adapter = adapter
+//
+//        viewModel.comments.observe(viewLifecycleOwner, {
+//            it?.let {
+//                adapter.data = it
+//                print(it)
+//                Timber.i("comments loaded")
+//            }
+//        })
 
 //        binding.commentsSwipeRefresh.setOnRefreshListener {
 //            Timber.i("Swipe refresh initiated")
@@ -156,10 +164,10 @@ class WorkReaderFragment : Fragment() {
 //            binding.commentsSwipeRefresh.isRefreshing = false
 //        }
 
-        // load comments every chapter
-        viewModel.currentChapterBody.observe(viewLifecycleOwner, {
-            viewModel.getNextCommentsPage()
-        })
+//        // load comments every chapter
+//        viewModel.currentChapterBody.observe(viewLifecycleOwner, {
+//            viewModel.getNextCommentsPage()
+//        })
 
 
         return binding.root

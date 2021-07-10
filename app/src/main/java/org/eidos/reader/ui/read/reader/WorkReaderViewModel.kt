@@ -58,6 +58,14 @@ class WorkReaderViewModel
         .map { it.readerTextSize }
         .asLiveData()
 
+    private val _workTitle = MutableLiveData<String>()
+    val workTitle: LiveData<String>
+        get() = _workTitle
+
+    private val _workAuthors = MutableLiveData<List<String>>()
+    val workAuthors: LiveData<List<String>>
+        get() = _workAuthors
+
     val uiPreferences = repository.uiPreferencesFlow.asLiveData()
 
     init {
@@ -75,6 +83,8 @@ class WorkReaderViewModel
         withContext(Dispatchers.IO) {
             val workRequest = WorkRequest(workURL)
             work = repository.getWorkFromAO3(workRequest)
+            _workTitle.postValue(work.title)
+            _workAuthors.postValue(work.authors)
             loadFirstChapter()
             _chapterTitles.postValue(work.chapters.let { chapterList ->
                 val titles = mutableListOf<String>()
@@ -90,6 +100,8 @@ class WorkReaderViewModel
     private suspend fun getWorkFromDatabase() {
         withContext(Dispatchers.IO) {
             work = repository.getWorkFromDatabase(workURL)
+            _workTitle.postValue(work.title)
+            _workAuthors.postValue(work.authors)
 
             // TODO: refactor out below code as this is duplicate
             loadFirstChapter()
