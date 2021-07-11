@@ -5,6 +5,7 @@ import org.eidos.reader.model.domain.*
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Element
 import org.jsoup.select.Elements
+import timber.log.Timber
 
 class HTMLParser {
     fun parseCsrfToken(html: String) : String {
@@ -223,10 +224,6 @@ class HTMLParser {
     fun parseWork(workHtml: String, navigationHtml: String, workURL: String) : Work {
         val workDoc = Jsoup.parse(workHtml)
         val navigationDoc = Jsoup.parse(navigationHtml)
-        // get the list of URLs to zip with the contents later
-        val chapterURLs : List<String> = navigationDoc
-                .select("div#main > ol.chapter.index.group > li > a[href]")
-                .map { it.attr("href") }
 
         // Statistics
         val metadataTree = workDoc.select("dl.work.meta.group")
@@ -313,73 +310,81 @@ class HTMLParser {
             .select("#workskin > div.preface.group > div.notes.module > ul.associations > li > a")
             .map { it.text() }  // pseuds can be parsed based on names alone
 
-        // TODO: Because Entire Work doesn't actually work on completed oneshots, we need to change chapterTrees
+        // Because Entire Work doesn't actually work on completed oneshots, we need to change chapterTrees
+        val chapters: List<Chapter> =
+            if (currentChapterCount == 1 && maxChapterCount == 1) {
+                // get the list of URLs to zip with the contents later
+                val chapterURLs : List<String> = navigationDoc
+                    .select("div#main > ol.chapter.index.group > li > a[href]")
+                    .map { it.attr("href") }
 
-        val chapters : List<Chapter>
-
-        if (currentChapterCount == 1 && maxChapterCount == 1) {
-            // TODO: execute the following code if it is a completed oneshot
-            val chapterText = workDoc.select("div#chapters > div.userstuff")
-                    .first()
-                    .html()
-
-            val chapter = Chapter(
-                    title = "",
-                    summary = "",
-                    preChapterNotes = "",
-                    chapterBody = chapterText,
-                    postChapterNotes = "",
-                    chapterURL = chapterURLs[0]
-            )
-
-            chapters = listOf(chapter)  // singular list
-
-        } else {
-            // TODO: Execute this branch if the work is not a *completed* oneshot.
-            // i.e. this is a multi-work series or incomplete single chapter work etc
-            // Get chapter trees
-            val chapterTrees = workDoc.select("div#chapters > div.chapter")
-
-            require(chapterTrees.size == chapterURLs.size)
-            val zipChapterTreesAndUrlsList = chapterTrees zip chapterURLs
-            chapters = zipChapterTreesAndUrlsList.map {
-                val title = it.first
-                        .select("div.chapter.preface.group > h3.title")
+                val chapterText = workDoc.select("div#chapters > div.userstuff")
                         .first()
-                        .ownText()  // gets the text enclosed within the element that is *not* nested in other elements
-                        .removePrefix(": ")
-                val summary = it.first
-                        .select("div#summary > blockquote.userstuff")
-                        .first()
-                        ?.html()
-                        ?: ""
-                val preChapterNotes = it.first
-                        .select("div#notes > blockquote.userstuff")
-                        .first()
-                        ?.html()
-                        ?: ""
-                val chapterText = it.first
-                        .select("div.userstuff.module")
-                        .first()
-                        .apply { this.getElementById("work")?.remove() }
                         .html()
-                val postChapterNotes = it.first
-                        .select("div.chapter.preface.group > div.end.notes.module > blockquote.userstuff")
-                        .first()
-                        ?.html()
-                        ?: ""
-                val chapterURL = it.second
 
-                return@map Chapter(
-                        title = title,
-                        summary = summary,
-                        preChapterNotes = preChapterNotes,
+                val chapter = Chapter(
+                        title = "",
+                        summary = "",
+                        preChapterNotes = "",
                         chapterBody = chapterText,
-                        postChapterNotes = postChapterNotes,
-                        chapterURL = chapterURL
+                        postChapterNotes = "",
+                        chapterURL = chapterURLs[0]
                 )
+
+                listOf(chapter)  // assigns singular list to chapters
+
+            } else {
+                // TODO: Execute this branch if the work is not a *completed* oneshot.
+                // i.e. this is a multi-work series or incomplete single chapter work etc
+                // Get chapter trees
+                val chapterTrees = workDoc.select("div#chapters > div.chapter")
+
+                // assigns the result of the map to chapters
+                chapterTrees.map {
+                    // TODO: parse the url inside here
+                    val title = it
+                            .select("div.chapter.preface.group > h3.title")
+                            .first()
+                            .ownText()  // gets the text enclosed within the element that is *not* nested in other elements
+                            .removePrefix(": ")
+
+                    // chapter url obtained here is the same as the one in the navigation list
+                    val chapterURL = it
+                        .selectFirst("div.chapter.preface.group > h3.title > a[href]")
+                        .attr("href")
+                        .removePrefix(workURL)
+
+                    val summary = it
+                            .select("div#summary > blockquote.userstuff")
+                            .first()
+                            ?.html()
+                            ?: ""
+                    val preChapterNotes = it
+                            .select("div#notes > blockquote.userstuff")
+                            .first()
+                            ?.html()
+                            ?: ""
+                    val chapterText = it
+                            .select("div.userstuff.module")
+                            .first()
+                            .apply { this.getElementById("work")?.remove() }
+                            .html()
+                    val postChapterNotes = it
+                            .select("div.chapter.preface.group > div.end.notes.module > blockquote.userstuff")
+                            .first()
+                            ?.html()
+                            ?: ""
+
+                    return@map Chapter(
+                            title = title,
+                            summary = summary,
+                            preChapterNotes = preChapterNotes,
+                            chapterBody = chapterText,
+                            postChapterNotes = postChapterNotes,
+                            chapterURL = chapterURL
+                    )
+                }
             }
-        }
 
         val preWorkNotes : String = workDoc
             .select("#workskin > div.preface.group > div.notes.module > blockquote.userstuff")
