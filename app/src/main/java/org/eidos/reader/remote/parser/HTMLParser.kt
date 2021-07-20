@@ -5,7 +5,6 @@ import org.eidos.reader.model.domain.*
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Element
 import org.jsoup.select.Elements
-import timber.log.Timber
 
 class HTMLParser {
     fun parseCsrfToken(html: String) : String {
@@ -495,7 +494,7 @@ class HTMLParser {
                 // URL must be of format /users/$USERNAME/pseuds/$PSEUDONYM
                 val temp = userURL.removePrefix("/users/").split("/pseuds/")
 
-                val author = Pseud(temp[0], temp[1])
+                val author = PseudName(temp[0], temp[1])
                 val chapter = commentObject.selectFirst("h4.heading > span.parent")
                     ?.ownText()
                     ?.removePrefix("on Chapter ")
@@ -523,7 +522,7 @@ class HTMLParser {
                     // basically the same as the registered user case, except that the author changes
                     val username = anonymousUserHeaderElement.ownText()
 
-                    val author = AnonymousUser(username)
+                    val author = AnonymousUserName(username)
                     val chapter = commentObject.selectFirst("h4.heading > span.parent")
                         ?.ownText()
                         ?.removePrefix("on Chapter ")

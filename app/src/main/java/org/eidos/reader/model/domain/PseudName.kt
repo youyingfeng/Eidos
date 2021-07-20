@@ -1,10 +1,10 @@
 package org.eidos.reader.model.domain
 
-class Pseud
+class PseudName
     constructor (
         val username: String,
         val pseudonym: String
-    ) : User
+    ) : UserName
 {
     override val displayName: String
         get() = "$pseudonym ($username)"

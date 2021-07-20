@@ -111,6 +111,13 @@ data class WorkFilterRequest
 
     private val ratingsQueryString: String
         get() {
+            /**
+             * Not Rated    9
+             * General      10
+             * Teen         11
+             * Mature       12
+             * Explicit     13
+             */
             var tempRatingsQueryString = ""
 
             if (!workFilterChoices.showRatingNotRated) {

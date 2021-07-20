@@ -2,7 +2,7 @@ package org.eidos.reader.model.domain
 
 data class Comment(
     val commentID: String,
-    val author: User,
+    val author: UserName,
     val chapter: Int,
     val postedDateTime: String,
     val body: String,

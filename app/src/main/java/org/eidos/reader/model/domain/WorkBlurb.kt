@@ -13,7 +13,7 @@ data class WorkBlurb
         val rating: String,
         val warnings: List<String>,
         val categories: List<String>,
-        val completionStatus: Boolean,
+        val completionStatus: Boolean,  // TODO: remove this field from ctor, as this is inferred
         val characters: List<String>,
         val relationships: List<String>,
         val freeforms: List<String>,
