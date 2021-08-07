@@ -1,10 +1,21 @@
 # Eidos
-This is an unofficial AO3 app written in Kotlin.
+An unoffical AO3 app for Android.
 
-This is intended as an introduction to writing a good android app, which follows all 
-the good design principles (e.g. clean architecture, proper separation of concerns, etc).
-Additionally, this serves as a platform to refine my UI/UX design skills.
+Requires Android 6.0 and above.
 
-The development phase is expected to be slow, as I am an overworked university student 
-with too much work on my hands. I expect it to take about ~6 months before a fully 
-functional application is developed.
+## What can it do?
+So far, it can search for works by tag (e.g. fandom, relationship, etc.) and read them. It can 
+also save works in the Library, and mark works for future reading in the Reading List.
+
+## Usage
+Download the debug apk in the release and install it on your android device. Do allow your device to
+install apps from unknown sources (before Android 8.0)/install unknown apps (Android 8.0 and above).
+
+## Screenshots
+<p float="left">
+  <img src="/images/tag-search.png" width="200" alt="Searching for tags" />
+  <img src="/images/works-by-tag.png" width="200" alt="Browsing works by tag" /> 
+  <img src="/images/work-reader.png" width="200" alt="Reading a work" />
+  <img src="/images/library.png" width="200" alt="Saved works in the Library" /> 
+  <img src="/images/reading-list.png" width="200" alt="List of works in the Reading List" />
+</p>
